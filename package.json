@@ -1,0 +1,23 @@
+{
+  "name": "graphql-to-openapi",
+  "version": "1.0.0",
+  "description": "A utility for converting the combination of an graphql schema and graphql query into an openapi specification.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schwer/graphql-to-openapi.git"
+  },
+  "keywords": [
+    "graphql",
+    "openapi"
+  ],
+  "author": "Peter Schwer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/schwer/graphql-to-openapi/issues"
+  },
+  "homepage": "https://github.com/schwer/graphql-to-openapi#readme"
+}
