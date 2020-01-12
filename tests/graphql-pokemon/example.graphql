@@ -1,5 +1,7 @@
-query PokemonExampleQuery(
-  $name: String!
+# @description: Returns a pokemon by it's name
+# @operationId: getPokemonByName
+query pokemonByName (
+  $name: String! # name of the pokemon
 ) {
   pokemon(name: $name) {
     id

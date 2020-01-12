@@ -1,0 +1,173 @@
+{
+  "swagger": "2.0",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/pokemonByName": {
+      "get": {
+        "description": "Returns a pokemon by its name",
+        "operationId": "getPokemonByName",
+        "produces": [
+          "application/json"
+        ],
+        "parameters': [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "name of the pokemon",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/Pokemon"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Attack": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "damage": {
+          "type": "integer"
+        }
+      }
+    },
+    "Pokemon": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The ID of an object",
+          "type": "string"
+        },
+        "number": {
+          "description": "The identifier of this Pokémon",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of this Pokémon",
+          "type": "string"
+        },
+        "weight": {
+          "description": "The minimum and maximum weight of this Pokémon",
+          "$ref": "#/definitions/PokemonDimension"
+        },
+        "height": {
+          "description": "The minimum and maximum weight of this Pokémon"
+          "$ref": "#/definitions/PokemonDimension"
+        },
+        "classification": {
+          "description": "The classification of this Pokémon",
+          "type": "string",
+        },
+        "types": {
+          "description": "The type(s) of this Pokémon"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resistant": {
+          "description": "The type(s) of Pokémons that this Pokémon is resistant to"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attacks": {
+          "description": "The attacks of this Pokémon",
+          "$ref": "#/definitions/PokemonAttack"
+        },
+        "weaknesses": {
+          "description": "The type(s) of Pokémons that this Pokémon weak to",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fleeRate": {
+          "type": "number"
+        },
+        "maxCP": {
+          "type": "integer"
+        },
+        "evolutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Pokemon"
+          }
+        },
+        "evolutionRequirements": {
+          "$ref": "#/definitions/PokemonEvolutionRequirement"
+        },
+        "maxHP": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        }
+      }
+    },
+    "PokemonAttack": {
+      "type": "object",
+      "properties": {
+        "fast": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Attack"
+          }
+        }
+        "special": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Attack"
+          }
+        }
+      }
+    },
+    "PokemonDimension": {
+      "description": "Represents a Pokémon's dimensions",
+      "type": "object",
+      "properties": {
+        "minimum": {
+          "description": "The minimum value of this dimension",
+          "type": "string"
+        },
+        "maximum": {
+          "description": "The maximum value of this dimension",
+          "type": "string"
+        }
+      }
+    },
+    "PokemonEvolutionRequirement": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
