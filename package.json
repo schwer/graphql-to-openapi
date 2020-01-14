@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/schwer/graphql-to-openapi#readme",
   "dependencies": {
+    "eslint-plugin-graphql": "^3.1.1",
     "graphql": "^14.5.8"
   },
   "devDependencies": {
