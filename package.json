@@ -4,7 +4,8 @@
   "description": "A utility for converting the combination of an graphql schema and graphql query into an openapi specification.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --forceExit --coverage --verbose",
+    "watch-test": "npm run test -- --watchAll"
   },
   "repository": {
     "type": "git",
