@@ -24,7 +24,16 @@
     "graphql": "^14.5.8"
   },
   "devDependencies": {
-    "tsc": "^1.20150623.0"
+    "@types/jest": "^24.0.25",
+    "@types/node": "^13.1.6",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "eslint": "^6.8.0",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.3.0",
+    "ts-node": "^8.6.2",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.7.4"
   },
   "types": "dist/index.d.ts",
   "prepublish": "tsc"
