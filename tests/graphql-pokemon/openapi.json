@@ -30,142 +30,124 @@
           "200": {
             "description": "response",
             "schema": {
-              "$ref": "#/definitions/Pokemon"
+              "type": "object",
+              "nullable": true,
+              "properties": {
+                "id": {
+                  "description": "the id of an object",
+                  "type": "string"
+                },
+                "number": {
+                  "description": "the identifier of this pokémon",
+                  "type": "string",
+                  "nullable": true
+                },
+                "name": {
+                  "description": "the name of this pokémon",
+                  "type": "string"
+                  "nullable": true
+                },
+                "attacks": {
+                  "description": "the attacks of this pokémon",
+                  "nullable": true,
+                  "properties": {
+                    "special": {
+                      "description": "The special attacks of this Pokémon",
+                      "items": {
+                        "properties": {
+                          "name": {
+                            "description": "The name of this Pokémon attack",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "The type of this Pokémon attack",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "damage": {
+                            "description": "The damage of this Pokémon attack",
+                            "nullable": true,
+                            "type": "integer"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                },
+                "evolutions": {
+                  "description": "The evolutions of this Pokémon",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The ID of an object",
+                        "type": "string"
+                      },
+                      "number": {
+                        "description": "The identifier of this Pokémon",
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "name": {
+                        "description": "the name of this pokémon",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "weight": {
+                        "description": "The minimum and maximum weight of this Pokémon",
+                        "properties": {
+                          "minimum": {
+                            "description": "The minimum value of this dimension",
+                            "type": "string"
+                          },
+                          "maximum": {
+                            "description": "The maximum value of this dimension",
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "attacks": {
+                        "description": "The attacks of this Pokémon",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "fast": {
+                              "description": "The fast attacks of this Pokémon",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "description": "The name of this Pokémon attack",
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "description": "The type of this Pokémon attack",
+                                    "type": "string"
+                                  },
+                                  "damage": {
+                                    "description": "The damage of this Pokémon attack",
+                                    "type": "integer"
+                                  }
+                                }
+                              },
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "type": "array"
+                      }
+                    }
+                  },
+                  "type": "array"
+                }
+              }
             }
           }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Attack": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "damage": {
-          "type": "integer"
-        }
-      }
-    },
-    "Pokemon": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "description": "The ID of an object",
-          "type": "string"
-        },
-        "number": {
-          "description": "The identifier of this Pokémon",
-          "type": "string"
-        },
-        "name": {
-          "description": "The name of this Pokémon",
-          "type": "string"
-        },
-        "weight": {
-          "description": "The minimum and maximum weight of this Pokémon",
-          "$ref": "#/definitions/PokemonDimension"
-        },
-        "height": {
-          "description": "The minimum and maximum weight of this Pokémon"
-          "$ref": "#/definitions/PokemonDimension"
-        },
-        "classification": {
-          "description": "The classification of this Pokémon",
-          "type": "string",
-        },
-        "types": {
-          "description": "The type(s) of this Pokémon"
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "resistant": {
-          "description": "The type(s) of Pokémons that this Pokémon is resistant to"
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "attacks": {
-          "description": "The attacks of this Pokémon",
-          "$ref": "#/definitions/PokemonAttack"
-        },
-        "weaknesses": {
-          "description": "The type(s) of Pokémons that this Pokémon weak to",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "fleeRate": {
-          "type": "number"
-        },
-        "maxCP": {
-          "type": "integer"
-        },
-        "evolutions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Pokemon"
-          }
-        },
-        "evolutionRequirements": {
-          "$ref": "#/definitions/PokemonEvolutionRequirement"
-        },
-        "maxHP": {
-          "type": "integer"
-        },
-        "image": {
-          "type": "string"
-        }
-      }
-    },
-    "PokemonAttack": {
-      "type": "object",
-      "properties": {
-        "fast": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Attack"
-          }
-        }
-        "special": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Attack"
-          }
-        }
-      }
-    },
-    "PokemonDimension": {
-      "description": "Represents a Pokémon's dimensions",
-      "type": "object",
-      "properties": {
-        "minimum": {
-          "description": "The minimum value of this dimension",
-          "type": "string"
-        },
-        "maximum": {
-          "description": "The maximum value of this dimension",
-          "type": "string"
-        }
-      }
-    },
-    "PokemonEvolutionRequirement": {
-      "type": "object",
-      "properties": {
-        "amount": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
         }
       }
     }
