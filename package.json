@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest --forceExit --coverage --verbose",
-    "watch-test": "npm run test -- --watchAll"
+    "watch-test": "npm run test -- --watchAll",
+    "lint": "eslint **/*.ts"
   },
   "repository": {
     "type": "git",
