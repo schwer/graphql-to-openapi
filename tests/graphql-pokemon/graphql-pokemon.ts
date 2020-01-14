@@ -26,7 +26,8 @@ describe('graphql-pokemon', function() {
     const actualOutput = graphqlToOpenApi(
       inputSchema,
       inputQuery
-    );
-    assert.equal(expectedOutput, actualOutput);
+    )
+    console.log(actualOutput);
+    assert.equal(expectedOutput, actualOutput.openApiSchemaJson);
   });
 });
