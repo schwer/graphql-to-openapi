@@ -11,6 +11,15 @@ export function graphqlToOpenApi(
 ): string {
   const cliEngine = new CLIEngine({
     baseConfig: {
+      rules: {
+        'graphql/template-strings': ['error', {
+          env: 'literal',
+          schemaString: inputSchema,
+        }],
+        'graphql/named-operations' : ['error', {
+          schemaString: inputSchema,
+        }],
+      },
     },
     rules: {
       'graphql/template-strings': ['error', {
