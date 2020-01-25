@@ -3,20 +3,20 @@ import { parse } from 'graphql/language/parser';
 import { buildSchema, TypeInfo } from 'graphql';
 import { CLIEngine } from 'eslint';
 
-interface IGraphqlToOpenApiErrorReport {
+interface GraphqlToOpenApiErrorReport {
   inputQuery?: string;
   schemaString?: string;
 }
 
-interface IGraphqlToOpenApiResult {
-  errorReport?: IGraphqlToOpenApiErrorReport;
+interface GraphqlToOpenApiResult {
+  errorReport?: GraphqlToOpenApiErrorReport;
   openApiSchemaJson?: string;
 }
 
 export function graphqlToOpenApi(
   schemaString: string,
   inputQuery: string
-): IGraphqlToOpenApiResult {
+): GraphqlToOpenApiResult {
   const enabled = ['error', {
     env: 'literal',
     schemaString,
@@ -62,15 +62,15 @@ export function graphqlToOpenApi(
   }
   const parsedQuery = parse(inputQuery);
   let openApiSchemaJson = {
-    swagger: "2.0",
+    swagger: '2.0',
     schemes: [
-      "http", "https"
+      'http', 'https'
     ],
     consumes: [
-      "application/json"
+      'application/json'
     ],
     produces: [
-      "application/json"
+      'application/json'
     ],
     paths: {
     }
