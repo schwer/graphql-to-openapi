@@ -14,7 +14,26 @@ interface GraphqlToOpenApiResult {
 }
 
 const typeMap = {
-  'String': { type: 'string' },
+  'ID': {
+    type: 'string'
+  },
+  '[ID]': {
+    type: 'array',
+    items: {
+      type: 'string',
+      nullable: true,
+    }
+  },
+  '[ID!]': {
+    type: 'array',
+    items: {
+      type: 'string',
+      nullable: false,
+    },
+  },
+  'String': {
+     type: 'string'
+  },
   '[String!]': {
     type: 'array',
     items: {
@@ -121,12 +140,16 @@ function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
     } else {
       return {
         ...typeMap[typeNameWithoutBang],
-        ...openApiType,
+        nullable,
       };
     }
   } else if (typeNameWithoutBang.match(/^\[/)) {
     openApiType.type = 'array';
-    openApiType.items = {};
+    openApiType.items = {
+      type: 'object',
+      properties: {
+      }
+    };
     return openApiType;
   } else {
     openApiType.type = 'object';
@@ -206,7 +229,12 @@ export function graphqlToOpenApi(
     },
     OperationDefinition: {
       enter(node) {
-        const openApiType = { test: 'here'};
+        const openApiType = {
+          type: 'object',
+          properties: {
+            // To be filled by Field visitor
+          },
+        };
         openApiSchemaJson.paths['/' + node.name.value] = operationDef = {
           get: {
             responses: {
@@ -220,9 +248,7 @@ export function graphqlToOpenApi(
         });
       },
       leave(node) {
-        if (node === currentSelection[0].node) {
-          return currentSelection.shift().openApiType;
-        }
+        return openApiSchemaJson;
       },
     },
     VariableDefinition({ variable, type }) {
@@ -240,16 +266,13 @@ export function graphqlToOpenApi(
     Field: {
       enter(node) {
         const openApiType = fieldDefToOpenApiField(typeInfo, node);
-        let parentObj;
-        if (currentSelection.length > 0) {
-          parentObj = currentSelection[0].openApiType;
-        }
+        const parentObj = currentSelection[0].openApiType;
         if (parentObj.type === 'object') {
           parentObj.properties[node.name.value] = openApiType;
         } else if (parentObj.type === 'array') {
-          parentObj.items = openApiType;
+          parentObj.items.properties[node.name.value] = openApiType;
         }
-        if (openApiType.type === 'array' && !openApiType.items.type) {
+        if (openApiType.type === 'array' && openApiType.items.type === 'object') {
           currentSelection.unshift({
             node,
             openApiType,
@@ -263,12 +286,12 @@ export function graphqlToOpenApi(
       },
       leave(node) {
         if (currentSelection[0].node === node) {
-          return currentSelection.shift().openApiType;
+          const result = currentSelection.shift().openApiType;
+          return result;
         }
       }
     },
   }));
-  console.log(JSON.stringify(openApiSchemaJson, null, 2));
   return {
     openApiSchemaJson: JSON.stringify(openApiSchemaJson, null, 2),
   };
