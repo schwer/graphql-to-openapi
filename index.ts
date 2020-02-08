@@ -146,10 +146,10 @@ export function graphqlToOpenApi(
       rules: {
         'graphql/template-strings': ['error', {
           env: 'literal',
-          schemaString: inputSchema,
+          schemaString,
         }],
         'graphql/named-operations' : ['error', {
-          schemaString: inputSchema,
+          schemaString,
         }],
       },
     },
