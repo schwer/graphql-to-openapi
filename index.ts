@@ -13,6 +13,129 @@ interface GraphqlToOpenApiResult {
   openApiSchemaJson?: string;
 }
 
+const typeMap = {
+  'String': { type: 'string' },
+  '[String!]': {
+    type: 'array',
+    items: {
+      type: 'string',
+      nullable: false,
+    },
+  },
+  '[String]': {
+    type: 'array',
+    items: {
+      type: 'string',
+      nullable: true,
+    }
+  },
+  '[Int]': {
+    type: 'array',
+    items: {
+      type: 'integer',
+      nullable: true,
+    }
+  },
+  '[Int!]': {
+    type: 'array',
+    items: {
+      type: 'integer',
+      nullable: false,
+    }
+  },
+  '[Float]': {
+    type: 'array',
+    items: {
+      type: 'number',
+      nullable: true,
+    }
+  },
+  '[Float!]': {
+    type: 'array',
+    items: {
+      type: 'number',
+      nullable: false,
+    }
+  },
+  '[Boolean]': {
+    type: 'array',
+    items: {
+      type: 'boolean',
+      nullable: true,
+    }
+  },
+  '[Boolean!]': {
+    type: 'array',
+    items: {
+      type: 'boolean',
+      nullable: false,
+    }
+  },
+  'Int': { type: 'integer' },
+  'Float': { type: 'number' },
+  'Boolean': { type: 'boolean' },
+};
+
+
+function graphqlTypeToOpenApiType(typeNode: TypeNode, objectDefinitions) {
+  if (typeNode.kind === Kind.NON_NULL_TYPE) {
+    return {
+      ...graphqlTypeToOpenApiType(typeNode.type, objectDefinitions),
+      nullable: false,
+    };
+  }
+  if (typeNode.kind === Kind.NAMED_TYPE) {
+    return {
+      ...typeMap[typeNode.name.value],
+    };
+  }
+}
+
+function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
+  const fieldDef = typeInfo.getFieldDef();
+  const typeName = fieldDef.type.toString();
+  let nullable;
+  if (typeName.match(/[!]$/)) {
+    nullable = false;
+  } else {
+    nullable = true;
+  }
+  const openApiType = {
+    nullable,
+    items: undefined,
+    properties: undefined,
+    type: undefined,
+  };
+  const typeNameWithoutBang = typeName.replace(/[!]$/, '');
+  if (typeMap[typeNameWithoutBang]) {
+    if (openApiType.type === 'array') {
+      openApiType.items = {
+        ...typeMap[typeNameWithoutBang],
+        nullable,
+      };
+    } else if (openApiType.type === 'object') {
+      openApiType.properties[name.value] = {
+        ...typeMap[typeNameWithoutBang],
+        nullable,
+      };
+    } else {
+      return {
+        ...typeMap[typeNameWithoutBang],
+        ...openApiType,
+      };
+    }
+  } else if (typeNameWithoutBang.match(/^\[/)) {
+    openApiType.type = 'array';
+    openApiType.items = {};
+    return openApiType;
+  } else {
+    openApiType.type = 'object';
+    openApiType.properties = {};
+    return openApiType;
+  }
+}
+
+
 export function graphqlToOpenApi(
   schemaString: string,
   inputQuery: string
@@ -115,7 +238,7 @@ export function graphqlToOpenApi(
       });
     },
     Field: {
-      enter(node, key, parent, path, ancestors) {
+      enter(node) {
         const openApiType = fieldDefToOpenApiField(typeInfo, node);
         let parentObj;
         if (currentSelection.length > 0) {
@@ -151,126 +274,4 @@ export function graphqlToOpenApi(
   };
 }
 
-function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
-  const fieldDef = typeInfo.getFieldDef();
-  const typeName = fieldDef.type.toString();
-  let nullable;
-  if (typeName.match(/[!]$/)) {
-    nullable = false;
-  } else {
-    nullable = true;
-  }
-  let openApiType = {
-    nullable,
-    items: undefined,
-    properties: undefined,
-    type: undefined,
-  };
-  const typeNameWithoutBang = typeName.replace(/[!]$/, '');
-  if (typeMap[typeNameWithoutBang]) {
-    if (openApiType.type === 'array') {
-      openApiType.items = {
-        ...typeMap[typeNameWithoutBang],
-        nullable,
-      };
-    } else if (openApiType.type === 'object') {
-      openApiType.properties[name.value] = {
-        ...typeMap[typeNameWithoutBang],
-        nullable,
-      }
-    } else {
-      return {
-        ...typeMap[typeNameWithoutBang],
-        ...openApiType,
-      };
-    }
-  } else if (typeNameWithoutBang.match(/^\[/)) {
-    openApiType.type = 'array';
-    openApiType.items = {};
-    return openApiType;
-  } else {
-    openApiType.type = 'object';
-    openApiType.properties = {};
-    return openApiType;
-  }
-}
 
-const typeMap = {
-  'String': { type: 'string' },
-  '[String!]': {
-    type: 'array',
-    items: {
-      type: 'string',
-      nullable: false,
-    },
-  },
-  '[String]': {
-    type: 'array',
-    items: {
-      type: 'string',
-      nullable: true,
-    }
-  },
-  '[Int]': {
-    type: 'array',
-    items: {
-      type: 'integer',
-      nullable: true,
-    }
-  },
-  '[Int!]': {
-    type: 'array',
-    items: {
-      type: 'integer',
-      nullable: false,
-    }
-  },
-  '[Float]': {
-    type: 'array',
-    items: {
-      type: 'number',
-      nullable: true,
-    }
-  },
-  '[Float!]': {
-    type: 'array',
-    items: {
-      type: 'number',
-      nullable: false,
-    }
-  },
-  '[Boolean]': {
-    type: 'array',
-    items: {
-      type: 'boolean',
-      nullable: true,
-    }
-  },
-  '[Boolean!]': {
-    type: 'array',
-    items: {
-      type: 'boolean',
-      nullable: false,
-    }
-  },
-  'Int': { type: 'integer' },
-  'Float': { type: 'number' },
-  'Boolean': { type: 'boolean' },
-};
-
-let graphqlTypeToOpenApiType = (typeNode: TypeNode, objectDefinitions) => {
-  let nullable = true;
-  if (typeNode.kind === Kind.NON_NULL_TYPE) {
-    nullable = false;
-    return {
-      ...graphqlTypeToOpenApiType(typeNode.type, objectDefinitions),
-      nullable: false,
-    }
-  }
-  if (typeNode.kind === Kind.NAMED_TYPE) {
-    return {
-      ...typeMap[typeNode.name.value],
-    };
-  }
-
-}
