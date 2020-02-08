@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --forceExit --coverage --verbose",
     "watch-test": "npm run test -- --watchAll",
-    "lint": "eslint *.ts **/*.ts"
+    "lint": "eslint *.ts **/*.ts tests/**/*.ts"
   },
   "repository": {
     "type": "git",
