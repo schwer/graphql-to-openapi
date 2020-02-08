@@ -17,10 +17,6 @@ export function graphqlToOpenApi(
   schemaString: string,
   inputQuery: string
 ): GraphqlToOpenApiResult {
-  const enabled = ['error', {
-    env: 'literal',
-    schemaString,
-  }];
   const cli = new CLIEngine({
     extensions: ['.gql', '.graphql'],
     baseConfig: {
@@ -77,10 +73,7 @@ export function graphqlToOpenApi(
   };
 
   let operationDef;
-  let currentSelection = [];
-  let firstParent;
-  let outputPointer = null;
-  let a = null;
+  const currentSelection = [];
   const typeInfo = new TypeInfo(buildSchema(schemaString));
   openApiSchemaJson = visit(parsedQuery, visitWithTypeInfo(typeInfo, {
     Document: {
@@ -265,7 +258,7 @@ const typeMap = {
   'Boolean': { type: 'boolean' },
 };
 
-function graphqlTypeToOpenApiType(typeNode: TypeNode, objectDefinitions) {
+let graphqlTypeToOpenApiType = (typeNode: TypeNode, objectDefinitions) => {
   let nullable = true;
   if (typeNode.kind === Kind.NON_NULL_TYPE) {
     nullable = false;
