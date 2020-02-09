@@ -30,30 +30,32 @@
             "schema": {
               "type": "object",
               "properties": {
-                "Pokemon": {
+                "pokemon": {
                   "type": "object",
                   "nullable": true,
                   "properties": {
                     "id": {
-                      "description": "the id of an object",
-                      "type": "string"
+                      "description": "The ID of an object",
+                      "type": "string",
+                      "nullable": false
                     },
                     "number": {
-                      "description": "the identifier of this Pokémon",
+                      "description": "The identifier of this Pokémon",
                       "type": "string",
                       "nullable": true
                     },
                     "name": {
-                      "description": "the name of this Pokémon",
+                      "description": "The name of this Pokémon",
                       "type": "string",
                       "nullable": true
                     },
                     "attacks": {
-                      "description": "the attacks of this Pokémon",
+                      "description": "The attacks of this Pokémon",
                       "nullable": true,
                       "properties": {
                         "special": {
                           "description": "The special attacks of this Pokémon",
+                          "nullable": true,
                           "items": {
                             "properties": {
                               "name": {
@@ -81,66 +83,73 @@
                     },
                     "evolutions": {
                       "description": "The evolutions of this Pokémon",
+                      "nullable": true,
                       "items": {
                         "type": "object",
                         "properties": {
                           "id": {
                             "description": "The ID of an object",
+                            "nullable": false,
                             "type": "string"
                           },
                           "number": {
                             "description": "The identifier of this Pokémon",
                             "nullable": true,
-                            "type": "integer"
+                            "type": "string"
                           },
                           "name": {
-                            "description": "the name of this Pokémon",
+                            "description": "The name of this Pokémon",
                             "nullable": true,
                             "type": "string"
                           },
                           "weight": {
                             "description": "The minimum and maximum weight of this Pokémon",
+                            "nullable": true,
                             "properties": {
                               "minimum": {
                                 "description": "The minimum value of this dimension",
+                                "nullable": true,
                                 "type": "string"
                               },
                               "maximum": {
                                 "description": "The maximum value of this dimension",
+                                "nullable": true,
                                 "type": "string"
                               }
                             },
                             "type": "object"
                           },
                           "attacks": {
+                            "nullable": true,
                             "description": "The attacks of this Pokémon",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "fast": {
-                                  "description": "The fast attacks of this Pokémon",
-                                  "items": {
-                                    "type": "object",
-                                    "properties": {
-                                      "name": {
-                                        "description": "The name of this Pokémon attack",
-                                        "type": "string"
-                                      },
-                                      "type": {
-                                        "description": "The type of this Pokémon attack",
-                                        "type": "string"
-                                      },
-                                      "damage": {
-                                        "description": "The damage of this Pokémon attack",
-                                        "type": "integer"
-                                      }
+                            "type": "object",
+                            "properties": {
+                              "fast": {
+                                "description": "The fast attacks of this Pokémon",
+                                "nullable": true,
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "description": "The name of this Pokémon attack",
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "description": "The type of this Pokémon attack",
+                                      "nullable": true,
+                                      "type": "string"
+                                    },
+                                    "damage": {
+                                      "nullable": true,
+                                      "description": "The damage of this Pokémon attack",
+                                      "type": "integer"
                                     }
-                                  },
-                                  "type": "array"
-                                }
+                                  }
+                                },
+                                "type": "array"
                               }
-                            },
-                            "type": "array"
+                            }
                           }
                         }
                       },
