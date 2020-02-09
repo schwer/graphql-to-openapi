@@ -296,7 +296,9 @@ export function graphqlToOpenApi(
         }
       },
       leave(node) {
-        if (currentSelection[0].node === node) {
+        // raw reference comparison doesn't work here. Using
+        // loc as a proxy instead.
+        if (currentSelection[0].node.loc === node.loc) {
           const result = currentSelection.shift().openApiType;
           return result;
         }
