@@ -18,6 +18,7 @@ describe('graphql-pokemon', function() {
         'example.graphql'
       )
     ).toString();
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const expectedOutput = require('./openapi.json');
     const actualOutput = graphqlToOpenApi(
       inputSchema,

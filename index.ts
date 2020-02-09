@@ -10,7 +10,7 @@ interface GraphqlToOpenApiErrorReport {
 
 interface GraphqlToOpenApiResult {
   errorReport?: GraphqlToOpenApiErrorReport;
-  openApiSchema?: any;
+  openApiSchema?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 const typeMap = {
@@ -248,7 +248,7 @@ export function graphqlToOpenApi(
               },
             },
             produces: [
-              "application/json",
+              'application/json',
             ],
           },
         };
@@ -257,7 +257,7 @@ export function graphqlToOpenApi(
           openApiType,
         });
       },
-      leave(node) {
+      leave() {
         return openApiSchema;
       },
     },
