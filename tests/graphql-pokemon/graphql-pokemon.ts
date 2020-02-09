@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 import { graphqlToOpenApi } from '../../index';
 import * as assert from 'assert';
+import * as stringify from 'json-stable-stringify';
 
 describe('graphql-pokemon', function() {
   it('should produce a valid openapi spec', function() {
@@ -17,17 +18,14 @@ describe('graphql-pokemon', function() {
         'example.graphql'
       )
     ).toString();
-    const expectedOutput = readFileSync(
-      path.join(
-        __dirname,
-        'openapi.json'
-      )
-    ).toString();
+    const expectedOutput = require('./openapi.json');
     const actualOutput = graphqlToOpenApi(
       inputSchema,
       inputQuery
-    );
-    assert.ok(!!actualOutput.openApiSchemaJson);
-    assert.equal(expectedOutput, actualOutput);
+    ).openApiSchema;
+    const normalizedActualOutput = stringify(actualOutput, { space: '  '});
+    const normalizedExpectedOutput = stringify(expectedOutput, { space: '  '});
+    assert.ok(!!actualOutput);
+    assert.equal(normalizedActualOutput, normalizedExpectedOutput);
   });
 });

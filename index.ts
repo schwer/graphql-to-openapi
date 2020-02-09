@@ -10,7 +10,7 @@ interface GraphqlToOpenApiErrorReport {
 
 interface GraphqlToOpenApiResult {
   errorReport?: GraphqlToOpenApiErrorReport;
-  openApiSchemaJson?: string;
+  openApiSchema?: any;
 }
 
 const typeMap = {
@@ -96,10 +96,10 @@ const typeMap = {
 };
 
 
-function graphqlTypeToOpenApiType(typeNode: TypeNode, objectDefinitions) {
+function graphqlTypeToOpenApiType(typeNode: TypeNode, typeInfo: TypeInfo, objectDefinitions) {
   if (typeNode.kind === Kind.NON_NULL_TYPE) {
     return {
-      ...graphqlTypeToOpenApiType(typeNode.type, objectDefinitions),
+      ...graphqlTypeToOpenApiType(typeNode.type, typeInfo, objectDefinitions),
       nullable: false,
     };
   }
@@ -113,6 +113,7 @@ function graphqlTypeToOpenApiType(typeNode: TypeNode, objectDefinitions) {
 function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
+  const description = fieldDef.description;
   let nullable;
   if (typeName.match(/[!]$/)) {
     nullable = false;
@@ -124,6 +125,7 @@ function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
     items: undefined,
     properties: undefined,
     type: undefined,
+    description,
   };
   const typeNameWithoutBang = typeName.replace(/[!]$/, '');
   if (typeMap[typeNameWithoutBang]) {
@@ -135,11 +137,13 @@ function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
     } else if (openApiType.type === 'object') {
       openApiType.properties[name.value] = {
         ...typeMap[typeNameWithoutBang],
+        description,
         nullable,
       };
     } else {
       return {
         ...typeMap[typeNameWithoutBang],
+        description,
         nullable,
       };
     }
@@ -203,7 +207,7 @@ export function graphqlToOpenApi(
     };
   }
   const parsedQuery = parse(inputQuery);
-  let openApiSchemaJson = {
+  let openApiSchema = {
     swagger: '2.0',
     schemes: [
       'http', 'https'
@@ -221,10 +225,10 @@ export function graphqlToOpenApi(
   let operationDef;
   const currentSelection = [];
   const typeInfo = new TypeInfo(buildSchema(schemaString));
-  openApiSchemaJson = visit(parsedQuery, visitWithTypeInfo(typeInfo, {
+  openApiSchema = visit(parsedQuery, visitWithTypeInfo(typeInfo, {
     Document: {
       leave() {
-        return openApiSchemaJson;
+        return openApiSchema;
       },
     },
     OperationDefinition: {
@@ -235,11 +239,17 @@ export function graphqlToOpenApi(
             // To be filled by Field visitor
           },
         };
-        openApiSchemaJson.paths['/' + node.name.value] = operationDef = {
+        openApiSchema.paths['/' + node.name.value] = operationDef = {
           get: {
             responses: {
-              '200': openApiType,
+              '200': {
+                description: 'response',
+                schema: openApiType,
+              },
             },
+            produces: [
+              "application/json",
+            ],
           },
         };
         currentSelection.unshift({
@@ -248,19 +258,20 @@ export function graphqlToOpenApi(
         });
       },
       leave(node) {
-        return openApiSchemaJson;
+        return openApiSchema;
       },
     },
     VariableDefinition({ variable, type }) {
       if (!operationDef.parameters) {
         operationDef.get.parameters = [];
       }
-      const openApiType = graphqlTypeToOpenApiType(type, {});
+      const openApiType = graphqlTypeToOpenApiType(type, typeInfo, {});
       operationDef.get.parameters.push({
         name: variable.name.value,
         in: 'query',
         required: !openApiType.nullable,
         type: openApiType.type,
+        description: openApiType.description,
       });
     },
     Field: {
@@ -293,8 +304,6 @@ export function graphqlToOpenApi(
     },
   }));
   return {
-    openApiSchemaJson: JSON.stringify(openApiSchemaJson, null, 2),
+    openApiSchema,
   };
 }
-
-
