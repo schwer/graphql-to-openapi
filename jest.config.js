@@ -12,7 +12,10 @@ module.exports = {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
   testMatch: [
-    "**/tests/**/*.(ts|js)"
+    "**/tests/**/*.ts"
+  ],
+  testPathIgnorePatterns: [
+    "/dist/"
   ],
   testEnvironment: "node",
   coverageThreshold: {
