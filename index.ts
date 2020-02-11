@@ -104,11 +104,11 @@ function graphqlTypeToOpenApiType(typeNode: TypeNode, typeInfo: TypeInfo, object
     };
   }
   return {
-    ...typeMap[(<NamedTypeNode>typeNode).name.value],
+    ...typeMap[(typeNode as NamedTypeNode).name.value],
   };
 }
 
-function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
+function fieldDefToOpenApiField(typeInfo: TypeInfo) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
   const description = fieldDef.description;
@@ -259,7 +259,7 @@ export function graphqlToOpenApi(
     },
     Field: {
       enter(node) {
-        const openApiType = fieldDefToOpenApiField(typeInfo, node);
+        const openApiType = fieldDefToOpenApiField(typeInfo);
         const parentObj = currentSelection[0].openApiType;
         if (parentObj.type === 'object') {
           parentObj.properties[node.name.value] = openApiType;
