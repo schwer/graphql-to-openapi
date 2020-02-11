@@ -4,7 +4,7 @@ query pokemonByName (
   $name: String! # name of the pokemon
 ) {
   pokemon(name: $name) {
-    id
+    pokemonId: id
     number
     name
     attacks {

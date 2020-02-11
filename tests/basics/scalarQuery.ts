@@ -4,7 +4,7 @@ import { graphqlToOpenApi } from '../../index';
 import * as assert from 'assert';
 import * as stringify from 'json-stable-stringify';
 
-describe('graphql-pokemon', function() {
+describe('scalarQuery', function() {
   it('should produce a valid openapi spec', function() {
     const inputSchema = readFileSync(
       path.join(
@@ -15,11 +15,11 @@ describe('graphql-pokemon', function() {
     const inputQuery = readFileSync(
       path.join(
         __dirname,
-        'example.graphql'
+        'scalarQuery.graphql'
       )
     ).toString();
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const expectedOutput = require('./openapi.json');
+    const expectedOutput = require('./scalarQuery.json');
     const actualOutput = graphqlToOpenApi(
       inputSchema,
       inputQuery

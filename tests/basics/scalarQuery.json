@@ -1,0 +1,49 @@
+{
+  "swagger": "2.0",
+   "schemes": [
+     "http",
+     "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/scalarQuery": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "arrayOfStrings": {
+                  "description": "An array of strings",
+                  "type": "array",
+                  "nullable": false,
+                  "items": {
+                    "type": "string",
+                    "nullable": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
