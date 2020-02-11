@@ -1,0 +1,10 @@
+type Query {
+  query: Query
+
+  """
+  An array of strings
+  """
+  arrayOfStrings(
+    input: String!
+  ): [String!]!
+}
