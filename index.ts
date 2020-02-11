@@ -1,4 +1,4 @@
-import { visit, Kind, TypeNode, visitWithTypeInfo } from 'graphql/language';
+import { visit, Kind, TypeNode, visitWithTypeInfo, NamedTypeNode } from 'graphql/language';
 import { parse } from 'graphql/language/parser';
 import { buildSchema, TypeInfo } from 'graphql';
 import { CLIEngine } from 'eslint';
@@ -103,11 +103,9 @@ function graphqlTypeToOpenApiType(typeNode: TypeNode, typeInfo: TypeInfo, object
       nullable: false,
     };
   }
-  if (typeNode.kind === Kind.NAMED_TYPE) {
-    return {
-      ...typeMap[typeNode.name.value],
-    };
-  }
+  return {
+    ...typeMap[(<NamedTypeNode>typeNode).name.value],
+  };
 }
 
 function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
@@ -129,24 +127,11 @@ function fieldDefToOpenApiField(typeInfo: TypeInfo, name) {
   };
   const typeNameWithoutBang = typeName.replace(/[!]$/, '');
   if (typeMap[typeNameWithoutBang]) {
-    if (openApiType.type === 'array') {
-      openApiType.items = {
-        ...typeMap[typeNameWithoutBang],
-        nullable,
-      };
-    } else if (openApiType.type === 'object') {
-      openApiType.properties[name.value] = {
-        ...typeMap[typeNameWithoutBang],
-        description,
-        nullable,
-      };
-    } else {
-      return {
-        ...typeMap[typeNameWithoutBang],
-        description,
-        nullable,
-      };
-    }
+    return {
+      ...typeMap[typeNameWithoutBang],
+      description,
+      nullable,
+    };
   } else if (typeNameWithoutBang.match(/^\[/)) {
     openApiType.type = 'array';
     openApiType.items = {
@@ -241,6 +226,7 @@ export function graphqlToOpenApi(
         };
         openApiSchema.paths['/' + node.name.value] = operationDef = {
           get: {
+            parameters: [],
             responses: {
               '200': {
                 description: 'response',
@@ -262,9 +248,6 @@ export function graphqlToOpenApi(
       },
     },
     VariableDefinition({ variable, type }) {
-      if (!operationDef.parameters) {
-        operationDef.get.parameters = [];
-      }
       const openApiType = graphqlTypeToOpenApiType(type, typeInfo, {});
       operationDef.get.parameters.push({
         name: variable.name.value,
@@ -280,7 +263,7 @@ export function graphqlToOpenApi(
         const parentObj = currentSelection[0].openApiType;
         if (parentObj.type === 'object') {
           parentObj.properties[node.name.value] = openApiType;
-        } else if (parentObj.type === 'array') {
+        } else { // array
           parentObj.items.properties[node.name.value] = openApiType;
         }
         if (openApiType.type === 'array' && openApiType.items.type === 'object') {

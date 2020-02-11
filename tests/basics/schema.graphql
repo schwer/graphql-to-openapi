@@ -5,6 +5,7 @@ type Query {
   An array of strings
   """
   arrayOfStrings(
-    input: String!
+    input: String!,
+    otherInput: String!
   ): [String!]!
 }
