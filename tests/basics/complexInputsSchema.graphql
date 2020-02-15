@@ -1,0 +1,65 @@
+
+type Query {
+  query: Query
+
+  """
+  A results set
+  """
+  resultsSet(
+    input: ComplexInput!,
+    otherInput: ComplexerInput!
+  ): [String!]!
+}
+
+input ComplexInput {
+  """
+  An array of strings
+  """
+  strings: [String!]
+  """
+  An array of floats
+  """
+  floats: [Float!]!
+  """
+  An array of integers
+  """
+  integers: [Int!]!
+  """
+  An array of ObjectInput
+  """
+  objects: [ObjectInput]
+  """
+  An array of booleans
+  """
+  booleans: [Boolean!]!
+}
+
+input ObjectInput {
+  """
+  An array of strings
+  """
+  strings: [String!]
+  """
+  An array of floats
+  """
+  floats: [Float!]!
+  """
+  An array of integers
+  """
+  integers: [Int!]!
+  """
+  An array of booleans
+  """
+  booleans: [Boolean!]!
+}
+
+input ComplexerInput {
+  """
+  objects1 of the complexer input object
+  """
+  objects1: [ObjectInput!]!
+  """
+  objects2 of the complexer input object
+  """
+  objects2: [ObjectInput]
+}
