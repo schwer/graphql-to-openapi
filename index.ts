@@ -1,7 +1,8 @@
 import { visit, Kind, TypeNode, visitWithTypeInfo, NamedTypeNode } from 'graphql/language';
 import { parse } from 'graphql/language/parser';
-import { buildSchema, TypeInfo } from 'graphql';
+import { buildSchema, TypeInfo, buildClientSchema, printIntrospectionSchema, GraphQLSchema, GraphQLInputObjectType, GraphQLScalarType, GraphQLAbstractType, GraphQLEnumType, GraphQLNamedType, GraphQLNonNull, GraphQLNullableType } from 'graphql';
 import { CLIEngine } from 'eslint';
+import { _GraphQLList, GraphQLList } from 'graphql/type/definition';
 
 interface GraphqlToOpenApiErrorReport {
   inputQuery?: string;
@@ -147,6 +148,87 @@ function fieldDefToOpenApiField(typeInfo: TypeInfo) {
   }
 }
 
+type InputType = GraphQLInputObjectType |
+  GraphQLScalarType |
+  GraphQLEnumType |
+  GraphQLList<any> |
+  GraphQLNonNull<any>;
+
+function createInputTypes(schema: GraphQLSchema): any {
+  const typeMap = schema.getTypeMap();
+  const inputObjects = Object.entries(typeMap)
+    .filter(([name, obj]) => {
+      return obj instanceof GraphQLInputObjectType ||
+        obj instanceof GraphQLScalarType ||
+        obj instanceof GraphQLEnumType;
+    });
+  const inputTypes = inputObjects.reduce((inputTypes, [name, obj]) => {
+    inputTypes[name] = recurseInputType(obj as InputType, 0);
+    return inputTypes;
+  }, {});
+}
+
+function recurseInputType(
+  obj: InputType,
+  depth: number,
+) {
+  if (depth > 50) {
+    throw new Error('depth limit exceeded: ' + depth);
+  }
+  if (obj instanceof GraphQLInputObjectType) {
+    const inputObjectType = (obj as GraphQLInputObjectType);
+    const properties = Object
+      .entries(inputObjectType.getFields())
+      .reduce((properties, [name, f]) => {
+        properties[name] = recurseInputType(f.type, depth + 1);
+        return properties;
+      }, {});
+    return {
+      type: 'object',
+      properties,
+    };
+  }
+  if (obj instanceof GraphQLList) {
+    const list = (obj as GraphQLList<any>);
+    return {
+      type: 'array',
+      items: recurseInputType(list.ofType, depth + 1),
+    };
+  }
+  if (obj instanceof GraphQLScalarType) {
+    const { name } = obj;
+    if (name === 'Float') {
+      return { type: 'number' };
+    }
+    if (name === 'Int') {
+      return { type: 'number' };
+    }
+    if (name === 'String') {
+      return { type: 'string' };
+    }
+    if (name === 'Boolean') {
+      return { type: 'boolean' };
+    }
+    if (name === 'ID') {
+      return { type: 'string' };
+    }
+    throw new Error(`Unknown scalar: ${name}`);
+  }
+  if (obj instanceof GraphQLEnumType) {
+    const enumValues = obj.getValues();
+    return {
+      type: 'string',
+      'enum': enumValues.map(({ name }) => name),
+    };
+  }
+  if (obj instanceof GraphQLNonNull) {
+    const nonNull = (obj as GraphQLNonNull<any>);
+    return {
+      ...recurseInputType(nonNull.ofType, depth + 1),
+      nullable: false,
+    };
+  }
+}
 
 export function graphqlToOpenApi(
   schemaString: string,
@@ -209,7 +291,9 @@ export function graphqlToOpenApi(
 
   let operationDef;
   const currentSelection = [];
-  const typeInfo = new TypeInfo(buildSchema(schemaString));
+  const schema = buildSchema(schemaString);
+  const typeInfo = new TypeInfo(schema);
+  const inputTypes = createInputTypes(schema);
   openApiSchema = visit(parsedQuery, visitWithTypeInfo(typeInfo, {
     Document: {
       leave() {
