@@ -2,5 +2,5 @@ query complexInputsQuery (
   $input: ComplexInput!,
   $otherInput: ComplexerInput!
 ) {
-  resultSet(input: $input, otherInput: $otherInput)
+  resultsSet(input: $input, otherInput: $otherInput)
 }
