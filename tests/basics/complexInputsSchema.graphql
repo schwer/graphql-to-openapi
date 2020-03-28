@@ -11,6 +11,11 @@ type Query {
   ): [String!]!
 }
 
+enum AnEnum {
+  SomeEnumValue1
+  SomeEnumValue2
+}
+
 input ComplexInput {
   """
   An array of strings
@@ -62,4 +67,8 @@ input ComplexerInput {
   objects2 of the complexer input object
   """
   objects2: [ObjectInput]
+  """
+  objects3 of the complexer input object
+  """
+  objects3: [AnEnum!]!
 }
