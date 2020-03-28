@@ -185,6 +185,7 @@ function recurseInputType(
       }, {});
     return {
       type: 'object',
+      description: inputObjectType.description,
       properties,
     };
   }
@@ -196,7 +197,7 @@ function recurseInputType(
     };
   }
   if (obj instanceof GraphQLScalarType) {
-    const { name } = obj;
+    const { name, description } = obj;
     if (name === 'Float') {
       return { type: 'number' };
     }
@@ -218,6 +219,7 @@ function recurseInputType(
     const enumValues = obj.getValues();
     return {
       type: 'string',
+      description: obj.description,
       'enum': enumValues.map(({ name }) => name),
     };
   }
@@ -332,14 +334,25 @@ export function graphqlToOpenApi(
       },
     },
     VariableDefinition({ variable, type }) {
-      const openApiType = graphqlTypeToOpenApiType(type, typeInfo, {});
-      operationDef.get.parameters.push({
-        name: variable.name.value,
-        in: 'query',
-        required: !openApiType.nullable,
-        type: openApiType.type,
-        description: openApiType.description,
-      });
+      const t = recurseInputType(typeInfo.getInputType(), 0);
+      if (t.type === 'object' || t.type === 'array') {
+        operationDef.get.parameters.push({
+          name: variable.name.value,
+          in: 'query',
+          required: !t.nullable,
+          type: t,
+          description: t.description,
+        });
+      } else {
+        operationDef.get.parameters.push({
+          name: variable.name.value,
+          in: 'query',
+          required: !t.nullable,
+          type: t.type,
+          description: t.description,
+        });
+
+      }
     },
     Field: {
       enter(node) {
