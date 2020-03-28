@@ -61,7 +61,7 @@
                       "items": {
                         "type": "string",
                         "nullable": false
-                      },
+                      }
                     },
                     "floats": {
                       "description": "An array of floats",
@@ -69,7 +69,7 @@
                       "nullable": false,
                       "items": {
                         "type": "number",
-                        "nullable": false,
+                        "nullable": false
                       }
                     },
                     "integers": {
@@ -115,7 +115,7 @@
                       "items": {
                         "type": "string",
                         "nullable": false
-                      },
+                      }
                     },
                     "floats": {
                       "description": "An array of floats",
@@ -123,7 +123,7 @@
                       "nullable": false,
                       "items": {
                         "type": "number",
-                        "nullable": false,
+                        "nullable": false
                       }
                     },
                     "integers": {
@@ -161,7 +161,7 @@
                       "items": {
                         "type": "string",
                         "nullable": false
-                      },
+                      }
                     },
                     "floats": {
                       "description": "An array of floats",
@@ -169,7 +169,7 @@
                       "nullable": false,
                       "items": {
                         "type": "number",
-                        "nullable": false,
+                        "nullable": false
                       }
                     },
                     "integers": {
