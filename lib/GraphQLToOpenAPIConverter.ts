@@ -273,7 +273,7 @@ export class GraphQLToOpenAPIConverter {
     this.schema = buildSchema(this.schemaString);
   }
 
-  public toOpenAPI(inputQuery: string, inputQueryFilename: string) {
+  public toOpenAPI(inputQuery: string, inputQueryFilename: string): GraphQLToOpenAPIResult {
     const { cliEngine, schema } = this;
     const report = cliEngine.executeOnText(inputQuery, inputQueryFilename);
     if (report.errorCount > 0) {
