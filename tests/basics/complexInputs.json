@@ -220,6 +220,11 @@
                     "SomeEnumValue2"
                   ]
                 }
+              },
+              "someId": {
+                "description": "someId of the complexer input object",
+                "type": "string",
+                "nullable": false
               }
             }
           }
