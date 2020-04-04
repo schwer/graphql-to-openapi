@@ -7,3 +7,9 @@
 <img style="display:inline-block" src="https://avatars3.githubusercontent.com/u/16343502?v=3&s=200" height="200" width="200">
 
 Convert a graphql query + graphql schema into an openapi spec.
+
+## Usage
+
+```
+npx graphql-to-openapi --schema <schemaFilename> --query <queryFilename>
+```

@@ -10,7 +10,7 @@
     "testall": "npm run test && npm run test-cli",
     "test": "jest --coverage --verbose",
     "test-cli": "ts-node bin/graphql-to-openapi --schema tests/basics/complexInputsSchema.graphql --query tests/basics/complexInputs.graphql > out.json && ts-node bin/stable-stringify-json --filename=out.json && diff out.json tests/basics/complexInputs.json && rm out.json",
-    "watch-test": "npm run test -- --watchAll",
+    "test:watch": "npm run test -- --watchAll",
     "lint": "eslint *.ts **/*.ts tests/**/*.ts"
   },
   "repository": {
