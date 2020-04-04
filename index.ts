@@ -1,8 +1,16 @@
 import { visit, Kind, TypeNode, NamedTypeNode } from 'graphql/language';
 import { visitWithTypeInfo } from 'graphql/utilities/TypeInfo';
 import { parse } from 'graphql/language/parser';
-import { buildSchema, TypeInfo } from 'graphql';
+import {
+  GraphQLEnumType,
+  GraphQLInputObjectType,
+  GraphQLNonNull,
+  GraphQLScalarType,
+  TypeInfo,
+  buildSchema,
+} from 'graphql';
 import { CLIEngine } from 'eslint';
+import { GraphQLList } from 'graphql/type/definition';
 
 interface GraphqlToOpenApiErrorReport {
   inputQuery?: string;
@@ -96,19 +104,6 @@ const typeMap = {
   'Boolean': { type: 'boolean' },
 };
 
-
-function graphqlTypeToOpenApiType(typeNode: TypeNode, typeInfo: TypeInfo, objectDefinitions) {
-  if (typeNode.kind === Kind.NON_NULL_TYPE) {
-    return {
-      ...graphqlTypeToOpenApiType(typeNode.type, typeInfo, objectDefinitions),
-      nullable: false,
-    };
-  }
-  return {
-    ...typeMap[(typeNode as NamedTypeNode).name.value],
-  };
-}
-
 function fieldDefToOpenApiField(typeInfo: TypeInfo) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
@@ -148,6 +143,103 @@ function fieldDefToOpenApiField(typeInfo: TypeInfo) {
   }
 }
 
+type InputType = GraphQLInputObjectType |
+  GraphQLScalarType |
+  GraphQLEnumType |
+  GraphQLList<any> | // eslint-disable-line @typescript-eslint/no-explicit-any
+  GraphQLNonNull<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+function recurseInputType(
+  obj: InputType,
+  depth: number,
+) {
+  // istanbul ignore next
+  if (depth > 50) {
+    // istanbul ignore next
+    throw new Error('depth limit exceeded: ' + depth);
+  }
+  if (obj instanceof GraphQLInputObjectType) {
+    const inputObjectType = (obj as GraphQLInputObjectType);
+    const properties = Object
+      .entries(inputObjectType.getFields())
+      .reduce((properties, [name, f]) => {
+        properties[name] = recurseInputType(f.type, depth + 1);
+        properties[name].description = f.description;
+        return properties;
+      }, {});
+    return {
+      type: 'object',
+      nullable: true,
+      description: inputObjectType.description,
+      properties,
+    };
+  }
+  if (obj instanceof GraphQLList) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const list = (obj as GraphQLList<any>);
+    return {
+      type: 'array',
+      nullable: true,
+      items: recurseInputType(list.ofType, depth + 1),
+    };
+  }
+  if (obj instanceof GraphQLScalarType) {
+    const { name } = obj;
+    if (name === 'Float') {
+      return {
+        type: 'number',
+        nullable: true,
+       };
+    }
+    if (name === 'Int') {
+      return {
+        type: 'integer',
+        nullable: true,
+      };
+    }
+    if (name === 'String') {
+      return {
+        type: 'string',
+        nullable: true,
+      };
+    }
+    if (name === 'Boolean') {
+      return {
+        type: 'boolean',
+        nullable: true,
+      };
+    }
+    // istanbul ignore else
+    if (name === 'ID') {
+      return {
+        type: 'string',
+        nullable: true,
+      };
+    }
+    // istanbul ignore next
+    throw new Error(`Unknown scalar: ${name}`);
+  }
+  if (obj instanceof GraphQLEnumType) {
+    const enumValues = obj.getValues();
+    return {
+      type: 'string',
+      description: obj.description,
+      nullable: true,
+      'enum': enumValues.map(({ name }) => name),
+    };
+  }
+  // istanbul ignore else
+  if (obj instanceof GraphQLNonNull) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nonNull = (obj as GraphQLNonNull<any>);
+    return {
+      ...recurseInputType(nonNull.ofType, depth + 1),
+      nullable: false,
+    };
+  }
+  // istanbul ignore next
+  throw new Error(`Unexpected InputType: ${obj}`);
+}
 
 export function graphqlToOpenApi(
   schemaString: string,
@@ -210,7 +302,8 @@ export function graphqlToOpenApi(
 
   let operationDef;
   const currentSelection = [];
-  const typeInfo = new TypeInfo(buildSchema(schemaString));
+  const schema = buildSchema(schemaString);
+  const typeInfo = new TypeInfo(schema);
   openApiSchema = visit(parsedQuery, visitWithTypeInfo(typeInfo, {
     Document: {
       leave() {
@@ -248,15 +341,28 @@ export function graphqlToOpenApi(
         return openApiSchema;
       },
     },
-    VariableDefinition({ variable, type }) {
-      const openApiType = graphqlTypeToOpenApiType(type, typeInfo, {});
-      operationDef.get.parameters.push({
-        name: variable.name.value,
-        in: 'query',
-        required: !openApiType.nullable,
-        type: openApiType.type,
-        description: openApiType.description,
-      });
+    VariableDefinition({ variable }) {
+      const t = recurseInputType(typeInfo.getInputType(), 0);
+      if (t.type === 'object' || t.type === 'array') {
+        operationDef.get.parameters.push({
+          name: variable.name.value,
+          in: 'query',
+          required: !t.nullable,
+          type: t.type,
+          items: t.items,
+          properties: t.properties,
+          description: t.description,
+        });
+      } else {
+        operationDef.get.parameters.push({
+          name: variable.name.value,
+          in: 'query',
+          required: !t.nullable,
+          type: t.type,
+          description: t.description,
+        });
+
+      }
     },
     Field: {
       enter(node) {
