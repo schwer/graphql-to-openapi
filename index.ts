@@ -1,4 +1,5 @@
-import { visit, Kind, TypeNode, visitWithTypeInfo, NamedTypeNode } from 'graphql/language';
+import { visit, Kind, TypeNode, NamedTypeNode } from 'graphql/language';
+import { visitWithTypeInfo } from 'graphql/utilities/TypeInfo';
 import { parse } from 'graphql/language/parser';
 import { buildSchema, TypeInfo } from 'graphql';
 import { CLIEngine } from 'eslint';
