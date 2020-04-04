@@ -11,7 +11,7 @@
     "application/json"
   ],
   "paths": {
-    "/resultsSet": {
+    "/complexInputsQuery": {
       "get": {
         "produces": [
           "application/json"
@@ -23,7 +23,17 @@
             "required": true,
             "type": "object",
             "properties": {
+              "booleans": {
+                "description": "An array of booleans",
+                "type": "array",
+                "nullable": false,
+                "items": {
+                  "type": "boolean",
+                  "nullable": false
+                }
+              },
               "strings": {
+                "description": "An array of strings",
                 "type": "array",
                 "nullable": true,
                 "items": {
@@ -32,6 +42,7 @@
                 }
               },
               "floats": {
+                "description": "An array of floats",
                 "type": "array",
                 "nullable": false,
                 "items": {
@@ -40,6 +51,7 @@
                 }
               },
               "integers": {
+                "description": "An array of integers",
                 "type": "array",
                 "nullable": false,
                 "items": {
@@ -48,6 +60,7 @@
                 }
               },
               "objects": {
+                "description": "An array of ObjectInput",
                 "type": "array",
                 "nullable": true,
                 "items": {
@@ -96,12 +109,13 @@
             }
           },
           {
-            "name": "complexInput",
+            "name": "otherInput",
             "in": "query",
             "required": true,
             "type": "object",
             "properties": {
               "objects1": {
+                "description": "objects1 of the complexer input object",
                 "type": "array",
                 "nullable": false,
                 "items": {
@@ -148,6 +162,7 @@
                 }
               },
               "objects2": {
+                "description": "objects2 of the complexer input object",
                 "type": "array",
                 "nullable": true,
                 "items": {
@@ -192,6 +207,19 @@
                     }
                   }
                 }
+              },
+              "enums": {
+                "description": "enums of the complexer input object",
+                "type": "array",
+                "nullable": false,
+                "items": {
+                  "type": "string",
+                  "nullable": false,
+                  "enum": [
+                    "SomeEnumValue1",
+                    "SomeEnumValue2"
+                  ]
+                }
               }
             }
           }
@@ -202,8 +230,8 @@
             "schema": {
               "type": "object",
               "properties": {
-                "arrayOfStrings": {
-                  "description": "An array of strings",
+                "resultsSet": {
+                  "description": "A results set",
                   "type": "array",
                   "nullable": false,
                   "items": {
