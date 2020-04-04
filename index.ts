@@ -96,19 +96,6 @@ const typeMap = {
   'Boolean': { type: 'boolean' },
 };
 
-
-function graphqlTypeToOpenApiType(typeNode: TypeNode, typeInfo: TypeInfo, objectDefinitions) {
-  if (typeNode.kind === Kind.NON_NULL_TYPE) {
-    return {
-      ...graphqlTypeToOpenApiType(typeNode.type, typeInfo, objectDefinitions),
-      nullable: false,
-    };
-  }
-  return {
-    ...typeMap[(typeNode as NamedTypeNode).name.value],
-  };
-}
-
 function fieldDefToOpenApiField(typeInfo: TypeInfo) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
@@ -172,7 +159,9 @@ function recurseInputType(
   obj: InputType,
   depth: number,
 ) {
+  // istanbul ignore next
   if (depth > 50) {
+    // istanbul ignore next
     throw new Error('depth limit exceeded: ' + depth);
   }
   if (obj instanceof GraphQLInputObjectType) {
@@ -231,6 +220,7 @@ function recurseInputType(
         nullable: true,
       };
     }
+    // istanbul ignore next
     throw new Error(`Unknown scalar: ${name}`);
   }
   if (obj instanceof GraphQLEnumType) {
@@ -249,6 +239,7 @@ function recurseInputType(
       nullable: false,
     };
   }
+  // istanbul ignore next
   throw new Error(`Unexpected InputType: ${obj}`)
 }
 

@@ -71,4 +71,9 @@ input ComplexerInput {
   enums of the complexer input object
   """
   enums: [AnEnum!]!
+
+  """
+  someId of the complexer input object
+  """
+  someId: ID!
 }
