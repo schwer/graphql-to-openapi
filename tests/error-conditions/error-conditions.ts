@@ -5,7 +5,7 @@ import * as assert from 'assert';
 
 describe('error-conditions', function() {
   it('should fail on a bad input query', function() {
-    const inputSchema = readFileSync(
+    const schemaString = readFileSync(
       path.join(
         __dirname,
         '..',
@@ -18,10 +18,11 @@ describe('error-conditions', function() {
         unknown
       }
     `;
-    const output = graphqlToOpenApi(
-      inputSchema,
-      inputQuery
-    );
+    const output = graphqlToOpenApi({
+      schemaString,
+      inputQuery,
+      inputQueryFilename: 'error-conditions.graphql'
+    });
     assert.ok(output.errorReport.inputQuery);
   });
 });

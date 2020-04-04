@@ -6,24 +6,24 @@ import * as stringify from 'json-stable-stringify';
 
 describe('graphql-pokemon', function() {
   it('should produce a valid openapi spec', function() {
-    const inputSchema = readFileSync(
+    const schemaString = readFileSync(
       path.join(
         __dirname,
         'schema.graphql'
       )
     ).toString();
-    const inputQuery = readFileSync(
-      path.join(
-        __dirname,
-        'example.graphql'
-      )
-    ).toString();
+    const inputQueryFilename = path.join(
+      __dirname,
+      'example.graphql'
+    );
+    const inputQuery = readFileSync(inputQueryFilename).toString();
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const expectedOutput = require('./openapi.json');
-    const actualOutput = graphqlToOpenApi(
-      inputSchema,
-      inputQuery
-    ).openApiSchema;
+    const actualOutput = graphqlToOpenApi({
+      schemaString,
+      inputQuery,
+      inputQueryFilename,
+    }).openApiSchema;
     const normalizedActualOutput = stringify(actualOutput, { space: '  '});
     const normalizedExpectedOutput = stringify(expectedOutput, { space: '  '});
     assert.ok(!!actualOutput);
