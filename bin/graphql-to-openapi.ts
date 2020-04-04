@@ -7,6 +7,13 @@ const {
   query,
   pretty,
 } = program
+  .description([
+    'Converts a graphql schema and query into',
+    'an openapi json document. The openapi json',
+    'document is a best-effort approximation',
+    'of a GET endpoint specification for the',
+    'graphql query supplied.',
+  ].join('\n'))
   .requiredOption('--schema <schema>', 'A graphql schema file')
   .requiredOption('--query <query>', 'A graphql query file')
   .option('--pretty', 'pretty json output', true)
