@@ -1,4 +1,5 @@
-import { visit, visitWithTypeInfo } from 'graphql/language';
+import { visit } from 'graphql/language';
+import { visitWithTypeInfo } from 'graphql/utilities/TypeInfo';
 import { parse } from 'graphql/language/parser';
 import {
   GraphQLEnumType,
