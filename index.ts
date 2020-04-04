@@ -214,6 +214,7 @@ function recurseInputType(
         nullable: true,
       };
     }
+    // istanbul ignore else
     if (name === 'ID') {
       return {
         type: 'string',
@@ -232,6 +233,7 @@ function recurseInputType(
       'enum': enumValues.map(({ name }) => name),
     };
   }
+  // istanbul ignore else
   if (obj instanceof GraphQLNonNull) {
     const nonNull = (obj as GraphQLNonNull<any>);
     return {
