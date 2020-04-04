@@ -181,10 +181,12 @@ function recurseInputType(
       .entries(inputObjectType.getFields())
       .reduce((properties, [name, f]) => {
         properties[name] = recurseInputType(f.type, depth + 1);
+        properties[name].description = f.description;
         return properties;
       }, {});
     return {
       type: 'object',
+      nullable: true,
       description: inputObjectType.description,
       properties,
     };
@@ -193,25 +195,41 @@ function recurseInputType(
     const list = (obj as GraphQLList<any>);
     return {
       type: 'array',
+      nullable: true,
       items: recurseInputType(list.ofType, depth + 1),
     };
   }
   if (obj instanceof GraphQLScalarType) {
     const { name, description } = obj;
     if (name === 'Float') {
-      return { type: 'number' };
+      return {
+        type: 'number',
+        nullable: true,
+       };
     }
     if (name === 'Int') {
-      return { type: 'number' };
+      return {
+        type: 'integer',
+        nullable: true,
+      };
     }
     if (name === 'String') {
-      return { type: 'string' };
+      return {
+        type: 'string',
+        nullable: true,
+      };
     }
     if (name === 'Boolean') {
-      return { type: 'boolean' };
+      return {
+        type: 'boolean',
+        nullable: true,
+      };
     }
     if (name === 'ID') {
-      return { type: 'string' };
+      return {
+        type: 'string',
+        nullable: true,
+      };
     }
     throw new Error(`Unknown scalar: ${name}`);
   }
@@ -220,6 +238,7 @@ function recurseInputType(
     return {
       type: 'string',
       description: obj.description,
+      nullable: true,
       'enum': enumValues.map(({ name }) => name),
     };
   }
@@ -230,6 +249,7 @@ function recurseInputType(
       nullable: false,
     };
   }
+  throw new Error(`Unexpected InputType: ${obj}`)
 }
 
 export function graphqlToOpenApi(
@@ -340,7 +360,9 @@ export function graphqlToOpenApi(
           name: variable.name.value,
           in: 'query',
           required: !t.nullable,
-          type: t,
+          type: t.type,
+          items: t.items,
+          properties: t.properties,
           description: t.description,
         });
       } else {

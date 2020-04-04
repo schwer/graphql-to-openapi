@@ -68,7 +68,7 @@ input ComplexerInput {
   """
   objects2: [ObjectInput]
   """
-  objects3 of the complexer input object
+  enums of the complexer input object
   """
-  objects3: [AnEnum!]!
+  enums: [AnEnum!]!
 }
