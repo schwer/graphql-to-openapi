@@ -1,6 +1,6 @@
 {
   "name": "graphql-to-openapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility for converting the combination of an graphql schema and graphql query into an openapi specification.",
   "main": "dist/index.js",
   "bin": {
@@ -45,5 +45,5 @@
     "typescript": "^3.8.3"
   },
   "types": "dist/index.d.ts",
-  "prepublish": "tsc"
+  "prepare": "tsc"
 }
