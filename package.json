@@ -1,6 +1,6 @@
 {
   "name": "graphql-to-openapi",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A utility for converting the combination of an graphql schema and graphql query into an openapi specification.",
   "main": "dist/index.js",
   "bin": {
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/schwer/graphql-to-openapi#readme",
   "dependencies": {
     "commander": "^5.0.0",
+    "eslint": "^6.8.0",
     "eslint-plugin-graphql": "^3.1.1",
     "graphql": "^15.0.0"
   },
@@ -38,7 +39,6 @@
     "@types/node": "^13.1.6",
     "@typescript-eslint/eslint-plugin": "2.23.0",
     "@typescript-eslint/parser": "^2.16.0",
-    "eslint": "6.8.0",
     "jest": "^25.1.0",
     "json-stable-stringify": "1.0.1",
     "ts-jest": "^25.2.0",
