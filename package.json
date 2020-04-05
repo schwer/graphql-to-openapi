@@ -45,5 +45,5 @@
     "typescript": "^3.8.3"
   },
   "types": "dist/index.d.ts",
-  "prepublish": "tsc"
+  "prepare": "tsc"
 }
