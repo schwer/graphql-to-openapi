@@ -12,3 +12,5 @@ Convert a graphql query + graphql schema into an openapi spec.
 ```
 npx graphql-to-openapi --schema <schemaFilename> --query <queryFilename>
 ```
+
+<img alt="GraphQL → OpenAPI" src="https://raw.github.com/schwer/graphql-to-openapi/master/static/usage.gif">
