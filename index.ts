@@ -1,4 +1,7 @@
-import { GraphQLToOpenAPIResult, GraphQLToOpenAPIConverter } from './lib/GraphQLToOpenAPIConverter';
+import {
+  GraphQLToOpenAPIResult,
+  GraphQLToOpenAPIConverter,
+} from './lib/GraphQLToOpenAPIConverter';
 
 export function graphqlToOpenApi({
   schemaString,
