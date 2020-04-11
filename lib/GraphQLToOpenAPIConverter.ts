@@ -1,5 +1,6 @@
-import { visit } from 'graphql/language';
+import { visit, BREAK } from 'graphql/language';
 import { visitWithTypeInfo } from 'graphql/utilities/TypeInfo';
+import { validate } from 'graphql/validation';
 import { parse } from 'graphql/language/parser';
 import {
   GraphQLEnumType,
@@ -9,17 +10,21 @@ import {
   TypeInfo,
   buildSchema,
   GraphQLSchema,
+  GraphQLError,
 } from 'graphql';
-import { CLIEngine } from 'eslint';
 import { GraphQLList } from 'graphql/type/definition';
 
-interface GraphQLToOpenAPIErrorReport {
-  inputQuery?: string;
-  schemaString?: string;
+export class NoOperationNameError extends Error {
+  constructor(message) {
+    super(message)/* istanbul ignore next */;
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+    this.name = NoOperationNameError.name;
+  }
 }
 
 export interface GraphQLToOpenAPIResult {
-  errorReport?: GraphQLToOpenAPIErrorReport;
+  readonly graphqlErrors?: readonly GraphQLError[];
+  readonly error?: NoOperationNameError;
   openApiSchema?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
@@ -244,54 +249,20 @@ function recurseInputType(
 
 
 export class GraphQLToOpenAPIConverter {
-  private cliEngine: CLIEngine;
   private schema: GraphQLSchema;
   constructor(private schemaString: string) {
-    this.cliEngine = new CLIEngine({
-      extensions: ['*'],
-      baseConfig: {
-        rules: {
-          'graphql/template-strings': ['error', {
-            env: 'literal',
-            schemaString,
-          }],
-          'graphql/named-operations': ['error', {
-            schemaString,
-          }],
-        },
-      },
-      ignore: false,
-      useEslintrc: false,
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-      plugins: [
-        'graphql',
-      ],
-    });
     this.schema = buildSchema(this.schemaString);
   }
 
   public toOpenAPI(inputQuery: string, inputQueryFilename: string): GraphQLToOpenAPIResult {
-    const { cliEngine, schema } = this;
-    const report = cliEngine.executeOnText(inputQuery, inputQueryFilename);
-    if (report.errorCount > 0) {
-      const { results } = report;
-      const formatter = cliEngine.getFormatter();
-      const resultsWithoutFilenames = results.map((r) => {
-        return {
-          ...r,
-          filePath: '',
-        };
-      });
+    const { schema } = this;
+    const parsedQuery = parse(inputQuery);
+    const graphqlErrors = validate(schema, parsedQuery);
+    if (graphqlErrors.length > 0) {
       return {
-        errorReport: {
-          inputQuery: formatter(resultsWithoutFilenames),
-        }
+        graphqlErrors,
       };
     }
-    const parsedQuery = parse(inputQuery);
     let openApiSchema = {
       swagger: '2.0',
       schemes: [
@@ -307,6 +278,7 @@ export class GraphQLToOpenAPIConverter {
       }
     };
 
+    let error;
     let operationDef;
     const currentSelection = [];
     const typeInfo = new TypeInfo(schema);
@@ -324,6 +296,14 @@ export class GraphQLToOpenAPIConverter {
               // To be filled by Field visitor
             },
           };
+          if (!node.name) {
+            error = new NoOperationNameError(
+              'GraphQLToOpenAPIConverter requires a named ' +
+              `operation on line ${node.loc.source.locationOffset.line} ` +
+              `of ${inputQueryFilename}.`
+            );
+            return BREAK;
+          }
           openApiSchema.paths['/' + node.name.value] = operationDef = {
             get: {
               parameters: [],
@@ -401,6 +381,11 @@ export class GraphQLToOpenAPIConverter {
         }
       },
     }));
+    if (error) {
+      return {
+        error,
+      };
+    }
     return {
       openApiSchema,
     };

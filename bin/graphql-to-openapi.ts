@@ -26,20 +26,19 @@ const schemaString = readFileSync(schema).toString();
 const inputQuery = readFileSync(query).toString();
 
 const {
-  errorReport,
+  error,
+  graphqlErrors,
   openApiSchema,
 } = graphqlToOpenApi({
   schemaString,
   inputQuery,
   inputQueryFilename: query,
 });
-if (errorReport && errorReport.inputQuery) {
-    process.stderr.write(errorReport.inputQuery);
-    process.exit(-1);
+if (error) {
+  throw error;
 }
-if (errorReport && errorReport.schemaString) {
-    process.stderr.write(errorReport.schemaString);
-    process.exit(-1);
+if (graphqlErrors?.length > 0) {
+  throw graphqlErrors[0];
 }
 if (pretty) {
   process.stdout.write(JSON.stringify(openApiSchema, null, 2));
