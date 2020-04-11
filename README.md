@@ -22,7 +22,8 @@ npx graphql-to-openapi --schema <schemaFilename> --query <queryFilename>
 import { graphqlToOpenApi } from 'graphql-to-openapi';
 
 const {
-  errorReport,
+  error,
+  graphqlErrors,
   openApiSchema,
 } = graphqlToOpenApi({
   schemaString,
@@ -30,8 +31,11 @@ const {
   inputQueryFilename, // needed for error messaging
 });
 
-// errorReport will contain any syntax issues if
+// error will contain any graphql-to-openapi errors if
 // they exist.
+
+// graphqlErrors are errors produced by the graphql
+// schema and query parsing and validation.
 
 // openApiSchema  will contain the deserialized
 // openapi schema for the specified query.
