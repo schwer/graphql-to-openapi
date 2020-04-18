@@ -49,7 +49,6 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
   } = graphqlToOpenApi({
     schemaString,
     inputQuery,
-    inputQueryFilename: 'supplied query',
   });
   const success = !schemaError && !queryErrors;
   return (
