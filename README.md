@@ -7,6 +7,8 @@
 
 Convert a graphql query + graphql schema into an openapi spec.
 
+[Demo]("https://schwer.github.io/graphql-to-openapi")
+
 ## Usage via CLI
 
 ```
