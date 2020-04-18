@@ -317,7 +317,7 @@ export class GraphQLToOpenAPIConverter {
             error = new NoOperationNameError(
               'GraphQLToOpenAPIConverter requires a named ' +
               `operation on line ${node.loc.source.locationOffset.line} ` +
-              `of input query`
+              'of input query'
             );
             return BREAK;
           }
