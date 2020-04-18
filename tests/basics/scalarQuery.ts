@@ -22,7 +22,6 @@ describe('scalarQuery', function() {
     const actualOutput = graphqlToOpenApi({
       schemaString,
       inputQuery,
-      inputQueryFilename,
     }).openApiSchema;
     const normalizedActualOutput = stringify(actualOutput, { space: '  '});
     const normalizedExpectedOutput = stringify(expectedOutput, { space: '  '});

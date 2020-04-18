@@ -12,7 +12,8 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "bootstrap": "4.4.1",
-    "graphql-to-openapi": "1.1.1",
+    "gh-pages": "^2.2.0",
+    "graphql-to-openapi": "1.2.1",
     "node-sass": "4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -20,6 +21,8 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,5 +42,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "homepage": "https://schwer.github.io/graphql-to-openapi"
 }

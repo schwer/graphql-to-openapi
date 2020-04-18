@@ -1,4 +1,5 @@
 import React from 'react';
+import { textAreaStyles } from './textAreaStyles';
 
 export const QueryTextArea: React.FC<{
   isValid: boolean;
@@ -16,10 +17,7 @@ export const QueryTextArea: React.FC<{
         className={
           isValid ? "form-control" : "form-control is-invalid"
         }
-        style={{
-          width: '100%',
-          height: '100%',
-        }}
+        style={textAreaStyles}
         onChange={({ target: { value } }) => {
           onChange(value);
         }} />

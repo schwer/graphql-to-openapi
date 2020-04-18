@@ -1,4 +1,5 @@
 import React from 'react';
+import { textAreaStyles } from './textAreaStyles';
 
 export const SchemaTextArea: React.FC<{
   isValid: boolean;
@@ -15,10 +16,7 @@ export const SchemaTextArea: React.FC<{
         className={
           isValid ? "form-control" : "form-control is-invalid"
         }
-        style={{
-          width: '100%',
-          height: '100%',
-        }}
+        style={textAreaStyles}
         value={value}
         onChange={({ target: { value } }) => {
           onChange(value);

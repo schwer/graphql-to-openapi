@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import { SchemaTextArea } from './SchemaTextArea';
 import { QueryTextArea } from './QueryTextArea';
-import { graphqlToOpenApi } from '../../index';
+import { graphqlToOpenApi } from 'graphql-to-openapi';
 import Octicon, { Check } from '@primer/octicons-react';
 import './GraphQLToOpenApiDocs.scss';
+import { textAreaStyles } from './textAreaStyles';
 
 export const GraphQLToOpenApiDocs: React.FC = () => {
   const defaultSchema =
@@ -48,7 +49,6 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
   } = graphqlToOpenApi({
     schemaString,
     inputQuery,
-    inputQueryFilename: 'supplied query',
   });
   const success = !schemaError && !queryErrors;
   return (
@@ -56,6 +56,10 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
       <div className="container-fluid">
         <header className="GraphQLToOpenApiDocs-header">
           <img height={50} src={logo} className="GraphQLToOpenApiDocs-logo" alt="logo" />
+          <a className="float-right"
+            href="https://npmjs.com/graphql-to-openapi">
+            <img alt="npm link" src="https://img.shields.io/npm/v/graphql-to-openapi.svg"/>
+          </a>
         </header>
         <div className="row">
           <h5 className="col">
@@ -102,10 +106,10 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
               ? (<textarea
                 className="form-control"
                 readOnly
-                style={{ width: '100%', height: '100%', resize: 'none' }}
+                style={textAreaStyles}
                 value={JSON.stringify(openApiSchema, null, 2)} />)
               : <textarea readOnly disabled
-                style={{ width: '100%', height: '100%', resize: 'none' }}
+                style={textAreaStyles}
                 className="form-control"
                 placeholder="Please supply a schema and query above" />
             }

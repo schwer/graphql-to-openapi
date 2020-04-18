@@ -6,12 +6,10 @@ import {
 export function graphqlToOpenApi({
   schemaString,
   inputQuery,
-  inputQueryFilename,
 }: {
   schemaString: string;
   inputQuery: string;
-  inputQueryFilename: string;
 }): GraphQLToOpenAPIResult {
   const c = new GraphQLToOpenAPIConverter(schemaString);
-  return c.toOpenAPI(inputQuery, inputQueryFilename);
+  return c.toOpenAPI(inputQuery);
 }

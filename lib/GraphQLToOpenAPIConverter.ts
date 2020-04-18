@@ -260,7 +260,7 @@ export class GraphQLToOpenAPIConverter {
     }
   }
 
-  public toOpenAPI(inputQuery: string, inputQueryFilename: string): GraphQLToOpenAPIResult {
+  public toOpenAPI(inputQuery: string): GraphQLToOpenAPIResult {
     const { schemaError } = this;
     if (schemaError) {
       return {
@@ -317,7 +317,7 @@ export class GraphQLToOpenAPIConverter {
             error = new NoOperationNameError(
               'GraphQLToOpenAPIConverter requires a named ' +
               `operation on line ${node.loc.source.locationOffset.line} ` +
-              `of ${inputQueryFilename}.`
+              'of input query'
             );
             return BREAK;
           }
