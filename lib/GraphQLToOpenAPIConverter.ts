@@ -268,7 +268,12 @@ export class GraphQLToOpenAPIConverter {
       };
     }
     const { schema } = this;
-    const parsedQuery = parse(inputQuery);
+    let parsedQuery;
+    try {
+      parsedQuery = parse(inputQuery);
+    } catch (err) {
+      return { queryErrors: [err] };
+    }
     const queryErrors = validate(schema, parsedQuery);
     if (queryErrors.length > 0) {
       return {
