@@ -24,7 +24,28 @@ describe('error-conditions', function() {
       inputQuery,
       inputQueryFilename: 'error-conditions.graphql'
     });
-    assert.ok(output.graphqlErrors.length > 0);
+    assert.ok(output.queryErrors.length > 0);
+  });
+
+  it('should fail on an invalid schema', function() {
+    const schemaString = `
+      type Query {
+        badSyntax() : moreBadSyntax
+      }
+    `;
+    const inputQuery = `
+      query {
+        pokemon(id: "Test", name: "Test") {
+          id
+        }
+      }`;
+    const output = graphqlToOpenApi({
+      schemaString,
+      inputQuery,
+      inputQueryFilename: 'bad-schema-query.graphql'
+    });
+    assert.ok(output.schemaError);
+    assert.equal(output.schemaError.name, 'GraphQLError');
   });
   
   it('should fail on a unnamed, valid input query', function() {

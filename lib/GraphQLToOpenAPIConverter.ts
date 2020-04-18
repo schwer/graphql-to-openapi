@@ -23,8 +23,9 @@ export class NoOperationNameError extends Error {
 }
 
 export interface GraphQLToOpenAPIResult {
-  readonly graphqlErrors?: readonly GraphQLError[];
+  readonly queryErrors?: readonly GraphQLError[];
   readonly error?: NoOperationNameError;
+  readonly schemaError?: GraphQLError;
   openApiSchema?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
@@ -250,17 +251,28 @@ function recurseInputType(
 
 export class GraphQLToOpenAPIConverter {
   private schema: GraphQLSchema;
+  private schemaError: GraphQLError;
   constructor(private schemaString: string) {
-    this.schema = buildSchema(this.schemaString);
+    try {
+      this.schema = buildSchema(this.schemaString);
+    } catch (err) {
+      this.schemaError = err;
+    }
   }
 
   public toOpenAPI(inputQuery: string, inputQueryFilename: string): GraphQLToOpenAPIResult {
+    const { schemaError } = this;
+    if (schemaError) {
+      return {
+        schemaError,
+      };
+    }
     const { schema } = this;
     const parsedQuery = parse(inputQuery);
-    const graphqlErrors = validate(schema, parsedQuery);
-    if (graphqlErrors.length > 0) {
+    const queryErrors = validate(schema, parsedQuery);
+    if (queryErrors.length > 0) {
       return {
-        graphqlErrors,
+        queryErrors,
       };
     }
     let openApiSchema = {
