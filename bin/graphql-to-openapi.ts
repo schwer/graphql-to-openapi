@@ -27,7 +27,8 @@ const inputQuery = readFileSync(query).toString();
 
 const {
   error,
-  graphqlErrors,
+  schemaError,
+  queryErrors,
   openApiSchema,
 } = graphqlToOpenApi({
   schemaString,
@@ -37,8 +38,11 @@ const {
 if (error) {
   throw error;
 }
-if (graphqlErrors?.length > 0) {
-  throw graphqlErrors[0];
+if (queryErrors?.length > 0) {
+  throw queryErrors[0];
+}
+if (schemaError) {
+  throw schemaError;
 }
 if (pretty) {
   process.stdout.write(JSON.stringify(openApiSchema, null, 2));
