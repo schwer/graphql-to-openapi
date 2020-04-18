@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import { SchemaTextArea } from './SchemaTextArea';
 import { QueryTextArea } from './QueryTextArea';
 import { graphqlToOpenApi } from 'graphql-to-openapi';
-import Octicon, { Check, MarkGithub } from '@primer/octicons-react';
+import Octicon, { Check } from '@primer/octicons-react';
 import './GraphQLToOpenApiDocs.scss';
 import { textAreaStyles } from './textAreaStyles';
 
@@ -59,7 +59,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
           <img height={50} src={logo} className="GraphQLToOpenApiDocs-logo" alt="logo" />
           <a className="float-right"
             href="https://npmjs.com/graphql-to-openapi">
-            <img src="https://img.shields.io/npm/v/graphql-to-openapi.svg"/>
+            <img alt="npm link" src="https://img.shields.io/npm/v/graphql-to-openapi.svg"/>
           </a>
         </header>
         <div className="row">
