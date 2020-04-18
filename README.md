@@ -23,21 +23,22 @@ import { graphqlToOpenApi } from 'graphql-to-openapi';
 
 const {
   error,
-  graphqlErrors,
   openApiSchema,
+  queryErrors,
+  schemaError,
 } = graphqlToOpenApi({
   schemaString,
   inputQuery,
-  inputQueryFilename, // needed for error messaging
 });
 
-// error will contain any graphql-to-openapi errors if
-// they exist.
+// error will contain any graphql-to-openapi errors if they exist.
 
-// graphqlErrors are errors produced by the graphql
-// schema and query parsing and validation.
+// schemaError are errors in the parsing of the input schema.
 
-// openApiSchema  will contain the deserialized
-// openapi schema for the specified query.
+// queryErrors are errors associated with parsing and validating the input
+query.
+
+// openApiSchema will contain the deserialized openapi schema for the
+// specified query.
 
 ```

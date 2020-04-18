@@ -23,7 +23,6 @@ describe('error-conditions', function() {
     const output = graphqlToOpenApi({
       schemaString,
       inputQuery,
-      inputQueryFilename: 'error-conditions.graphql'
     });
     assert.ok(output.queryErrors.length > 0);
   });
@@ -43,7 +42,6 @@ describe('error-conditions', function() {
     const output = graphqlToOpenApi({
       schemaString,
       inputQuery,
-      inputQueryFilename: 'bad-schema-query.graphql'
     });
     assert.ok(output.schemaError);
     assert.equal(output.schemaError.name, 'GraphQLError');
@@ -68,7 +66,6 @@ describe('error-conditions', function() {
     const output = graphqlToOpenApi({
       schemaString,
       inputQuery,
-      inputQueryFilename: 'error-conditions.graphql'
     });
     assert.ok(output.error);
     assert.ok(output.error instanceof NoOperationNameError);
@@ -94,7 +91,6 @@ describe('error-conditions', function() {
     const output = graphqlToOpenApi({
       schemaString,
       inputQuery,
-      inputQueryFilename: 'bad-syntax-query.graphql'
     });
     assert.ok(output.queryErrors);
     assert.ok(output.queryErrors[0] instanceof GraphQLError);

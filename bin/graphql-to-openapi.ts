@@ -33,7 +33,6 @@ const {
 } = graphqlToOpenApi({
   schemaString,
   inputQuery,
-  inputQueryFilename: query,
 });
 if (error) {
   throw error;
