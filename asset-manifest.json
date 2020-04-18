@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/graphql-to-openapi/static/css/main.d033c6de.chunk.css",
+    "main.js": "/graphql-to-openapi/static/js/main.2efb4c59.chunk.js",
+    "main.js.map": "/graphql-to-openapi/static/js/main.2efb4c59.chunk.js.map",
+    "runtime-main.js": "/graphql-to-openapi/static/js/runtime-main.d92b26cd.js",
+    "runtime-main.js.map": "/graphql-to-openapi/static/js/runtime-main.d92b26cd.js.map",
+    "static/css/2.89f067aa.chunk.css": "/graphql-to-openapi/static/css/2.89f067aa.chunk.css",
+    "static/js/2.784e6269.chunk.js": "/graphql-to-openapi/static/js/2.784e6269.chunk.js",
+    "static/js/2.784e6269.chunk.js.map": "/graphql-to-openapi/static/js/2.784e6269.chunk.js.map",
+    "index.html": "/graphql-to-openapi/index.html",
+    "precache-manifest.e93a8c50a53661ae23bff089ec7fa87f.js": "/graphql-to-openapi/precache-manifest.e93a8c50a53661ae23bff089ec7fa87f.js",
+    "service-worker.js": "/graphql-to-openapi/service-worker.js",
+    "static/css/2.89f067aa.chunk.css.map": "/graphql-to-openapi/static/css/2.89f067aa.chunk.css.map",
+    "static/css/main.d033c6de.chunk.css.map": "/graphql-to-openapi/static/css/main.d033c6de.chunk.css.map",
+    "static/js/2.784e6269.chunk.js.LICENSE.txt": "/graphql-to-openapi/static/js/2.784e6269.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/graphql-to-openapi/static/media/logo.b8584f3c.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d92b26cd.js",
+    "static/css/2.89f067aa.chunk.css",
+    "static/js/2.784e6269.chunk.js",
+    "static/css/main.d033c6de.chunk.css",
+    "static/js/main.2efb4c59.chunk.js"
+  ]
+}
