@@ -7,7 +7,10 @@
 
 Convert a graphql query + graphql schema into an openapi spec.
 
-[Demo]("https://schwer.github.io/graphql-to-openapi")
+[Demo](https://schwer.github.io/graphql-to-openapi)
+
+Not to be confused with the obviously more useful
+[openapi-to-graphql](https://github.com/ibm/openapi-to-graphql).
 
 ## Usage via CLI
 
@@ -34,11 +37,14 @@ const {
 });
 
 // error will contain any graphql-to-openapi errors if they exist.
+// graphql-to-openapi only throws an error if you've failed to name
+// the input query. The name of the input query is used to define the
+// openapi route name.
 
-// schemaError are errors in the parsing of the input schema.
+// schemaError is an error in the parsing of the input schema.
 
-// queryErrors are errors associated with parsing and validating the input
-query.
+// queryErrors are errors associated with parsing and validating the input query.
+// This includes any validation issues when matching the query with the schema.
 
 // openApiSchema will contain the deserialized openapi schema for the
 // specified query.
