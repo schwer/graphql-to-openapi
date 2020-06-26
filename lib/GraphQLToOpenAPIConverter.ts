@@ -12,7 +12,7 @@ import {
   GraphQLSchema,
   GraphQLError,
 } from 'graphql';
-import { GraphQLList } from 'graphql/type/definition';
+import { GraphQLList, GraphQLObjectType } from 'graphql/type/definition';
 
 export class NoOperationNameError extends Error {
   constructor(message) {
@@ -111,13 +111,35 @@ const typeMap = {
   'Boolean': { type: 'boolean' },
 };
 
-function fieldDefToOpenApiField(typeInfo: TypeInfo) {
+function getScalarType(
+  typeName: string,
+  scalarConfig: { [key: string]: any },
+  onUnknownScalar: (s: string) => any,
+): any {
+  if (scalarConfig[typeName]) {
+    return scalarConfig[typeName];
+  }
+  const r = onUnknownScalar(typeName);
+  if (r) {
+    scalarConfig[typeName] = r;
+    return r;
+  }
+  throw new Error("Unknown scalar: " + typeName);
+}
+
+function fieldDefToOpenApiField(
+  typeInfo: TypeInfo,
+  scalarConfig: { [key: string]: any },
+  onUnknownScalar: (s: string) => any,
+) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
   const description = fieldDef.description;
   let nullable;
-  if (typeName.match(/[!]$/)) {
+  let type = fieldDef.type;
+  if (type instanceof GraphQLNonNull) {
     nullable = false;
+    type = type.ofType;
   } else {
     nullable = true;
   }
@@ -135,18 +157,43 @@ function fieldDefToOpenApiField(typeInfo: TypeInfo) {
       description,
       nullable,
     };
-  } else if (typeNameWithoutBang.match(/^\[/)) {
+  } else if (type instanceof GraphQLList) {
     openApiType.type = 'array';
-    openApiType.items = {
-      type: 'object',
-      properties: {
-      }
-    };
+    let itemType = type.ofType;
+    let nullableItems = true;
+    if (itemType instanceof GraphQLNonNull) {
+      nullableItems = false;
+      itemType = itemType.ofType;
+    }
+    if (itemType instanceof GraphQLObjectType) {
+      openApiType.items = {
+        type: 'object',
+        properties: {
+        },
+      };
+    } else if (itemType instanceof GraphQLScalarType) {
+      openApiType.items = getScalarType(itemType.name, scalarConfig, onUnknownScalar);
+      openApiType.items.nullable = nullableItems;
+    }
     return openApiType;
-  } else {
+  } else if (type instanceof GraphQLObjectType) {
     openApiType.type = 'object';
     openApiType.properties = {};
     return openApiType;
+  } else if (type instanceof GraphQLScalarType) {
+    if (scalarConfig[type.name]) {
+      return {
+         ...scalarConfig[type.name],
+         description,
+         nullable,
+      };
+    }
+    const r = onUnknownScalar(type.name);
+    if (r) {
+      return r;
+    }
+    // istanbul ignore next
+    throw new Error("Unknown scalar: " + type.name);
   }
 }
 
@@ -159,6 +206,8 @@ type InputType = GraphQLInputObjectType |
 function recurseInputType(
   obj: InputType,
   depth: number,
+  scalarConfig: {[key: string]: any },
+  onUnknownScalar: (s: string) => any,
 ) {
   // istanbul ignore next
   if (depth > 50) {
@@ -170,7 +219,7 @@ function recurseInputType(
     const properties = Object
       .entries(inputObjectType.getFields())
       .reduce((properties, [name, f]) => {
-        properties[name] = recurseInputType(f.type, depth + 1);
+        properties[name] = recurseInputType(f.type, depth + 1, scalarConfig, onUnknownScalar);
         properties[name].description = f.description;
         return properties;
       }, {});
@@ -187,7 +236,7 @@ function recurseInputType(
     return {
       type: 'array',
       nullable: true,
-      items: recurseInputType(list.ofType, depth + 1),
+      items: recurseInputType(list.ofType, depth + 1, scalarConfig, onUnknownScalar),
     };
   }
   if (obj instanceof GraphQLScalarType) {
@@ -223,6 +272,13 @@ function recurseInputType(
         nullable: true,
       };
     }
+    if (scalarConfig[name]) {
+      return scalarConfig[name];
+    }
+    const runtimeScalarResult = onUnknownScalar(name);
+    if (runtimeScalarResult) {
+      return runtimeScalarResult;
+    }
     // istanbul ignore next
     throw new Error(`Unknown scalar: ${name}`);
   }
@@ -240,7 +296,7 @@ function recurseInputType(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const nonNull = (obj as GraphQLNonNull<any>);
     return {
-      ...recurseInputType(nonNull.ofType, depth + 1),
+      ...recurseInputType(nonNull.ofType, depth + 1, scalarConfig, onUnknownScalar),
       nullable: false,
     };
   }
@@ -252,7 +308,19 @@ function recurseInputType(
 export class GraphQLToOpenAPIConverter {
   private schema: GraphQLSchema;
   private schemaError: GraphQLError;
-  constructor(private schemaString: string) {
+  constructor(
+    private schemaString: string,
+    private onUnknownScalar?: (s: string) => any,
+    private scalarConfig?: { [key: string]: any },
+  ) {
+    if (!onUnknownScalar) {
+      this.onUnknownScalar = (s) => {
+        throw new Error('Unknown scalar: ' + s);
+      };
+    }
+    if (!scalarConfig) {
+      this.scalarConfig = {};
+    }
     try {
       this.schema = buildSchema(this.schemaString);
     } catch (err) {
@@ -261,7 +329,7 @@ export class GraphQLToOpenAPIConverter {
   }
 
   public toOpenAPI(inputQuery: string): GraphQLToOpenAPIResult {
-    const { schemaError } = this;
+    const { schemaError, onUnknownScalar, scalarConfig } = this;
     if (schemaError) {
       return {
         schemaError,
@@ -345,7 +413,7 @@ export class GraphQLToOpenAPIConverter {
         },
       },
       VariableDefinition({ variable }) {
-        const t = recurseInputType(typeInfo.getInputType(), 0);
+        const t = recurseInputType(typeInfo.getInputType(), 0, scalarConfig, onUnknownScalar);
         if (t.type === 'object' || t.type === 'array') {
           operationDef.get.parameters.push({
             name: variable.name.value,
@@ -369,7 +437,7 @@ export class GraphQLToOpenAPIConverter {
       },
       Field: {
         enter(node) {
-          const openApiType = fieldDefToOpenApiField(typeInfo);
+          const openApiType = fieldDefToOpenApiField(typeInfo, scalarConfig, onUnknownScalar);
           const parentObj = currentSelection[0].openApiType;
           if (parentObj.type === 'object') {
             parentObj.properties[node.name.value] = openApiType;

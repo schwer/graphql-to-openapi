@@ -4,12 +4,16 @@ import {
 } from './lib/GraphQLToOpenAPIConverter';
 
 export function graphqlToOpenApi({
-  schemaString,
   inputQuery,
+  onUnknownScalar,
+  scalarConfig,
+  schemaString,
 }: {
-  schemaString: string;
   inputQuery: string;
+  onUnknownScalar?: (s: string) => any;
+  scalarConfig?: { [key: string]: any };
+  schemaString: string;
 }): GraphQLToOpenAPIResult {
-  const c = new GraphQLToOpenAPIConverter(schemaString);
+  const c = new GraphQLToOpenAPIConverter(schemaString, onUnknownScalar, scalarConfig);
   return c.toOpenAPI(inputQuery);
 }

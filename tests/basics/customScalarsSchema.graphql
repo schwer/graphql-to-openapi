@@ -1,0 +1,11 @@
+scalar CustomScalar
+
+type SomeObject {
+  integer: Int
+  customScalar: CustomScalar
+}
+
+type Query {
+  arrayOfCustomScalars: [CustomScalar!]!
+  someObject: SomeObject
+}

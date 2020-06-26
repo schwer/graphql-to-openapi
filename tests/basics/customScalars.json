@@ -1,0 +1,55 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/customScalarsQuery": {
+      "get": {
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "properties": {
+                "arrayOfCustomScalars": {
+                  "items": {
+                    "nullable": false,
+                    "type": "string"
+                  },
+                  "nullable": false,
+                  "type": "array"
+                },
+                "someObject": {
+                  "nullable": true,
+                  "properties": {
+                    "customScalar": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "integer": {
+                      "nullable": true,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0"
+}
