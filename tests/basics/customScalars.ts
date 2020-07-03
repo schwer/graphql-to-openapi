@@ -46,7 +46,7 @@ describe('customScalars', function () {
 
   it('should throw an exception when a custom scalar is unhandled', function () {
     try {
-      const actualOutput = graphqlToOpenApi({
+      graphqlToOpenApi({
         schemaString,
         inputQuery,
       }).openApiSchema;
