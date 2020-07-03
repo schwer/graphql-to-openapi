@@ -14,6 +14,10 @@ export function graphqlToOpenApi({
   scalarConfig?: { [key: string]: any };
   schemaString: string;
 }): GraphQLToOpenAPIResult {
-  const c = new GraphQLToOpenAPIConverter(schemaString, onUnknownScalar, scalarConfig);
+  const c = new GraphQLToOpenAPIConverter(
+    schemaString,
+    onUnknownScalar,
+    scalarConfig
+  );
   return c.toOpenAPI(inputQuery);
 }
