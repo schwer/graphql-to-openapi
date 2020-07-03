@@ -1,6 +1,3 @@
-query scalarQuery (
-  $input: String!,
-  $otherInput: String!
-) {
+query scalarQuery($input: String!, $otherInput: String!) {
   arrayOfStrings(input: $input, otherInput: $otherInput)
 }

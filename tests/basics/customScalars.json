@@ -1,18 +1,12 @@
 {
   "consumes": ["application/json"],
   "paths": {
-    "/scalarQuery": {
+    "/customScalarsQuery": {
       "get": {
         "parameters": [
           {
             "in": "query",
-            "name": "input",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "otherInput",
+            "name": "c",
             "required": true,
             "type": "string"
           }
@@ -23,14 +17,31 @@
             "description": "response",
             "schema": {
               "properties": {
-                "arrayOfStrings": {
-                  "description": "An array of strings",
+                "arrayOfCustomScalars": {
                   "items": {
                     "nullable": false,
                     "type": "string"
                   },
                   "nullable": false,
                   "type": "array"
+                },
+                "someObject": {
+                  "nullable": true,
+                  "properties": {
+                    "customScalar": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "integer": {
+                      "nullable": true,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "customScalar": {
+                  "nullable": true,
+                  "type": "string"
                 }
               },
               "type": "object"

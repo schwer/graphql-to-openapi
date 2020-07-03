@@ -1,14 +1,10 @@
-
 type Query {
   query: Query
 
   """
   A results set
   """
-  resultsSet(
-    input: ComplexInput!,
-    otherInput: ComplexerInput!
-  ): [String!]!
+  resultsSet(input: ComplexInput!, otherInput: ComplexerInput!): [String!]!
 }
 
 enum AnEnum {
