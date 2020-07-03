@@ -1,7 +1,5 @@
 {
-  "consumes": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
   "paths": {
     "/pokemonByName": {
       "get": {
@@ -13,9 +11,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "response",
@@ -156,12 +152,7 @@
       }
     }
   },
-  "produces": [
-    "application/json"
-  ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "produces": ["application/json"],
+  "schemes": ["http", "https"],
   "swagger": "2.0"
 }

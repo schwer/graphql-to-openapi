@@ -2,4 +2,4 @@
 
 ## Reporting a Vulnerability
 
-Create an issue in github, choosing *Security Vulnerability* as the issue template.
+Create an issue in github, choosing _Security Vulnerability_ as the issue template.

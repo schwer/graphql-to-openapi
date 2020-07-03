@@ -20,11 +20,7 @@
             }
           ],
           "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "name": "include"
         },
         {
@@ -45,11 +41,7 @@
             }
           ],
           "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "name": "skip"
         },
         {
@@ -66,10 +58,7 @@
             }
           ],
           "description": "Marks an element of a GraphQL schema as no longer supported.",
-          "locations": [
-            "FIELD_DEFINITION",
-            "ENUM_VALUE"
-          ],
+          "locations": ["FIELD_DEFINITION", "ENUM_VALUE"],
           "name": "deprecated"
         }
       ],
@@ -84,8 +73,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -162,8 +150,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "Query",
           "possibleTypes": null
@@ -183,8 +170,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The ID of an object",
               "isDeprecated": false,
@@ -200,8 +186,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The identifier of this Pokémon",
               "isDeprecated": false,
@@ -213,8 +198,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The name of this Pokémon",
               "isDeprecated": false,
@@ -226,8 +210,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The minimum and maximum weight of this Pokémon",
               "isDeprecated": false,
@@ -239,8 +222,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The minimum and maximum weight of this Pokémon",
               "isDeprecated": false,
@@ -252,8 +234,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The classification of this Pokémon",
               "isDeprecated": false,
@@ -265,8 +246,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The type(s) of this Pokémon",
               "isDeprecated": false,
@@ -282,8 +262,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The type(s) of Pokémons that this Pokémon is resistant to",
               "isDeprecated": false,
@@ -299,8 +278,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The attacks of this Pokémon",
               "isDeprecated": false,
@@ -312,8 +290,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The type(s) of Pokémons that this Pokémon weak to",
               "isDeprecated": false,
@@ -329,8 +306,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -342,8 +318,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The maximum CP of this Pokémon",
               "isDeprecated": false,
@@ -355,8 +330,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The evolutions of this Pokémon",
               "isDeprecated": false,
@@ -372,8 +346,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The evolution requirements of this Pokémon",
               "isDeprecated": false,
@@ -385,8 +358,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The maximum HP of this Pokémon",
               "isDeprecated": false,
@@ -398,8 +370,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -412,8 +383,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "Pokemon",
           "possibleTypes": null
@@ -443,8 +413,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The minimum value of this dimension",
               "isDeprecated": false,
@@ -456,8 +425,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The maximum value of this dimension",
               "isDeprecated": false,
@@ -470,8 +438,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "PokemonDimension",
           "possibleTypes": null
@@ -481,8 +448,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The fast attacks of this Pokémon",
               "isDeprecated": false,
@@ -498,8 +464,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The special attacks of this Pokémon",
               "isDeprecated": false,
@@ -516,8 +481,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "PokemonAttack",
           "possibleTypes": null
@@ -527,8 +491,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The name of this Pokémon attack",
               "isDeprecated": false,
@@ -540,8 +503,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The type of this Pokémon attack",
               "isDeprecated": false,
@@ -553,8 +515,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The damage of this Pokémon attack",
               "isDeprecated": false,
@@ -567,8 +528,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "Attack",
           "possibleTypes": null
@@ -588,8 +548,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The amount of candy to evolve",
               "isDeprecated": false,
@@ -601,8 +560,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The name of the candy to evolve",
               "isDeprecated": false,
@@ -615,8 +573,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "PokemonEvolutionRequirement",
           "possibleTypes": null
@@ -626,8 +583,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "A list of all types supported by this server.",
               "isDeprecated": false,
@@ -651,8 +607,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "The type that query operations will be rooted at.",
               "isDeprecated": false,
@@ -668,8 +623,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "If this server supports mutation, the type that mutation operations will be rooted at.",
               "isDeprecated": false,
@@ -681,8 +635,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "If this server support subscription, the type that subscription operations will be rooted at.",
               "isDeprecated": false,
@@ -694,8 +647,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "A list of all directives supported by this server.",
               "isDeprecated": false,
@@ -720,8 +672,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "__Schema",
           "possibleTypes": null
@@ -731,8 +682,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -748,8 +698,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -761,8 +710,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -805,8 +753,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -826,8 +773,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -878,8 +824,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -899,8 +844,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -913,8 +857,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "__Type",
           "possibleTypes": null
@@ -993,8 +936,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1010,8 +952,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1023,8 +964,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1048,8 +988,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1065,8 +1004,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1082,8 +1020,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1096,8 +1033,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "__Field",
           "possibleTypes": null
@@ -1107,8 +1043,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1124,8 +1059,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1137,8 +1071,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1154,8 +1087,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": "A GraphQL-formatted string representing the default value for this input value.",
               "isDeprecated": false,
@@ -1168,8 +1100,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "__InputValue",
           "possibleTypes": null
@@ -1179,8 +1110,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1196,8 +1126,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1209,8 +1138,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1226,8 +1154,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1240,8 +1167,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "__EnumValue",
           "possibleTypes": null
@@ -1251,8 +1177,7 @@
           "enumValues": null,
           "fields": [
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1268,8 +1193,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1281,8 +1205,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1306,8 +1229,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
@@ -1331,8 +1253,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": "Use `locations`.",
               "description": null,
               "isDeprecated": true,
@@ -1348,8 +1269,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": "Use `locations`.",
               "description": null,
               "isDeprecated": true,
@@ -1365,8 +1285,7 @@
               }
             },
             {
-              "args": [
-              ],
+              "args": [],
               "deprecationReason": "Use `locations`.",
               "description": null,
               "isDeprecated": true,
@@ -1383,8 +1302,7 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [
-          ],
+          "interfaces": [],
           "kind": "OBJECT",
           "name": "__Directive",
           "possibleTypes": null
