@@ -33,13 +33,16 @@
     "graphql": "^15.1.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
     "@types/jest": "^25.1.2",
     "@types/node": "^13.1.6",
     "@typescript-eslint/eslint-plugin": "2.23.0",
     "@typescript-eslint/parser": "^2.16.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "jest": "^25.1.0",
     "json-stable-stringify": "1.0.1",
+    "prettier": "^2.0.5",
     "ts-jest": "^25.2.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.8.3"
