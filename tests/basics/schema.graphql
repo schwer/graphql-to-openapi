@@ -4,8 +4,5 @@ type Query {
   """
   An array of strings
   """
-  arrayOfStrings(
-    input: String!,
-    otherInput: String!
-  ): [String!]!
+  arrayOfStrings(input: String!, otherInput: String!): [String!]!
 }

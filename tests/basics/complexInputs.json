@@ -1,7 +1,5 @@
 {
-  "consumes": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
   "paths": {
     "/complexInputsQuery": {
       "get": {
@@ -104,10 +102,7 @@
               "enums": {
                 "description": "enums of the complexer input object",
                 "items": {
-                  "enum": [
-                    "SomeEnumValue1",
-                    "SomeEnumValue2"
-                  ],
+                  "enum": ["SomeEnumValue1", "SomeEnumValue2"],
                   "nullable": false,
                   "type": "string"
                 },
@@ -218,9 +213,7 @@
             "type": "object"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "response",
@@ -243,12 +236,7 @@
       }
     }
   },
-  "produces": [
-    "application/json"
-  ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "produces": ["application/json"],
+  "schemes": ["http", "https"],
   "swagger": "2.0"
 }
