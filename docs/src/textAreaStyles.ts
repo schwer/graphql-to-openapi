@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties } from 'react';
 
 export const textAreaStyles: CSSProperties = {
   fontFamily: 'Consolas, monospace, sans-serif',
