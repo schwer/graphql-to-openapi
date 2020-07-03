@@ -113,9 +113,9 @@ const typeMap = {
 
 function getScalarType(
   typeName: string,
-  scalarConfig: { [key: string]: unknown },
-  onUnknownScalar: (s: string) => unknown
-): unknown {
+  scalarConfig: { [key: string]: object },
+  onUnknownScalar: (s: string) => object
+): object {
   if (scalarConfig[typeName]) {
     return scalarConfig[typeName];
   }
@@ -129,8 +129,8 @@ function getScalarType(
 
 function fieldDefToOpenApiField(
   typeInfo: TypeInfo,
-  scalarConfig: { [key: string]: unknown },
-  onUnknownScalar: (s: string) => unknown
+  scalarConfig: { [key: string]: object },
+  onUnknownScalar: (s: string) => object
 ) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
@@ -206,8 +206,8 @@ type InputType =
 function recurseInputType(
   obj: InputType,
   depth: number,
-  scalarConfig: { [key: string]: unknown },
-  onUnknownScalar: (s: string) => unknown
+  scalarConfig: { [key: string]: object },
+  onUnknownScalar: (s: string) => object
 ) {
   // istanbul ignore next
   if (depth > 50) {
@@ -317,8 +317,8 @@ export class GraphQLToOpenAPIConverter {
   private schemaError: GraphQLError;
   constructor(
     private schemaString: string,
-    private onUnknownScalar?: (s: string) => unknown,
-    private scalarConfig?: { [key: string]: unknown }
+    private onUnknownScalar?: (s: string) => object,
+    private scalarConfig?: { [key: string]: object }
   ) {
     if (!onUnknownScalar) {
       this.onUnknownScalar = () => {

@@ -10,8 +10,8 @@ export function graphqlToOpenApi({
   schemaString,
 }: {
   inputQuery: string;
-  onUnknownScalar?: (s: string) => unknown;
-  scalarConfig?: { [key: string]: unknown };
+  onUnknownScalar?: (s: string) => object;
+  scalarConfig?: { [key: string]: object };
   schemaString: string;
 }): GraphQLToOpenAPIResult {
   const c = new GraphQLToOpenAPIConverter(
