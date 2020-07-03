@@ -1,7 +1,8 @@
-query customScalarsQuery {
-  arrayOfCustomScalars
+query customScalarsQuery($c: CustomScalar!) {
+  arrayOfCustomScalars(c: $c)
   someObject {
     customScalar
     integer
   }
+  customScalar
 }

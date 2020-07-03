@@ -16,7 +16,7 @@ import { GraphQLList, GraphQLObjectType } from 'graphql/type/definition';
 
 export class NoOperationNameError extends Error {
   constructor(message) {
-    super(message)/* istanbul ignore next */;
+    super(message) /* istanbul ignore next */;
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = NoOperationNameError.name;
   }
@@ -30,15 +30,15 @@ export interface GraphQLToOpenAPIResult {
 }
 
 const typeMap = {
-  'ID': {
-    type: 'string'
+  ID: {
+    type: 'string',
   },
   '[ID]': {
     type: 'array',
     items: {
       type: 'string',
       nullable: true,
-    }
+    },
   },
   '[ID!]': {
     type: 'array',
@@ -47,8 +47,8 @@ const typeMap = {
       nullable: false,
     },
   },
-  'String': {
-     type: 'string'
+  String: {
+    type: 'string',
   },
   '[String!]': {
     type: 'array',
@@ -62,59 +62,59 @@ const typeMap = {
     items: {
       type: 'string',
       nullable: true,
-    }
+    },
   },
   '[Int]': {
     type: 'array',
     items: {
       type: 'integer',
       nullable: true,
-    }
+    },
   },
   '[Int!]': {
     type: 'array',
     items: {
       type: 'integer',
       nullable: false,
-    }
+    },
   },
   '[Float]': {
     type: 'array',
     items: {
       type: 'number',
       nullable: true,
-    }
+    },
   },
   '[Float!]': {
     type: 'array',
     items: {
       type: 'number',
       nullable: false,
-    }
+    },
   },
   '[Boolean]': {
     type: 'array',
     items: {
       type: 'boolean',
       nullable: true,
-    }
+    },
   },
   '[Boolean!]': {
     type: 'array',
     items: {
       type: 'boolean',
       nullable: false,
-    }
+    },
   },
-  'Int': { type: 'integer' },
-  'Float': { type: 'number' },
-  'Boolean': { type: 'boolean' },
+  Int: { type: 'integer' },
+  Float: { type: 'number' },
+  Boolean: { type: 'boolean' },
 };
 
 function getScalarType(
   typeName: string,
   scalarConfig: { [key: string]: any },
-  onUnknownScalar: (s: string) => any,
+  onUnknownScalar: (s: string) => any
 ): any {
   if (scalarConfig[typeName]) {
     return scalarConfig[typeName];
@@ -124,13 +124,13 @@ function getScalarType(
     scalarConfig[typeName] = r;
     return r;
   }
-  throw new Error("Unknown scalar: " + typeName);
+  throw new Error('Unknown scalar: ' + typeName);
 }
 
 function fieldDefToOpenApiField(
   typeInfo: TypeInfo,
   scalarConfig: { [key: string]: any },
-  onUnknownScalar: (s: string) => any,
+  onUnknownScalar: (s: string) => any
 ) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
@@ -157,7 +157,8 @@ function fieldDefToOpenApiField(
       description,
       nullable,
     };
-  } else if (type instanceof GraphQLList) {
+  }
+  if (type instanceof GraphQLList) {
     openApiType.type = 'array';
     let itemType = type.ofType;
     let nullableItems = true;
@@ -168,46 +169,45 @@ function fieldDefToOpenApiField(
     if (itemType instanceof GraphQLObjectType) {
       openApiType.items = {
         type: 'object',
-        properties: {
-        },
+        properties: {},
       };
-    } else if (itemType instanceof GraphQLScalarType) {
-      openApiType.items = getScalarType(itemType.name, scalarConfig, onUnknownScalar);
+    }
+    if (itemType instanceof GraphQLScalarType) {
+      openApiType.items = getScalarType(
+        itemType.name,
+        scalarConfig,
+        onUnknownScalar
+      );
       openApiType.items.nullable = nullableItems;
     }
     return openApiType;
-  } else if (type instanceof GraphQLObjectType) {
+  }
+  if (type instanceof GraphQLObjectType) {
     openApiType.type = 'object';
     openApiType.properties = {};
     return openApiType;
-  } else if (type instanceof GraphQLScalarType) {
-    if (scalarConfig[type.name]) {
-      return {
-         ...scalarConfig[type.name],
-         description,
-         nullable,
-      };
-    }
-    const r = onUnknownScalar(type.name);
-    if (r) {
-      return r;
-    }
-    // istanbul ignore next
-    throw new Error("Unknown scalar: " + type.name);
   }
+  const scalarType = type as GraphQLScalarType;
+  const t = getScalarType(scalarType.name, scalarConfig, onUnknownScalar);
+  return {
+    ...t,
+    description,
+    nullable,
+  };
 }
 
-type InputType = GraphQLInputObjectType |
-  GraphQLScalarType |
-  GraphQLEnumType |
-  GraphQLList<any> | // eslint-disable-line @typescript-eslint/no-explicit-any
-  GraphQLNonNull<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+type InputType =
+  | GraphQLInputObjectType
+  | GraphQLScalarType
+  | GraphQLEnumType
+  | GraphQLList<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+  | GraphQLNonNull<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 function recurseInputType(
   obj: InputType,
   depth: number,
-  scalarConfig: {[key: string]: any },
-  onUnknownScalar: (s: string) => any,
+  scalarConfig: { [key: string]: any },
+  onUnknownScalar: (s: string) => any
 ) {
   // istanbul ignore next
   if (depth > 50) {
@@ -215,14 +215,20 @@ function recurseInputType(
     throw new Error('depth limit exceeded: ' + depth);
   }
   if (obj instanceof GraphQLInputObjectType) {
-    const inputObjectType = (obj as GraphQLInputObjectType);
-    const properties = Object
-      .entries(inputObjectType.getFields())
-      .reduce((properties, [name, f]) => {
-        properties[name] = recurseInputType(f.type, depth + 1, scalarConfig, onUnknownScalar);
+    const inputObjectType = obj as GraphQLInputObjectType;
+    const properties = Object.entries(inputObjectType.getFields()).reduce(
+      (properties, [name, f]) => {
+        properties[name] = recurseInputType(
+          f.type,
+          depth + 1,
+          scalarConfig,
+          onUnknownScalar
+        );
         properties[name].description = f.description;
         return properties;
-      }, {});
+      },
+      {}
+    );
     return {
       type: 'object',
       nullable: true,
@@ -232,11 +238,16 @@ function recurseInputType(
   }
   if (obj instanceof GraphQLList) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const list = (obj as GraphQLList<any>);
+    const list = obj as GraphQLList<any>;
     return {
       type: 'array',
       nullable: true,
-      items: recurseInputType(list.ofType, depth + 1, scalarConfig, onUnknownScalar),
+      items: recurseInputType(
+        list.ofType,
+        depth + 1,
+        scalarConfig,
+        onUnknownScalar
+      ),
     };
   }
   if (obj instanceof GraphQLScalarType) {
@@ -245,7 +256,7 @@ function recurseInputType(
       return {
         type: 'number',
         nullable: true,
-       };
+      };
     }
     if (name === 'Int') {
       return {
@@ -272,15 +283,7 @@ function recurseInputType(
         nullable: true,
       };
     }
-    if (scalarConfig[name]) {
-      return scalarConfig[name];
-    }
-    const runtimeScalarResult = onUnknownScalar(name);
-    if (runtimeScalarResult) {
-      return runtimeScalarResult;
-    }
-    // istanbul ignore next
-    throw new Error(`Unknown scalar: ${name}`);
+    return getScalarType(name, scalarConfig, onUnknownScalar);
   }
   if (obj instanceof GraphQLEnumType) {
     const enumValues = obj.getValues();
@@ -288,15 +291,20 @@ function recurseInputType(
       type: 'string',
       description: obj.description,
       nullable: true,
-      'enum': enumValues.map(({ name }) => name),
+      enum: enumValues.map(({ name }) => name),
     };
   }
   // istanbul ignore else
   if (obj instanceof GraphQLNonNull) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nonNull = (obj as GraphQLNonNull<any>);
+    const nonNull = obj as GraphQLNonNull<any>;
     return {
-      ...recurseInputType(nonNull.ofType, depth + 1, scalarConfig, onUnknownScalar),
+      ...recurseInputType(
+        nonNull.ofType,
+        depth + 1,
+        scalarConfig,
+        onUnknownScalar
+      ),
       nullable: false,
     };
   }
@@ -304,18 +312,17 @@ function recurseInputType(
   throw new Error(`Unexpected InputType: ${obj}`);
 }
 
-
 export class GraphQLToOpenAPIConverter {
   private schema: GraphQLSchema;
   private schemaError: GraphQLError;
   constructor(
     private schemaString: string,
     private onUnknownScalar?: (s: string) => any,
-    private scalarConfig?: { [key: string]: any },
+    private scalarConfig?: { [key: string]: any }
   ) {
     if (!onUnknownScalar) {
       this.onUnknownScalar = (s) => {
-        throw new Error('Unknown scalar: ' + s);
+        return null;
       };
     }
     if (!scalarConfig) {
@@ -350,122 +357,128 @@ export class GraphQLToOpenAPIConverter {
     }
     let openApiSchema = {
       swagger: '2.0',
-      schemes: [
-        'http', 'https'
-      ],
-      consumes: [
-        'application/json'
-      ],
-      produces: [
-        'application/json'
-      ],
-      paths: {
-      }
+      schemes: ['http', 'https'],
+      consumes: ['application/json'],
+      produces: ['application/json'],
+      paths: {},
     };
 
     let error;
     let operationDef;
     const currentSelection = [];
     const typeInfo = new TypeInfo(schema);
-    openApiSchema = visit(parsedQuery, visitWithTypeInfo(typeInfo, {
-      Document: {
-        leave() {
-          return openApiSchema;
+    openApiSchema = visit(
+      parsedQuery,
+      visitWithTypeInfo(typeInfo, {
+        Document: {
+          leave() {
+            return openApiSchema;
+          },
         },
-      },
-      OperationDefinition: {
-        enter(node) {
-          const openApiType = {
-            type: 'object',
-            properties: {
-              // To be filled by Field visitor
-            },
-          };
-          if (!node.name) {
-            error = new NoOperationNameError(
-              'GraphQLToOpenAPIConverter requires a named ' +
-              `operation on line ${node.loc.source.locationOffset.line} ` +
-              'of input query'
-            );
-            return BREAK;
-          }
-          openApiSchema.paths['/' + node.name.value] = operationDef = {
-            get: {
-              parameters: [],
-              responses: {
-                '200': {
-                  description: 'response',
-                  schema: openApiType,
-                },
+        OperationDefinition: {
+          enter(node) {
+            const openApiType = {
+              type: 'object',
+              properties: {
+                // To be filled by Field visitor
               },
-              produces: [
-                'application/json',
-              ],
-            },
-          };
-          currentSelection.unshift({
-            node,
-            openApiType,
-          });
-        },
-        leave() {
-          return openApiSchema;
-        },
-      },
-      VariableDefinition({ variable }) {
-        const t = recurseInputType(typeInfo.getInputType(), 0, scalarConfig, onUnknownScalar);
-        if (t.type === 'object' || t.type === 'array') {
-          operationDef.get.parameters.push({
-            name: variable.name.value,
-            in: 'query',
-            required: !t.nullable,
-            type: t.type,
-            items: t.items,
-            properties: t.properties,
-            description: t.description,
-          });
-        } else {
-          operationDef.get.parameters.push({
-            name: variable.name.value,
-            in: 'query',
-            required: !t.nullable,
-            type: t.type,
-            description: t.description,
-          });
-
-        }
-      },
-      Field: {
-        enter(node) {
-          const openApiType = fieldDefToOpenApiField(typeInfo, scalarConfig, onUnknownScalar);
-          const parentObj = currentSelection[0].openApiType;
-          if (parentObj.type === 'object') {
-            parentObj.properties[node.name.value] = openApiType;
-          } else { // array
-            parentObj.items.properties[node.name.value] = openApiType;
-          }
-          if (openApiType.type === 'array' && openApiType.items.type === 'object') {
+            };
+            if (!node.name) {
+              error = new NoOperationNameError(
+                'GraphQLToOpenAPIConverter requires a named ' +
+                  `operation on line ${node.loc.source.locationOffset.line} ` +
+                  'of input query'
+              );
+              return BREAK;
+            }
+            openApiSchema.paths['/' + node.name.value] = operationDef = {
+              get: {
+                parameters: [],
+                responses: {
+                  '200': {
+                    description: 'response',
+                    schema: openApiType,
+                  },
+                },
+                produces: ['application/json'],
+              },
+            };
             currentSelection.unshift({
               node,
               openApiType,
             });
-          } else if (openApiType.type === 'object') {
-            currentSelection.unshift({
-              node,
-              openApiType,
+          },
+          leave() {
+            return openApiSchema;
+          },
+        },
+        VariableDefinition({ variable }) {
+          const t = recurseInputType(
+            typeInfo.getInputType(),
+            0,
+            scalarConfig,
+            onUnknownScalar
+          );
+          if (t.type === 'object' || t.type === 'array') {
+            operationDef.get.parameters.push({
+              name: variable.name.value,
+              in: 'query',
+              required: !t.nullable,
+              type: t.type,
+              items: t.items,
+              properties: t.properties,
+              description: t.description,
+            });
+          } else {
+            operationDef.get.parameters.push({
+              name: variable.name.value,
+              in: 'query',
+              required: !t.nullable,
+              type: t.type,
+              description: t.description,
             });
           }
         },
-        leave(node) {
-          // raw reference comparison doesn't work here. Using
-          // loc as a proxy instead.
-          if (currentSelection[0].node.loc === node.loc) {
-            const result = currentSelection.shift().openApiType;
-            return result;
-          }
-        }
-      },
-    }));
+        Field: {
+          enter(node) {
+            const openApiType = fieldDefToOpenApiField(
+              typeInfo,
+              scalarConfig,
+              onUnknownScalar
+            );
+            const parentObj = currentSelection[0].openApiType;
+            if (parentObj.type === 'object') {
+              parentObj.properties[node.name.value] = openApiType;
+            } else {
+              // array
+              parentObj.items.properties[node.name.value] = openApiType;
+            }
+            if (
+              openApiType.type === 'array' &&
+              openApiType.items.type === 'object'
+            ) {
+              currentSelection.unshift({
+                node,
+                openApiType,
+              });
+            } else if (openApiType.type === 'object') {
+              currentSelection.unshift({
+                node,
+                openApiType,
+              });
+            }
+          },
+          leave(node) {
+            // raw reference comparison doesn't work here. Using
+            // loc as a proxy instead.
+            if (currentSelection[0].node.loc === node.loc) {
+              const result = currentSelection.shift().openApiType;
+              return result;
+            }
+          },
+        },
+      })
+    );
     if (error) {
       return {
         error,

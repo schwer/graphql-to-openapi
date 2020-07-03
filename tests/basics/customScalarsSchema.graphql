@@ -6,6 +6,7 @@ type SomeObject {
 }
 
 type Query {
-  arrayOfCustomScalars: [CustomScalar!]!
+  arrayOfCustomScalars(c: CustomScalar!): [CustomScalar!]!
   someObject: SomeObject
+  customScalar: CustomScalar
 }
