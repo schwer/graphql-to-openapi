@@ -21,14 +21,14 @@ const {
       'graphql query supplied.',
     ].join('\n')
   )
-  .option('--schema <schema>', 'A graphql schema file')
+  .option('-s, --schema <schema>', 'A graphql schema file')
   .option(
-    '--introspection-schema-json <introspectionSchemaJson>',
+    '-i, --introspection-schema-json <introspectionSchemaJson>',
     'A graphql introspection query output (json) file'
   )
-  .requiredOption('--query <query>', 'A graphql query file')
+  .requiredOption('-q, --query <query>', 'A graphql query file')
   .option(
-    '--scalarConfigFile <scalarConfigFile>',
+    '-c, --scalarConfigFile <scalarConfigFile>',
     'A configuration file (json formatted)' + 'supporting custom scalars'
   )
   .option('--pretty', 'pretty json output', true)
