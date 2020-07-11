@@ -2,7 +2,10 @@ import { readFileSync } from 'fs';
 import * as path from 'path';
 import { graphqlToOpenApi } from '../../index';
 import * as assert from 'assert';
-import { NoOperationNameError } from '../../lib/GraphQLToOpenAPIConverter';
+import {
+  NoOperationNameError,
+  MissingSchemaError,
+} from '../../lib/GraphQLToOpenAPIConverter';
 import { GraphQLError } from 'graphql';
 
 describe('error-conditions', function () {
@@ -79,5 +82,24 @@ describe('error-conditions', function () {
     });
     assert.ok(output.queryErrors);
     assert.ok(output.queryErrors[0] instanceof GraphQLError);
+  });
+
+  it('should fail if neither schema nor introspection schema are supplied', function () {
+    const inputQuery = `
+      query {
+        someQuery(token: "Te") {
+          someResult
+        }
+      }
+    `;
+    try {
+      graphqlToOpenApi({
+        inputQuery,
+      });
+    } catch (err) {
+      assert.ok(err instanceof MissingSchemaError);
+      return;
+    }
+    assert.fail('exception not produced');
   });
 });

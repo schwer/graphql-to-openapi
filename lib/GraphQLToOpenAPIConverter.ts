@@ -4,13 +4,15 @@ import { validate } from 'graphql/validation';
 import { parse } from 'graphql/language/parser';
 import {
   GraphQLEnumType,
+  GraphQLError,
   GraphQLInputObjectType,
   GraphQLNonNull,
   GraphQLScalarType,
-  TypeInfo,
-  buildSchema,
   GraphQLSchema,
-  GraphQLError,
+  IntrospectionQuery,
+  TypeInfo,
+  buildClientSchema,
+  buildSchema,
 } from 'graphql';
 import { GraphQLList, GraphQLObjectType } from 'graphql/type/definition';
 
@@ -19,6 +21,22 @@ export class NoOperationNameError extends Error {
     super(message) /* istanbul ignore next */;
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = NoOperationNameError.name;
+  }
+}
+
+export class MissingSchemaError extends Error {
+  constructor(message) {
+    super(message) /* istanbul ignore next */;
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+    this.name = MissingSchemaError.name;
+  }
+}
+
+export class UnknownScalarError extends Error {
+  constructor(message) {
+    super(message) /* istanbul ignore next */;
+    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
+    this.name = UnknownScalarError.name;
   }
 }
 
@@ -124,7 +142,7 @@ function getScalarType(
     scalarConfig[typeName] = r;
     return r;
   }
-  throw new Error('Unknown scalar: ' + typeName);
+  throw new UnknownScalarError('Unknown scalar: ' + typeName);
 }
 
 function fieldDefToOpenApiField(
@@ -134,7 +152,7 @@ function fieldDefToOpenApiField(
 ) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
-  const description = fieldDef.description;
+  const description = fieldDef.description || undefined;
   let nullable;
   let type = fieldDef.type;
   if (type instanceof GraphQLNonNull) {
@@ -232,7 +250,7 @@ function recurseInputType(
     return {
       type: 'object',
       nullable: true,
-      description: inputObjectType.description,
+      description: inputObjectType.description || undefined,
       properties,
     };
   }
@@ -289,7 +307,7 @@ function recurseInputType(
     const enumValues = obj.getValues();
     return {
       type: 'string',
-      description: obj.description,
+      description: obj.description || undefined,
       nullable: true,
       enum: enumValues.map(({ name }) => name),
     };
@@ -316,7 +334,8 @@ export class GraphQLToOpenAPIConverter {
   private schema: GraphQLSchema;
   private schemaError: GraphQLError;
   constructor(
-    private schemaString: string,
+    private schemaString?: string,
+    private introspectionSchema?: IntrospectionQuery,
     private onUnknownScalar?: (s: string) => object,
     private scalarConfig?: { [key: string]: object }
   ) {
@@ -328,10 +347,18 @@ export class GraphQLToOpenAPIConverter {
     if (!scalarConfig) {
       this.scalarConfig = {};
     }
-    try {
-      this.schema = buildSchema(this.schemaString);
-    } catch (err) {
-      this.schemaError = err;
+    if (schemaString) {
+      try {
+        this.schema = buildSchema(this.schemaString);
+      } catch (err) {
+        this.schemaError = err;
+      }
+    } else if (introspectionSchema) {
+      this.schema = buildClientSchema(this.introspectionSchema);
+    } else {
+      throw new MissingSchemaError(
+        'neither schema nor introspection schema supplied'
+      );
     }
   }
 
@@ -427,7 +454,7 @@ export class GraphQLToOpenAPIConverter {
               type: t.type,
               items: t.items,
               properties: t.properties,
-              description: t.description,
+              description: t.description || undefined,
             });
           } else {
             operationDef.get.parameters.push({
@@ -435,7 +462,7 @@ export class GraphQLToOpenAPIConverter {
               in: 'query',
               required: !t.nullable,
               type: t.type,
-              description: t.description,
+              description: t.description || undefined,
             });
           }
         },
