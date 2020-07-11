@@ -102,460 +102,7 @@
     "subscriptionType": null,
     "types": [
       {
-        "description": "Represents a Pokémon's attack types",
-        "enumValues": null,
-        "fields": [
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The name of this Pokémon attack",
-            "isDeprecated": false,
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The type of this Pokémon attack",
-            "isDeprecated": false,
-            "name": "type",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The damage of this Pokémon attack",
-            "isDeprecated": false,
-            "name": "damage",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            }
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-        ],
-        "kind": "OBJECT",
-        "name": "Attack",
-        "possibleTypes": null
-      },
-      {
-        "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
-        "enumValues": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "kind": "SCALAR",
-        "name": "String",
-        "possibleTypes": null
-      },
-      {
-        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
-        "enumValues": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "kind": "SCALAR",
-        "name": "Int",
-        "possibleTypes": null
-      },
-      {
-        "description": "Represents a Pokémon",
-        "enumValues": null,
-        "fields": [
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The ID of an object",
-            "isDeprecated": false,
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The identifier of this Pokémon",
-            "isDeprecated": false,
-            "name": "number",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The name of this Pokémon",
-            "isDeprecated": false,
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The minimum and maximum weight of this Pokémon",
-            "isDeprecated": false,
-            "name": "weight",
-            "type": {
-              "kind": "OBJECT",
-              "name": "PokemonDimension",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The minimum and maximum weight of this Pokémon",
-            "isDeprecated": false,
-            "name": "height",
-            "type": {
-              "kind": "OBJECT",
-              "name": "PokemonDimension",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The classification of this Pokémon",
-            "isDeprecated": false,
-            "name": "classification",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The type(s) of this Pokémon",
-            "isDeprecated": false,
-            "name": "types",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The type(s) of Pokémons that this Pokémon is resistant to",
-            "isDeprecated": false,
-            "name": "resistant",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The attacks of this Pokémon",
-            "isDeprecated": false,
-            "name": "attacks",
-            "type": {
-              "kind": "OBJECT",
-              "name": "PokemonAttack",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The type(s) of Pokémons that this Pokémon weak to",
-            "isDeprecated": false,
-            "name": "weaknesses",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
-            "name": "fleeRate",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The maximum CP of this Pokémon",
-            "isDeprecated": false,
-            "name": "maxCP",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The evolutions of this Pokémon",
-            "isDeprecated": false,
-            "name": "evolutions",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Pokemon",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The evolution requirements of this Pokémon",
-            "isDeprecated": false,
-            "name": "evolutionRequirements",
-            "type": {
-              "kind": "OBJECT",
-              "name": "PokemonEvolutionRequirement",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The maximum HP of this Pokémon",
-            "isDeprecated": false,
-            "name": "maxHP",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
-            "name": "image",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-        ],
-        "kind": "OBJECT",
-        "name": "Pokemon",
-        "possibleTypes": null
-      },
-      {
-        "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
-        "enumValues": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "kind": "SCALAR",
-        "name": "ID",
-        "possibleTypes": null
-      },
-      {
-        "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
-        "enumValues": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "kind": "SCALAR",
-        "name": "Float",
-        "possibleTypes": null
-      },
-      {
-        "description": "Represents a Pokémon's attack types",
-        "enumValues": null,
-        "fields": [
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The fast attacks of this Pokémon",
-            "isDeprecated": false,
-            "name": "fast",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Attack",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The special attacks of this Pokémon",
-            "isDeprecated": false,
-            "name": "special",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Attack",
-                "ofType": null
-              }
-            }
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-        ],
-        "kind": "OBJECT",
-        "name": "PokemonAttack",
-        "possibleTypes": null
-      },
-      {
-        "description": "Represents a Pokémon's dimensions",
-        "enumValues": null,
-        "fields": [
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The minimum value of this dimension",
-            "isDeprecated": false,
-            "name": "minimum",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The maximum value of this dimension",
-            "isDeprecated": false,
-            "name": "maximum",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-        ],
-        "kind": "OBJECT",
-        "name": "PokemonDimension",
-        "possibleTypes": null
-      },
-      {
-        "description": "Represents a Pokémon's requirement to evolve",
-        "enumValues": null,
-        "fields": [
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The amount of candy to evolve",
-            "isDeprecated": false,
-            "name": "amount",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            }
-          },
-          {
-            "args": [
-            ],
-            "deprecationReason": null,
-            "description": "The name of the candy to evolve",
-            "isDeprecated": false,
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            }
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-        ],
-        "kind": "OBJECT",
-        "name": "PokemonEvolutionRequirement",
-        "possibleTypes": null
-      },
-      {
-        "description": "Query any Pokémon by number or name",
+        "description": null,
         "enumValues": null,
         "fields": [
           {
@@ -576,63 +123,52 @@
               {
                 "defaultValue": null,
                 "description": null,
-                "name": "first",
+                "name": "input",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
+                    "kind": "INPUT_OBJECT",
+                    "name": "ComplexInput",
+                    "ofType": null
+                  }
+                }
+              },
+              {
+                "defaultValue": null,
+                "description": null,
+                "name": "otherInput",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ComplexerInput",
                     "ofType": null
                   }
                 }
               }
             ],
             "deprecationReason": null,
-            "description": null,
+            "description": "A results set",
             "isDeprecated": false,
-            "name": "pokemons",
+            "name": "resultsSet",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Pokemon",
-                "ofType": null
-              }
-            }
-          },
-          {
-            "args": [
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "id",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              {
-                "defaultValue": null,
-                "description": null,
-                "name": "name",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
                 }
               }
-            ],
-            "deprecationReason": null,
-            "description": null,
-            "isDeprecated": false,
-            "name": "pokemon",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Pokemon",
-              "ofType": null
             }
           }
         ],
@@ -644,6 +180,168 @@
         "possibleTypes": null
       },
       {
+        "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+        "enumValues": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "SCALAR",
+        "name": "String",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": [
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "SomeEnumValue1"
+          },
+          {
+            "deprecationReason": null,
+            "description": null,
+            "isDeprecated": false,
+            "name": "SomeEnumValue2"
+          }
+        ],
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "ENUM",
+        "name": "AnEnum",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "defaultValue": null,
+            "description": "An array of strings",
+            "name": "strings",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "An array of floats",
+            "name": "floats",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Float",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "An array of integers",
+            "name": "integers",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "An array of ObjectInput",
+            "name": "objects",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "ObjectInput",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "An array of booleans",
+            "name": "booleans",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "interfaces": null,
+        "kind": "INPUT_OBJECT",
+        "name": "ComplexInput",
+        "possibleTypes": null
+      },
+      {
+        "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).",
+        "enumValues": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "SCALAR",
+        "name": "Float",
+        "possibleTypes": null
+      },
+      {
+        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "enumValues": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "SCALAR",
+        "name": "Int",
+        "possibleTypes": null
+      },
+      {
         "description": "The `Boolean` scalar type represents `true` or `false`.",
         "enumValues": null,
         "fields": null,
@@ -651,6 +349,194 @@
         "interfaces": null,
         "kind": "SCALAR",
         "name": "Boolean",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "defaultValue": null,
+            "description": "An array of strings",
+            "name": "strings",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "An array of floats",
+            "name": "floats",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Float",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "An array of integers",
+            "name": "integers",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "An array of booleans",
+            "name": "booleans",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "interfaces": null,
+        "kind": "INPUT_OBJECT",
+        "name": "ObjectInput",
+        "possibleTypes": null
+      },
+      {
+        "description": null,
+        "enumValues": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "defaultValue": null,
+            "description": "objects1 of the complexer input object",
+            "name": "objects1",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ObjectInput",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "objects2 of the complexer input object",
+            "name": "objects2",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "ObjectInput",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "enums of the complexer input object",
+            "name": "enums",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "AnEnum",
+                    "ofType": null
+                  }
+                }
+              }
+            }
+          },
+          {
+            "defaultValue": null,
+            "description": "someId of the complexer input object",
+            "name": "someId",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            }
+          }
+        ],
+        "interfaces": null,
+        "kind": "INPUT_OBJECT",
+        "name": "ComplexerInput",
+        "possibleTypes": null
+      },
+      {
+        "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+        "enumValues": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "kind": "SCALAR",
+        "name": "ID",
         "possibleTypes": null
       },
       {
