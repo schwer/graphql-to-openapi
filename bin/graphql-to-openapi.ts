@@ -3,8 +3,15 @@
 import { program } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { graphqlToOpenApi } from '../index';
+import { IntrospectionQuery } from 'graphql';
 
-const { schema, query, scalarConfigFile, pretty } = program
+const {
+  schema,
+  introspectionSchemaJson,
+  query,
+  scalarConfigFile,
+  pretty,
+} = program
   .description(
     [
       'Converts a graphql schema and query into',
@@ -14,7 +21,11 @@ const { schema, query, scalarConfigFile, pretty } = program
       'graphql query supplied.',
     ].join('\n')
   )
-  .requiredOption('--schema <schema>', 'A graphql schema file')
+  .option('--schema <schema>', 'A graphql schema file')
+  .option(
+    '--introspection-schema-json <introspectionSchemaJson>',
+    'A graphql introspection query output (json) file'
+  )
   .requiredOption('--query <query>', 'A graphql query file')
   .option(
     '--scalarConfigFile <scalarConfigFile>',
@@ -24,7 +35,15 @@ const { schema, query, scalarConfigFile, pretty } = program
   .parse(process.argv)
   .opts();
 
-const schemaString = readFileSync(schema).toString();
+let schemaString;
+let introspectionSchema;
+if (schema) {
+  schemaString = readFileSync(schema).toString();
+} else if (introspectionSchemaJson) {
+  introspectionSchema = JSON.parse(
+    readFileSync(introspectionSchemaJson).toString()
+  ) as IntrospectionQuery;
+}
 const inputQuery = readFileSync(query).toString();
 let scalarConfig;
 if (scalarConfigFile) {
@@ -36,6 +55,7 @@ let needsScalarConfigFile = false;
 
 const { error, schemaError, queryErrors, openApiSchema } = graphqlToOpenApi({
   schemaString,
+  introspectionSchema,
   inputQuery,
   scalarConfig,
   onUnknownScalar(unknownScalar) {
