@@ -354,7 +354,11 @@ export class GraphQLToOpenAPIConverter {
         this.schemaError = err;
       }
     } else if (introspectionSchema) {
-      this.schema = buildClientSchema(this.introspectionSchema);
+      try {
+        this.schema = buildClientSchema(this.introspectionSchema);
+      } catch (err) {
+        this.schemaError = err;
+      }
     } else {
       throw new MissingSchemaError(
         'neither schema nor introspection schema supplied'
