@@ -21,4 +21,4 @@ const introspectionSchema = graphqlSync(
   schema,
   getIntrospectionQuery({ descriptions: true })
 ).data;
-writeFileSync(outputFilename, stringify(introspectionSchema, null, 2));
+writeFileSync(outputFilename, stringify(introspectionSchema, { space: '  ' }));
