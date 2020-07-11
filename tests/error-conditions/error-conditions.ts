@@ -56,13 +56,12 @@ describe('error-conditions', function () {
         }
       }`;
     const output = graphqlToOpenApi({
-      introspectionSchema: introspectionSchema as unknown as IntrospectionQuery,
+      introspectionSchema: (introspectionSchema as unknown) as IntrospectionQuery,
       inputQuery,
     });
     assert.ok(output.schemaError);
     assert.equal(output.schemaError.name, 'Error');
   });
-
 
   it('should fail on a unnamed, valid input query', function () {
     const schemaString = readFileSync(
