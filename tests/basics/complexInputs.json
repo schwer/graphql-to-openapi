@@ -1,7 +1,15 @@
 {
-  "consumes": [
-    "application/json"
-  ],
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Not specified",
+    "license": {
+      "name": "Not specified"
+    },
+    "version": "Not specified"
+  },
+  "servers": [{
+    "url": "/"
+  }],
   "paths": {
     "/complexInputsQuery": {
       "get": {
@@ -9,246 +17,243 @@
           {
             "in": "query",
             "name": "input",
-            "properties": {
-              "booleans": {
-                "description": "An array of booleans",
-                "items": {
-                  "nullable": false,
-                  "type": "boolean"
-                },
-                "nullable": false,
-                "type": "array"
-              },
-              "floats": {
-                "description": "An array of floats",
-                "items": {
-                  "nullable": false,
-                  "type": "number"
-                },
-                "nullable": false,
-                "type": "array"
-              },
-              "integers": {
-                "description": "An array of integers",
-                "items": {
-                  "nullable": false,
-                  "type": "integer"
-                },
-                "nullable": false,
-                "type": "array"
-              },
-              "objects": {
-                "description": "An array of ObjectInput",
-                "items": {
-                  "nullable": true,
-                  "properties": {
-                    "booleans": {
-                      "description": "An array of booleans",
-                      "items": {
-                        "nullable": false,
-                        "type": "boolean"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "floats": {
-                      "description": "An array of floats",
-                      "items": {
-                        "nullable": false,
-                        "type": "number"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "integers": {
-                      "description": "An array of integers",
-                      "items": {
-                        "nullable": false,
-                        "type": "integer"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "strings": {
-                      "description": "An array of strings",
-                      "items": {
-                        "nullable": false,
-                        "type": "string"
-                      },
-                      "nullable": true,
-                      "type": "array"
-                    }
-                  },
-                  "type": "object"
-                },
-                "nullable": true,
-                "type": "array"
-              },
-              "strings": {
-                "description": "An array of strings",
-                "items": {
-                  "nullable": false,
-                  "type": "string"
-                },
-                "nullable": true,
-                "type": "array"
-              }
-            },
             "required": true,
-            "type": "object"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "booleans": {
+                  "description": "An array of booleans",
+                  "items": {
+                    "nullable": false,
+                    "type": "boolean"
+                  },
+                  "nullable": false,
+                  "type": "array"
+                },
+                "floats": {
+                  "description": "An array of floats",
+                  "items": {
+                    "nullable": false,
+                    "type": "number"
+                  },
+                  "nullable": false,
+                  "type": "array"
+                },
+                "integers": {
+                  "description": "An array of integers",
+                  "items": {
+                    "nullable": false,
+                    "type": "integer"
+                  },
+                  "nullable": false,
+                  "type": "array"
+                },
+                "objects": {
+                  "description": "An array of ObjectInput",
+                  "items": {
+                    "nullable": true,
+                    "properties": {
+                      "booleans": {
+                        "description": "An array of booleans",
+                        "items": {
+                          "nullable": false,
+                          "type": "boolean"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "floats": {
+                        "description": "An array of floats",
+                        "items": {
+                          "nullable": false,
+                          "type": "number"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "integers": {
+                        "description": "An array of integers",
+                        "items": {
+                          "nullable": false,
+                          "type": "integer"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "strings": {
+                        "description": "An array of strings",
+                        "items": {
+                          "nullable": false,
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "nullable": true,
+                  "type": "array"
+                },
+                "strings": {
+                  "description": "An array of strings",
+                  "items": {
+                    "nullable": false,
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "type": "array"
+                }
+              }
+            }
           },
           {
             "in": "query",
             "name": "otherInput",
-            "properties": {
-              "enums": {
-                "description": "enums of the complexer input object",
-                "items": {
-                  "enum": [
-                    "SomeEnumValue1",
-                    "SomeEnumValue2"
-                  ],
-                  "nullable": false,
-                  "type": "string"
-                },
-                "nullable": false,
-                "type": "array"
-              },
-              "objects1": {
-                "description": "objects1 of the complexer input object",
-                "items": {
-                  "nullable": false,
-                  "properties": {
-                    "booleans": {
-                      "description": "An array of booleans",
-                      "items": {
-                        "nullable": false,
-                        "type": "boolean"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "floats": {
-                      "description": "An array of floats",
-                      "items": {
-                        "nullable": false,
-                        "type": "number"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "integers": {
-                      "description": "An array of integers",
-                      "items": {
-                        "nullable": false,
-                        "type": "integer"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "strings": {
-                      "description": "An array of strings",
-                      "items": {
-                        "nullable": false,
-                        "type": "string"
-                      },
-                      "nullable": true,
-                      "type": "array"
-                    }
-                  },
-                  "type": "object"
-                },
-                "nullable": false,
-                "type": "array"
-              },
-              "objects2": {
-                "description": "objects2 of the complexer input object",
-                "items": {
-                  "nullable": true,
-                  "properties": {
-                    "booleans": {
-                      "description": "An array of booleans",
-                      "items": {
-                        "nullable": false,
-                        "type": "boolean"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "floats": {
-                      "description": "An array of floats",
-                      "items": {
-                        "nullable": false,
-                        "type": "number"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "integers": {
-                      "description": "An array of integers",
-                      "items": {
-                        "nullable": false,
-                        "type": "integer"
-                      },
-                      "nullable": false,
-                      "type": "array"
-                    },
-                    "strings": {
-                      "description": "An array of strings",
-                      "items": {
-                        "nullable": false,
-                        "type": "string"
-                      },
-                      "nullable": true,
-                      "type": "array"
-                    }
-                  },
-                  "type": "object"
-                },
-                "nullable": true,
-                "type": "array"
-              },
-              "someId": {
-                "description": "someId of the complexer input object",
-                "nullable": false,
-                "type": "string"
-              }
-            },
             "required": true,
-            "type": "object"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "response",
             "schema": {
+              "type": "object",
               "properties": {
-                "resultsSet": {
-                  "description": "A results set",
+                "enums": {
+                  "description": "enums of the complexer input object",
                   "items": {
+                    "enum": [
+                      "SomeEnumValue1",
+                      "SomeEnumValue2"
+                    ],
                     "nullable": false,
                     "type": "string"
                   },
                   "nullable": false,
                   "type": "array"
+                },
+                "objects1": {
+                  "description": "objects1 of the complexer input object",
+                  "items": {
+                    "nullable": false,
+                    "properties": {
+                      "booleans": {
+                        "description": "An array of booleans",
+                        "items": {
+                          "nullable": false,
+                          "type": "boolean"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "floats": {
+                        "description": "An array of floats",
+                        "items": {
+                          "nullable": false,
+                          "type": "number"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "integers": {
+                        "description": "An array of integers",
+                        "items": {
+                          "nullable": false,
+                          "type": "integer"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "strings": {
+                        "description": "An array of strings",
+                        "items": {
+                          "nullable": false,
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "nullable": false,
+                  "type": "array"
+                },
+                "objects2": {
+                  "description": "objects2 of the complexer input object",
+                  "items": {
+                    "nullable": true,
+                    "properties": {
+                      "booleans": {
+                        "description": "An array of booleans",
+                        "items": {
+                          "nullable": false,
+                          "type": "boolean"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "floats": {
+                        "description": "An array of floats",
+                        "items": {
+                          "nullable": false,
+                          "type": "number"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "integers": {
+                        "description": "An array of integers",
+                        "items": {
+                          "nullable": false,
+                          "type": "integer"
+                        },
+                        "nullable": false,
+                        "type": "array"
+                      },
+                      "strings": {
+                        "description": "An array of strings",
+                        "items": {
+                          "nullable": false,
+                          "type": "string"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "nullable": true,
+                  "type": "array"
+                },
+                "someId": {
+                  "description": "someId of the complexer input object",
+                  "nullable": false,
+                  "type": "string"
                 }
-              },
-              "type": "object"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "resultsSet": {
+                      "description": "A results set",
+                      "items": {
+                        "nullable": false,
+                        "type": "string"
+                      },
+                      "nullable": false,
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
             }
           }
         }
       }
     }
-  },
-  "produces": [
-    "application/json"
-  ],
-  "schemes": [
-    "http",
-    "https"
-  ],
-  "swagger": "2.0"
+  }
 }
