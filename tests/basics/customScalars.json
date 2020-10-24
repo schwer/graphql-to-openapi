@@ -1,5 +1,12 @@
 {
-  "consumes": ["application/json"],
+  "info": {
+    "license": {
+      "name": "Not specified"
+    },
+    "title": "Not specified",
+    "version": "Not specified"
+  },
+  "openapi": "3.0.3",
   "paths": {
     "/customScalarsQuery": {
       "get": {
@@ -8,50 +15,57 @@
             "in": "query",
             "name": "c",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
-        "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "response",
-            "schema": {
-              "properties": {
-                "arrayOfCustomScalars": {
-                  "items": {
-                    "nullable": false,
-                    "type": "string"
-                  },
-                  "nullable": false,
-                  "type": "array"
-                },
-                "someObject": {
-                  "nullable": true,
+            "content": {
+              "application/json": {
+                "schema": {
                   "properties": {
+                    "arrayOfCustomScalars": {
+                      "items": {
+                        "nullable": false,
+                        "type": "string"
+                      },
+                      "nullable": false,
+                      "type": "array"
+                    },
                     "customScalar": {
                       "nullable": true,
                       "type": "string"
                     },
-                    "integer": {
+                    "someObject": {
                       "nullable": true,
-                      "type": "integer"
+                      "properties": {
+                        "customScalar": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "integer": {
+                          "nullable": true,
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
                     }
                   },
                   "type": "object"
-                },
-                "customScalar": {
-                  "nullable": true,
-                  "type": "string"
                 }
-              },
-              "type": "object"
-            }
+              }
+            },
+            "description": "response"
           }
         }
       }
     }
   },
-  "produces": ["application/json"],
-  "schemes": ["http", "https"],
-  "swagger": "2.0"
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }

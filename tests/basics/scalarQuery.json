@@ -1,5 +1,12 @@
 {
-  "consumes": ["application/json"],
+  "info": {
+    "license": {
+      "name": "Not specified"
+    },
+    "title": "Not specified",
+    "version": "Not specified"
+  },
+  "openapi": "3.0.3",
   "paths": {
     "/scalarQuery": {
       "get": {
@@ -8,39 +15,48 @@
             "in": "query",
             "name": "input",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "in": "query",
             "name": "otherInput",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
-        "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "response",
-            "schema": {
-              "properties": {
-                "arrayOfStrings": {
-                  "description": "An array of strings",
-                  "items": {
-                    "nullable": false,
-                    "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "arrayOfStrings": {
+                      "description": "An array of strings",
+                      "items": {
+                        "nullable": false,
+                        "type": "string"
+                      },
+                      "nullable": false,
+                      "type": "array"
+                    }
                   },
-                  "nullable": false,
-                  "type": "array"
+                  "type": "object"
                 }
-              },
-              "type": "object"
-            }
+              }
+            },
+            "description": "response"
           }
         }
       }
     }
   },
-  "produces": ["application/json"],
-  "schemes": ["http", "https"],
-  "swagger": "2.0"
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }

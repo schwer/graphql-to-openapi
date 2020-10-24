@@ -387,10 +387,19 @@ export class GraphQLToOpenAPIConverter {
       };
     }
     let openApiSchema = {
-      swagger: '2.0',
-      schemes: ['http', 'https'],
-      consumes: ['application/json'],
-      produces: ['application/json'],
+      openapi: '3.0.3',
+      info: {
+        title: 'Not specified',
+        license: {
+          name: 'Not specified',
+        },
+        version: 'Not specified',
+      },
+      servers: [
+        {
+          url: '/',
+        },
+      ],
       paths: {},
     };
 
@@ -428,10 +437,13 @@ export class GraphQLToOpenAPIConverter {
                 responses: {
                   '200': {
                     description: 'response',
-                    schema: openApiType,
+                    content: {
+                      'application/json': {
+                        schema: openApiType,
+                      },
+                    },
                   },
                 },
-                produces: ['application/json'],
               },
             };
             currentSelection.unshift({
@@ -455,9 +467,11 @@ export class GraphQLToOpenAPIConverter {
               name: variable.name.value,
               in: 'query',
               required: !t.nullable,
-              type: t.type,
-              items: t.items,
-              properties: t.properties,
+              schema: {
+                type: t.type,
+                items: t.items,
+                properties: t.properties,
+              },
               description: t.description || undefined,
             });
           } else {
@@ -465,7 +479,9 @@ export class GraphQLToOpenAPIConverter {
               name: variable.name.value,
               in: 'query',
               required: !t.nullable,
-              type: t.type,
+              schema: {
+                type: t.type,
+              },
               description: t.description || undefined,
             });
           }
