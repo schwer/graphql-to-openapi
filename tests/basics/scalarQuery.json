@@ -1,16 +1,12 @@
 {
-  "openapi": "3.0.3",
   "info": {
-    "title": "Not specified",
     "license": {
       "name": "Not specified"
     },
+    "title": "Not specified",
     "version": "Not specified"
   },
-  "servers": [{
-    "url": "/"
-  }],
-
+  "openapi": "3.0.3",
   "paths": {
     "/scalarQuery": {
       "get": {
@@ -34,7 +30,6 @@
         ],
         "responses": {
           "200": {
-            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -52,10 +47,16 @@
                   "type": "object"
                 }
               }
-            }
+            },
+            "description": "response"
           }
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }

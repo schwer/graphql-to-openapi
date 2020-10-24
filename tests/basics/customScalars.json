@@ -1,15 +1,12 @@
 {
-  "openapi": "3.0.3",
   "info": {
-    "title": "Not specified",
     "license": {
       "name": "Not specified"
     },
+    "title": "Not specified",
     "version": "Not specified"
   },
-  "servers": [{
-    "url": "/"
-  }],
+  "openapi": "3.0.3",
   "paths": {
     "/customScalarsQuery": {
       "get": {
@@ -25,7 +22,6 @@
         ],
         "responses": {
           "200": {
-            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -37,6 +33,10 @@
                       },
                       "nullable": false,
                       "type": "array"
+                    },
+                    "customScalar": {
+                      "nullable": true,
+                      "type": "string"
                     },
                     "someObject": {
                       "nullable": true,
@@ -51,19 +51,21 @@
                         }
                       },
                       "type": "object"
-                    },
-                    "customScalar": {
-                      "nullable": true,
-                      "type": "string"
                     }
                   },
                   "type": "object"
                 }
               }
-            }
+            },
+            "description": "response"
           }
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }

@@ -1,15 +1,12 @@
 {
-  "openapi": "3.0.3",
   "info": {
-    "title": "Not specified",
     "license": {
       "name": "Not specified"
     },
+    "title": "Not specified",
     "version": "Not specified"
   },
-  "servers": [{
-    "url": "/"
-  }],
+  "openapi": "3.0.3",
   "paths": {
     "/complexInputsQuery": {
       "get": {
@@ -19,7 +16,6 @@
             "name": "input",
             "required": true,
             "schema": {
-              "type": "object",
               "properties": {
                 "booleans": {
                   "description": "An array of booleans",
@@ -104,7 +100,8 @@
                   "nullable": true,
                   "type": "array"
                 }
-              }
+              },
+              "type": "object"
             }
           },
           {
@@ -112,7 +109,6 @@
             "name": "otherInput",
             "required": true,
             "schema": {
-              "type": "object",
               "properties": {
                 "enums": {
                   "description": "enums of the complexer input object",
@@ -226,13 +222,13 @@
                   "nullable": false,
                   "type": "string"
                 }
-              }
+              },
+              "type": "object"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "response",
             "content": {
               "application/json": {
                 "schema": {
@@ -250,10 +246,16 @@
                   "type": "object"
                 }
               }
-            }
+            },
+            "description": "response"
           }
         }
       }
     }
-  }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
 }
