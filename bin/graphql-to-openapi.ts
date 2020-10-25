@@ -4,6 +4,7 @@ import { program } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { graphqlToOpenApi } from '../index';
 import { IntrospectionQuery } from 'graphql';
+import { stringify } from 'yaml';
 
 const {
   schema,
@@ -11,6 +12,7 @@ const {
   query,
   scalarConfigFile,
   pretty,
+  yaml,
 } = program
   .description(
     [
@@ -32,6 +34,7 @@ const {
     'A configuration file (json formatted)' + 'supporting custom scalars'
   )
   .option('--pretty', 'pretty json output', true)
+  .option('-y, --yaml', 'Output in yaml format', false)
   .parse(process.argv)
   .opts();
 
@@ -83,7 +86,13 @@ if (queryErrors?.length > 0) {
 if (schemaError) {
   throw schemaError;
 }
-if (pretty) {
+if (yaml) {
+  process.stdout.write(
+    stringify(JSON.parse(JSON.stringify(openApiSchema)), {
+      sortMapEntries: true,
+    })
+  );
+} else if (pretty) {
   process.stdout.write(JSON.stringify(openApiSchema, null, 2));
 } else {
   process.stdout.write(JSON.stringify(openApiSchema));

@@ -1,6 +1,6 @@
 {
   "name": "graphql-to-openapi",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A utility for converting the combination of an graphql schema and graphql query into an openapi specification.",
   "main": "dist/index.js",
   "bin": {
@@ -13,7 +13,8 @@
     "test": "jest --coverage --verbose",
     "test-cli-1": "ts-node bin/graphql-to-openapi --schema tests/basics/complexInputsSchema.graphql --query tests/basics/complexInputs.graphql > out.json && ts-node bin/stable-stringify-json --filename=out.json && diff out.json tests/basics/complexInputs.json && rm out.json",
     "test-cli-2": "ts-node bin/graphql-to-openapi --introspection-schema-json tests/basics/complexInputsSchema.json --query tests/basics/complexInputs.graphql > out.json && ts-node bin/stable-stringify-json --filename=out.json && diff out.json tests/basics/complexInputs.json && rm out.json",
-    "test-cli": "npm run test-cli-1 && npm run test-cli-2",
+    "test-cli-3": "ts-node bin/graphql-to-openapi --introspection-schema-json tests/basics/complexInputsSchema.json --query tests/basics/complexInputs.graphql --yaml > out.yaml && diff out.yaml tests/basics/complexInputs.yaml && rm out.yaml",
+    "test-cli": "npm run test-cli-1 && npm run test-cli-2 && npm run test-cli-3",
     "test:watch": "npm run test -- --watchAll"
   },
   "repository": {
@@ -32,7 +33,8 @@
   "homepage": "https://github.com/schwer/graphql-to-openapi#readme",
   "dependencies": {
     "commander": "^5.1.0",
-    "graphql": "^15.3.0"
+    "graphql": "^15.3.0",
+    "yaml": "^1.10.0"
   },
   "devDependencies": {
     "@types/jest": "^25.1.2",
