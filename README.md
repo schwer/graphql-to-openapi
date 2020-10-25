@@ -15,7 +15,7 @@ Not to be confused with the obviously more useful
 ## Usage via CLI
 
 ```
-npx graphql-to-openapi --schema <schemaFilename> --query <queryFilename>
+npx graphql-to-openapi --yaml --schema <schemaFilename> --query <queryFilename>
 ```
 
 <img alt="GraphQL → OpenAPI" src="https://raw.github.com/schwer/graphql-to-openapi/master/static/usage.gif">
