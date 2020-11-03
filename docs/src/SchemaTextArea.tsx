@@ -12,8 +12,8 @@ export const SchemaTextArea: React.FC<{
         className={isValid ? 'form-control' : 'form-control is-invalid'}
         style={textAreaStyles}
         value={value}
-        onChange={({ target: { value } }) => {
-          onChange(value);
+        onChange={({ target: { value: v } }) => {
+          onChange(v);
         }}
       />
     </>

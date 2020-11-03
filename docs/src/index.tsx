@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GraphQLToOpenApiDocs from './GraphQLToOpenApiDocs';
+import { GraphQLToOpenApiDocs } from './GraphQLToOpenApiDocs';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 
