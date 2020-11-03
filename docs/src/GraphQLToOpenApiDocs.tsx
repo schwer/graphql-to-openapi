@@ -29,12 +29,12 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
 }`;
 
   const savedSchemaString = localStorage.getItem(
-    'graphql-to-openapi:schemaString',
+    'graphql-to-openapi:schemaString'
   );
   const savedInputQuery = localStorage.getItem('graphql-to-openapi:inputQuery');
 
   const [schemaString, setSchemaString] = useState(
-    savedSchemaString ?? defaultSchema,
+    savedSchemaString ?? defaultSchema
   );
   const [inputQuery, setInputQuery] = useState(savedInputQuery ?? defaultQuery);
   const [outputInYaml, setOutputInYaml] = useState(true);
@@ -54,7 +54,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
     const result = graphqlToOpenApi({
       schemaString,
       inputQuery,
-      onUnknownScalar(s) {
+      onUnknownScalar() {
         return { type: 'string' };
       },
     });
@@ -133,8 +133,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
                       style={{ width: '1em', height: '1em' }}
                     >
                       <span className="sr-only">Loading...</span>
-                    </span>
-                    {' '}
+                    </span>{' '}
                     Waiting for valid schema and query...
                   </span>
                 ) : (
