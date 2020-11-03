@@ -44,16 +44,16 @@ const { error, openApiSchema, queryErrors, schemaError } = graphqlToOpenApi({
 // specified query.
 ```
 
-## For Developers
+## For Developers contributing to this project
 
 ### To get started:
 
 1. Clone the github repo `git clone git@github.com/schwer/graphql-to-openapi`
 1. `npm install // install dependencies`
-1. `npm run test:watch // run jest test watch`
+1. `npm run test:watch`
 
 ### Updating the documentation:
 
-1. The docs subdirectory contains a `create-react-app`.
+1. The `docs` subdirectory contains a `create-react-app`.
 1. `cd docs && npm run start`
 
