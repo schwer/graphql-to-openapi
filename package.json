@@ -33,7 +33,7 @@
   "homepage": "https://github.com/schwer/graphql-to-openapi#readme",
   "dependencies": {
     "commander": "^5.1.0",
-    "graphql": "^15.3.0",
+    "graphql": "^15.4.0",
     "yaml": "^1.10.0"
   },
   "devDependencies": {
