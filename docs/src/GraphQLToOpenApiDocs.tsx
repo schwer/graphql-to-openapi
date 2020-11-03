@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import {
+  Button,
+  InputGroup,
+  Form,
+  ToggleButtonGroup,
+  ToggleButton,
+} from 'react-bootstrap';
 import { graphqlToOpenApi } from 'graphql-to-openapi';
 import Octicon, { Check } from '@primer/octicons-react';
 import { stringify } from 'yaml';
@@ -91,56 +97,65 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
             />
           </a>
         </header>
-        <div className="row">
-          <h5 className="col">Supply your GraphQL Schema below:</h5>
-          <h5 className="col">Supply your GraphQL Query below:</h5>
-        </div>
         <div style={{ height: 'calc(50vh - 100px)' }} className="row">
           <div className="col">
-            <SchemaTextArea
-              isValid={!schemaError}
-              onChange={setSchemaString}
-              value={schemaString}
-            />
+            <Form.Group style={{ height: '100%' }}>
+              <Form.Label>GraphQL Schema</Form.Label>
+              <SchemaTextArea
+                isValid={!schemaError}
+                onChange={setSchemaString}
+                value={schemaString}
+              />
+            </Form.Group>
           </div>
           <div className="col">
-            <QueryTextArea
-              isValid={!queryErrors}
-              onChange={setInputQuery}
-              value={inputQuery}
-            />
+            <Form.Group style={{ height: '100%' }}>
+              <Form.Label>GraphQL Query</Form.Label>
+              <QueryTextArea
+                isValid={!queryErrors}
+                onChange={setInputQuery}
+                value={inputQuery}
+              />
+            </Form.Group>
           </div>
         </div>
         <p>&nbsp;</p>
-        <div className="row" style={{ height: 'calc(50vh - 100px)' }}>
+        <div className="row" style={{ height: 'calc(50vh - 50px)' }}>
           <div className="col">
-            <h5>
-              OpenAPI Schema:
-              <ToggleButtonGroup
-                name="outputType"
-                type="radio"
-                value={outputInYaml}
-                onChange={setOutputInYaml}
-              >
-                <ToggleButton value>YAML</ToggleButton>
-                <ToggleButton value={false}>JSON</ToggleButton>
-              </ToggleButtonGroup>
-              <span className="float-right">
-                {!success ? (
-                  <span className="float-right">
-                    <span
-                      className="spinner-grow"
-                      style={{ width: '1em', height: '1em' }}
-                    >
-                      <span className="sr-only">Loading...</span>
-                    </span>{' '}
-                    Waiting for valid schema and query...
-                  </span>
-                ) : (
+            <div className="row" style={{ marginBottom: 5 }}>
+              <InputGroup size="sm" className="col">
+                <InputGroup.Prepend>
+                  <Button disabled variant="link">
+                    OpenAPI Schema
+                  </Button>
+                </InputGroup.Prepend>
+                <ToggleButtonGroup
+                  name="outputType"
+                  type="radio"
+                  size="sm"
+                  value={outputInYaml}
+                  onChange={setOutputInYaml}
+                >
+                  <ToggleButton value>YAML</ToggleButton>
+                  <ToggleButton value={false}>JSON</ToggleButton>
+                </ToggleButtonGroup>
+              </InputGroup>
+              {!success ? (
+                <span className="col" style={{ textAlign: 'right' }}>
+                  <span
+                    className="spinner-grow"
+                    style={{ width: '1em', height: '1em' }}
+                  >
+                    <span className="sr-only">Loading...</span>
+                  </span>{' '}
+                  Waiting for valid schema and query...
+                </span>
+              ) : (
+                <span className="col" style={{ textAlign: 'right' }}>
                   <Octicon icon={Check} />
-                )}
-              </span>
-            </h5>
+                </span>
+              )}
+            </div>
             {openApiSchema ? (
               <textarea
                 className="form-control"
