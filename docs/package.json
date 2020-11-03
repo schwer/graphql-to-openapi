@@ -47,6 +47,16 @@
     ]
   },
   "homepage": "https://schwer.github.io/graphql-to-openapi",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "4.6.1",
     "@typescript-eslint/parser": "4.6.1",
