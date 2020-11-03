@@ -488,6 +488,12 @@ export class GraphQLToOpenAPIConverter {
         },
         Field: {
           enter(node) {
+            let name;
+            if (node.alias) {
+              name = node.alias.value;
+            } else {
+              name = node.name.value;
+            }
             const openApiType = fieldDefToOpenApiField(
               typeInfo,
               scalarConfig,
@@ -495,10 +501,10 @@ export class GraphQLToOpenAPIConverter {
             );
             const parentObj = currentSelection[0].openApiType;
             if (parentObj.type === 'object') {
-              parentObj.properties[node.name.value] = openApiType;
+              parentObj.properties[name] = openApiType;
             } else {
               // array
-              parentObj.items.properties[node.name.value] = openApiType;
+              parentObj.items.properties[name] = openApiType;
             }
             if (
               openApiType.type === 'array' &&
