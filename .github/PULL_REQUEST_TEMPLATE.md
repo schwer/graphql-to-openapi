@@ -6,6 +6,7 @@
   <!-- If you'd like to suggest a significant change to request,
        please create an issue to discuss those changes and gather
        feedback BEFORE submitting your PR. -->
+- [ ] If this is a version update, have you updated the CHANGELOG.md?
 
 ## PR Description
 <!-- Describe Your PR Here! -->
