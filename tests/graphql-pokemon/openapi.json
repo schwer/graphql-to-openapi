@@ -135,7 +135,7 @@
                           "nullable": true,
                           "type": "array"
                         },
-                        "id": {
+                        "pokemonId": {
                           "description": "The ID of an object",
                           "nullable": false,
                           "type": "string"

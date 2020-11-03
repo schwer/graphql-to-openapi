@@ -1,0 +1,3 @@
+query aliasedQuery($input: String!, $otherInput: String!) {
+  aliasedArrayOfStrings: arrayOfStrings(input: $input, otherInput: $otherInput)
+}
