@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import logo from './logo.svg';
 import { SchemaTextArea } from './SchemaTextArea';
 import { QueryTextArea } from './QueryTextArea';
@@ -6,6 +7,7 @@ import { graphqlToOpenApi } from 'graphql-to-openapi';
 import Octicon, { Check } from '@primer/octicons-react';
 import './GraphQLToOpenApiDocs.scss';
 import { textAreaStyles } from './textAreaStyles';
+import { stringify } from 'yaml';
 
 export const GraphQLToOpenApiDocs: React.FC = () => {
   const defaultSchema = `type Query {
@@ -35,6 +37,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
     savedSchemaString ?? defaultSchema
   );
   const [inputQuery, setInputQuery] = useState(savedInputQuery ?? defaultQuery);
+  const [outputInYaml, setOutputInYaml] = useState(true);
 
   useEffect(() => {
     localStorage.setItem('graphql-to-openapi:schemaString', schemaString);
@@ -44,14 +47,30 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
     localStorage.setItem('graphql-to-openapi:inputQuery', inputQuery);
   }, [inputQuery]);
 
-  const { openApiSchema, schemaError, queryErrors } = graphqlToOpenApi({
-    schemaString,
-    inputQuery,
-    onUnknownScalar(s) {
-      return { type: 'string' };
-    },
-  });
+  let openApiSchema;
+  let schemaError;
+  let queryErrors;
+  try {
+    const result = graphqlToOpenApi({
+      schemaString,
+      inputQuery,
+      onUnknownScalar(s) {
+        return { type: 'string' };
+      },
+    });
+    openApiSchema = result.openApiSchema;
+    schemaError = result.schemaError;
+    queryErrors = result.queryErrors;
+  } catch (err) {
+    schemaError = err;
+  }
   const success = !schemaError && !queryErrors;
+  let value = '';
+  if (openApiSchema && outputInYaml) {
+    value = stringify(JSON.parse(JSON.stringify(openApiSchema)));
+  } else if (openApiSchema) {
+    value = JSON.stringify(openApiSchema, null, 2);
+  }
   return (
     <div className="GraphQLToOpenApiDocs">
       <div className="container-fluid">
@@ -97,6 +116,15 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
           <div className="col">
             <h5>
               OpenAPI Schema:
+              <ToggleButtonGroup
+                name="outputType"
+                type="radio"
+                value={outputInYaml}
+                onChange={setOutputInYaml}
+              >
+                <ToggleButton value={true}>YAML</ToggleButton>
+                <ToggleButton value={false}>JSON</ToggleButton>
+              </ToggleButtonGroup>
               <span className="float-right">
                 {!success ? (
                   <span className="float-right">
@@ -118,7 +146,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
                 className="form-control"
                 readOnly
                 style={textAreaStyles}
-                value={JSON.stringify(openApiSchema, null, 2)}
+                value={value}
               />
             ) : (
               <textarea
