@@ -12,8 +12,8 @@ export const QueryTextArea: React.FC<{
         value={value}
         className={isValid ? 'form-control' : 'form-control is-invalid'}
         style={textAreaStyles}
-        onChange={({ target: { value } }) => {
-          onChange(value);
+        onChange={({ target: { value: v } }) => {
+          onChange(v);
         }}
       />
     </>

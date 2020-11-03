@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { graphqlToOpenApi } from 'graphql-to-openapi';
+import Octicon, { Check } from '@primer/octicons-react';
+import { stringify } from 'yaml';
 import logo from './logo.svg';
 import { SchemaTextArea } from './SchemaTextArea';
 import { QueryTextArea } from './QueryTextArea';
-import { graphqlToOpenApi } from 'graphql-to-openapi';
-import Octicon, { Check } from '@primer/octicons-react';
 import './GraphQLToOpenApiDocs.scss';
 import { textAreaStyles } from './textAreaStyles';
-import { stringify } from 'yaml';
 
 export const GraphQLToOpenApiDocs: React.FC = () => {
   const defaultSchema = `type Query {
@@ -29,12 +29,12 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
 }`;
 
   const savedSchemaString = localStorage.getItem(
-    'graphql-to-openapi:schemaString'
+    'graphql-to-openapi:schemaString',
   );
   const savedInputQuery = localStorage.getItem('graphql-to-openapi:inputQuery');
 
   const [schemaString, setSchemaString] = useState(
-    savedSchemaString ?? defaultSchema
+    savedSchemaString ?? defaultSchema,
   );
   const [inputQuery, setInputQuery] = useState(savedInputQuery ?? defaultQuery);
   const [outputInYaml, setOutputInYaml] = useState(true);
@@ -95,7 +95,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
           <h5 className="col">Supply your GraphQL Schema below:</h5>
           <h5 className="col">Supply your GraphQL Query below:</h5>
         </div>
-        <div style={{ height: `calc(50vh - 100px)` }} className="row">
+        <div style={{ height: 'calc(50vh - 100px)' }} className="row">
           <div className="col">
             <SchemaTextArea
               isValid={!schemaError}
@@ -112,7 +112,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
           </div>
         </div>
         <p>&nbsp;</p>
-        <div className="row" style={{ height: `calc(50vh - 100px)` }}>
+        <div className="row" style={{ height: 'calc(50vh - 100px)' }}>
           <div className="col">
             <h5>
               OpenAPI Schema:
@@ -122,7 +122,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
                 value={outputInYaml}
                 onChange={setOutputInYaml}
               >
-                <ToggleButton value={true}>YAML</ToggleButton>
+                <ToggleButton value>YAML</ToggleButton>
                 <ToggleButton value={false}>JSON</ToggleButton>
               </ToggleButtonGroup>
               <span className="float-right">
@@ -133,7 +133,8 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
                       style={{ width: '1em', height: '1em' }}
                     >
                       <span className="sr-only">Loading...</span>
-                    </span>{' '}
+                    </span>
+                    {' '}
                     Waiting for valid schema and query...
                   </span>
                 ) : (

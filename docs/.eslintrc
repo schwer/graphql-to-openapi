@@ -1,0 +1,30 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": [
+    "airbnb-typescript",
+    "react-app",
+    "prettier"
+  ],
+  "env": {
+    "commonjs": true,
+    "es6": true,
+    "browser": true
+  },
+  "rules": {
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off"
+  }
+}
