@@ -1,0 +1,72 @@
+{
+  "info": {
+    "license": {
+      "name": "Not specified"
+    },
+    "title": "Not specified",
+    "version": "Not specified"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/queryInvolvingUnionTypes": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "input",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "someUnionType": {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "str": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            }
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "other": {
+                                "type": "integer",
+                                "nullable": true
+                              }
+                            }
+                          }
+                        ],
+                        "nullable": false
+                      },
+                      "nullable": false,
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "response"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}

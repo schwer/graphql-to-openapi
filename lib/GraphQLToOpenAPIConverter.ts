@@ -14,7 +14,11 @@ import {
   buildClientSchema,
   buildSchema,
 } from 'graphql';
-import { GraphQLList, GraphQLObjectType } from 'graphql/type/definition';
+import {
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLUnionType,
+} from 'graphql/type/definition';
 
 export class NoOperationNameError extends Error {
   constructor(message) {
@@ -188,6 +192,12 @@ function fieldDefToOpenApiField(
       openApiType.items = {
         type: 'object',
         properties: {},
+      };
+    }
+    if (itemType instanceof GraphQLUnionType) {
+      openApiType.items = {
+        anyOf: [],
+        nullable: nullableItems,
       };
     }
     if (itemType instanceof GraphQLScalarType) {
@@ -514,12 +524,38 @@ export class GraphQLToOpenAPIConverter {
                 node,
                 openApiType,
               });
+            } else if (
+              openApiType.type === 'array' &&
+              openApiType.items.anyOf
+            ) {
+              currentSelection.unshift({
+                node,
+                openApiType,
+              });
             } else if (openApiType.type === 'object') {
               currentSelection.unshift({
                 node,
                 openApiType,
               });
             }
+          },
+          leave(node) {
+            // raw reference comparison doesn't work here. Using
+            // loc as a proxy instead.
+            if (currentSelection[0].node.loc === node.loc) {
+              const result = currentSelection.shift().openApiType;
+              return result;
+            }
+          },
+        },
+        InlineFragment: {
+          enter(node) {
+            const openApiType = { type: 'object', properties: {} };
+            currentSelection[0].openApiType.items.anyOf.push(openApiType);
+            currentSelection.unshift({
+              node,
+              openApiType,
+            });
           },
           leave(node) {
             // raw reference comparison doesn't work here. Using

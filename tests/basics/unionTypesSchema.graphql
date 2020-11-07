@@ -1,0 +1,17 @@
+type Query {
+  query: Query
+
+  someUnionType(
+    input: String!
+  ): [U!]!
+}
+
+type X {
+  str: String
+}
+
+type Y {
+  other: Int
+}
+
+union U = X | Y

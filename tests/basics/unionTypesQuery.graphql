@@ -1,0 +1,12 @@
+query queryInvolvingUnionTypes($input: String!) {
+  someUnionType(
+    input: $input
+  ) {
+    ... on X {
+      str
+    }
+    ... on Y {
+      other
+    }
+  }
+}
