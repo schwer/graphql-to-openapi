@@ -13,7 +13,7 @@
         "parameters": [
           {
             "in": "query",
-            "name": "input",
+            "name": "name",
             "required": true,
             "schema": {
               "type": "string"
@@ -26,24 +26,91 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "someUnionType": {
+                    "favoritePets": {
                       "items": {
                         "anyOf": [
                           {
+                            "nullable": false,
                             "type": "object",
                             "properties": {
-                              "str": {
-                                "type": "string",
-                                "nullable": true
+                              "adultFur": {
+                                "type": "object",
+                                "nullable": true,
+                                "properties": {
+                                  "color": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "texture": {
+                                    "type": "string",
+                                    "nullable": false,
+                                    "enum": ["soft", "matted"]
+                                  }
+                                }
                               }
                             }
                           },
                           {
                             "type": "object",
+                            "nullable": false,
                             "properties": {
-                              "other": {
-                                "type": "integer",
-                                "nullable": true
+                              "puppyFur": {
+                                "nullable": true,
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "color": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "color": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "texture": {
+                                        "type": "string",
+                                        "enum": ["wiry", "soft", "shaggy"],
+                                        "nullable": true
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "adultFurs": {
+                                "type": "array",
+                                "nullable": false,
+                                "items": {
+                                  "nullable": false,
+                                  "anyOf": [
+                                    {
+                                      "type": "object",
+                                      "nullable": false,
+                                      "properties": {
+                                        "texture": {
+                                          "nullable": false,
+                                          "type": "string",
+                                          "enum": ["soft", "matted"]
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "object",
+                                      "nullable": false,
+                                      "properties": {
+                                        "color": {
+                                          "nullable": true,
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
                               }
                             }
                           }

@@ -1,17 +1,42 @@
 type Query {
   query: Query
 
-  someUnionType(
-    input: String!
-  ): [U!]!
+  favoritePets(
+    name: String!
+  ): [Pet!]!
 }
 
-type X {
-  str: String
+enum TextureEnum {
+  soft
+  matted
 }
 
-type Y {
-  other: Int
+enum HairTextureEnum {
+  wiry
+  soft
+  shaggy
 }
 
-union U = X | Y
+type Fur {
+  color: String
+  texture: TextureEnum!
+}
+
+type Hair {
+  color: String
+  texture: HairTextureEnum
+}
+
+type Cat {
+  kittenFur: Fur
+  adultFur: Fur
+}
+
+type Dog {
+  puppyFur: FurOrHair
+  adultFurs: [FurOrHair!]!
+}
+
+union Pet = Cat | Dog
+
+union FurOrHair = Fur | Hair
