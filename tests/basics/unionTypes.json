@@ -1,0 +1,149 @@
+{
+  "info": {
+    "license": {
+      "name": "Not specified"
+    },
+    "title": "Not specified",
+    "version": "Not specified"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/queryInvolvingUnionTypes": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "favoritePets": {
+                      "items": {
+                        "anyOf": [
+                          {
+                            "nullable": false,
+                            "properties": {
+                              "adultFur": {
+                                "nullable": true,
+                                "properties": {
+                                  "color": {
+                                    "nullable": true,
+                                    "type": "string"
+                                  },
+                                  "texture": {
+                                    "enum": [
+                                      "soft",
+                                      "matted"
+                                    ],
+                                    "nullable": false,
+                                    "type": "string"
+                                  }
+                                },
+                                "type": "object"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "nullable": false,
+                            "properties": {
+                              "adultFurs": {
+                                "items": {
+                                  "anyOf": [
+                                    {
+                                      "nullable": false,
+                                      "properties": {
+                                        "texture": {
+                                          "enum": [
+                                            "soft",
+                                            "matted"
+                                          ],
+                                          "nullable": false,
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    {
+                                      "nullable": false,
+                                      "properties": {
+                                        "color": {
+                                          "nullable": true,
+                                          "type": "string"
+                                        }
+                                      },
+                                      "type": "object"
+                                    }
+                                  ],
+                                  "nullable": false
+                                },
+                                "nullable": false,
+                                "type": "array"
+                              },
+                              "puppyFur": {
+                                "anyOf": [
+                                  {
+                                    "properties": {
+                                      "color": {
+                                        "nullable": true,
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  {
+                                    "properties": {
+                                      "color": {
+                                        "nullable": true,
+                                        "type": "string"
+                                      },
+                                      "texture": {
+                                        "enum": [
+                                          "wiry",
+                                          "soft",
+                                          "shaggy"
+                                        ],
+                                        "nullable": true,
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  }
+                                ],
+                                "nullable": true
+                              }
+                            },
+                            "type": "object"
+                          }
+                        ],
+                        "nullable": false
+                      },
+                      "nullable": false,
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "response"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}

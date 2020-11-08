@@ -1,0 +1,42 @@
+type Query {
+  query: Query
+
+  favoritePets(
+    name: String!
+  ): [Pet!]!
+}
+
+enum TextureEnum {
+  soft
+  matted
+}
+
+enum HairTextureEnum {
+  wiry
+  soft
+  shaggy
+}
+
+type Fur {
+  color: String
+  texture: TextureEnum!
+}
+
+type Hair {
+  color: String
+  texture: HairTextureEnum
+}
+
+type Cat {
+  kittenFur: Fur
+  adultFur: Fur
+}
+
+type Dog {
+  puppyFur: FurOrHair
+  adultFurs: [FurOrHair!]!
+}
+
+union Pet = Cat | Dog
+
+union FurOrHair = Fur | Hair

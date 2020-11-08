@@ -1,0 +1,31 @@
+query queryInvolvingUnionTypes($name: String!) {
+  favoritePets(
+    name: $name
+  ) {
+    ... on Cat {
+      adultFur {
+        color
+        texture
+      }
+    }
+    ... on Dog {
+      puppyFur {
+        ... on Fur {
+          color
+        }
+        ... on Hair {
+          color
+          texture
+        }
+      }
+      adultFurs {
+        ... on Fur {
+          texture
+        }
+        ... on Hair {
+          color
+        }
+      }
+    }
+  }
+}

@@ -14,7 +14,11 @@ import {
   buildClientSchema,
   buildSchema,
 } from 'graphql';
-import { GraphQLList, GraphQLObjectType } from 'graphql/type/definition';
+import {
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLUnionType,
+} from 'graphql/type/definition';
 
 export class NoOperationNameError extends Error {
   constructor(message) {
@@ -166,6 +170,8 @@ function fieldDefToOpenApiField(
     items: undefined,
     properties: undefined,
     type: undefined,
+    enum: undefined,
+    anyOf: undefined,
     description,
   };
   const typeNameWithoutBang = typeName.replace(/[!]$/, '');
@@ -190,6 +196,12 @@ function fieldDefToOpenApiField(
         properties: {},
       };
     }
+    if (itemType instanceof GraphQLUnionType) {
+      openApiType.items = {
+        anyOf: [],
+        nullable: nullableItems,
+      };
+    }
     if (itemType instanceof GraphQLScalarType) {
       openApiType.items = getScalarType(
         itemType.name,
@@ -203,6 +215,17 @@ function fieldDefToOpenApiField(
   if (type instanceof GraphQLObjectType) {
     openApiType.type = 'object';
     openApiType.properties = {};
+    return openApiType;
+  }
+  if (type instanceof GraphQLEnumType) {
+    openApiType.type = 'string';
+    openApiType.enum = type.getValues().map((v) => v.value);
+    openApiType.nullable = nullable;
+    return openApiType;
+  }
+  if (type instanceof GraphQLUnionType) {
+    openApiType.anyOf = [];
+    openApiType.nullable = nullable;
     return openApiType;
   }
   const scalarType = type as GraphQLScalarType;
@@ -514,6 +537,19 @@ export class GraphQLToOpenAPIConverter {
                 node,
                 openApiType,
               });
+            } else if (
+              openApiType.type === 'array' &&
+              openApiType.items.anyOf
+            ) {
+              currentSelection.unshift({
+                node,
+                openApiType,
+              });
+            } else if (openApiType.anyOf) {
+              currentSelection.unshift({
+                node,
+                openApiType,
+              });
             } else if (openApiType.type === 'object') {
               currentSelection.unshift({
                 node,
@@ -528,6 +564,30 @@ export class GraphQLToOpenAPIConverter {
               const result = currentSelection.shift().openApiType;
               return result;
             }
+          },
+        },
+        InlineFragment: {
+          enter(node) {
+            const openApiType = {
+              type: 'object',
+              nullable: undefined,
+              properties: {},
+            };
+            const topOfStack = currentSelection[0].openApiType;
+            if (topOfStack.items?.anyOf) {
+              const nullable = topOfStack.items.nullable;
+              openApiType.nullable = nullable;
+              topOfStack.items.anyOf.push(openApiType);
+            } else {
+              topOfStack.anyOf.push(openApiType);
+            }
+            currentSelection.unshift({
+              node,
+              openApiType,
+            });
+          },
+          leave() {
+            return currentSelection.shift().openApiType;
           },
         },
       })
