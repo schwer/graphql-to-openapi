@@ -568,7 +568,11 @@ export class GraphQLToOpenAPIConverter {
         },
         InlineFragment: {
           enter(node) {
-            const openApiType = { type: 'object', nullable: undefined, properties: {} };
+            const openApiType = {
+              type: 'object',
+              nullable: undefined,
+              properties: {},
+            };
             const topOfStack = currentSelection[0].openApiType;
             if (topOfStack.items?.anyOf) {
               const nullable = topOfStack.items.nullable;
