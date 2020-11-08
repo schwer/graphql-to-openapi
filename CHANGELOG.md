@@ -1,3 +1,8 @@
+# 2.2.0 November 6, 2020
+
+Added support for inline fragments and union types in graphql. Union types are
+converted to `anyOf` types in the openapi schema.
+
 # 2.1.1 November 3, 2020
 
 Fixed bug. Aliased fields in graphql queries were not properly processed.
