@@ -31,88 +31,98 @@
                         "anyOf": [
                           {
                             "nullable": false,
-                            "type": "object",
                             "properties": {
                               "adultFur": {
-                                "type": "object",
                                 "nullable": true,
                                 "properties": {
                                   "color": {
-                                    "type": "string",
-                                    "nullable": true
+                                    "nullable": true,
+                                    "type": "string"
                                   },
                                   "texture": {
-                                    "type": "string",
+                                    "enum": [
+                                      "soft",
+                                      "matted"
+                                    ],
                                     "nullable": false,
-                                    "enum": ["soft", "matted"]
+                                    "type": "string"
                                   }
-                                }
+                                },
+                                "type": "object"
                               }
-                            }
+                            },
+                            "type": "object"
                           },
                           {
-                            "type": "object",
                             "nullable": false,
                             "properties": {
-                              "puppyFur": {
-                                "nullable": true,
-                                "anyOf": [
-                                  {
-                                    "type": "object",
-                                    "properties": {
-                                      "color": {
-                                        "type": "string",
-                                        "nullable": true
-                                      }
-                                    }
-                                  },
-                                  {
-                                    "type": "object",
-                                    "properties": {
-                                      "color": {
-                                        "type": "string",
-                                        "nullable": true
-                                      },
-                                      "texture": {
-                                        "type": "string",
-                                        "enum": ["wiry", "soft", "shaggy"],
-                                        "nullable": true
-                                      }
-                                    }
-                                  }
-                                ]
-                              },
                               "adultFurs": {
-                                "type": "array",
-                                "nullable": false,
                                 "items": {
-                                  "nullable": false,
                                   "anyOf": [
                                     {
-                                      "type": "object",
                                       "nullable": false,
                                       "properties": {
                                         "texture": {
+                                          "enum": [
+                                            "soft",
+                                            "matted"
+                                          ],
                                           "nullable": false,
-                                          "type": "string",
-                                          "enum": ["soft", "matted"]
+                                          "type": "string"
                                         }
-                                      }
+                                      },
+                                      "type": "object"
                                     },
                                     {
-                                      "type": "object",
                                       "nullable": false,
                                       "properties": {
                                         "color": {
                                           "nullable": true,
                                           "type": "string"
                                         }
-                                      }
+                                      },
+                                      "type": "object"
                                     }
-                                  ]
-                                }
+                                  ],
+                                  "nullable": false
+                                },
+                                "nullable": false,
+                                "type": "array"
+                              },
+                              "puppyFur": {
+                                "anyOf": [
+                                  {
+                                    "properties": {
+                                      "color": {
+                                        "nullable": true,
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  {
+                                    "properties": {
+                                      "color": {
+                                        "nullable": true,
+                                        "type": "string"
+                                      },
+                                      "texture": {
+                                        "enum": [
+                                          "wiry",
+                                          "soft",
+                                          "shaggy"
+                                        ],
+                                        "nullable": true,
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  }
+                                ],
+                                "nullable": true
                               }
-                            }
+                            },
+                            "type": "object"
                           }
                         ],
                         "nullable": false
