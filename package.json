@@ -34,7 +34,7 @@
   "dependencies": {
     "commander": "^5.1.0",
     "graphql": "^15.5.0",
-    "yaml": "^1.10.0"
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "@types/jest": "^25.1.2",
