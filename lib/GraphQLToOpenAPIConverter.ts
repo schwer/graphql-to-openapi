@@ -531,7 +531,7 @@ export class GraphQLToOpenAPIConverter {
             }
             if (
               openApiType.type === 'array' &&
-              openApiType.items.type === 'object'
+              openApiType.items?.type === 'object'
             ) {
               currentSelection.unshift({
                 node,
@@ -539,7 +539,7 @@ export class GraphQLToOpenAPIConverter {
               });
             } else if (
               openApiType.type === 'array' &&
-              openApiType.items.anyOf
+              openApiType.items?.anyOf
             ) {
               currentSelection.unshift({
                 node,
