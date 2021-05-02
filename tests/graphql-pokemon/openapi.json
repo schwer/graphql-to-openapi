@@ -135,10 +135,10 @@
                           "nullable": true,
                           "type": "array"
                         },
-                        "pokemonId": {
-                          "description": "The ID of an object",
-                          "nullable": false,
-                          "type": "string"
+                        "locations": {
+                          "description": "Locations Pokémon lives",
+                          "nullable": true,
+                          "type": "array"
                         },
                         "name": {
                           "description": "The name of this Pokémon",
@@ -148,6 +148,11 @@
                         "number": {
                           "description": "The identifier of this Pokémon",
                           "nullable": true,
+                          "type": "string"
+                        },
+                        "pokemonId": {
+                          "description": "The ID of an object",
+                          "nullable": false,
                           "type": "string"
                         }
                       },

@@ -1,3 +1,7 @@
+# 2.3.0 April 1, 2021
+
+Added support for return type of array set to enum values
+
 # 2.2.0 November 6, 2020
 
 Added support for inline fragments and union types in graphql. Union types are

@@ -93,6 +93,11 @@ type Pokemon {
   """
   maxHP: Int
   image: String
+
+  """
+  Locations Pokémon lives
+  """
+  locations: [Locations]
 }
 
 """
@@ -147,4 +152,15 @@ type Query {
   query: Query
   pokemons(first: Int!): [Pokemon]
   pokemon(id: String, name: String): Pokemon
+}
+
+enum Locations {
+  KANTO
+  JOHTO
+  HOENN
+  SINNOH
+  UNOVA
+  KALOS
+  ALOLA
+  GALAR
 }
