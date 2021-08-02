@@ -1,0 +1,35 @@
+type Query {
+  query: Query
+  someComplexObject: TopLevelObject
+}
+
+type TopLevelObject {
+  unusedString: String!
+  simpleObjectWithNulls: SimpleObjectWithNulls
+  simpleObjectWithNonNulls: SimpleObjectWithNonNulls
+  nestedObject: NestedObjectType
+  arrayOfSimpleObjectsWithNulls: [AnotherSimpleObjectWithNulls]
+  unionField: UnionType
+}
+
+type SimpleObjectWithNulls {
+  str0: String
+  int: Int
+}
+
+union UnionType = SimpleObjectWithNulls | SimpleObjectWithNonNulls | NestedObjectType
+
+type SimpleObjectWithNonNulls {
+  str1: String!
+  int: Int!
+}
+
+type NestedObjectType {
+  simpleObjectWithNonNulls: SimpleObjectWithNonNulls
+  f3: AnotherSimpleObjectWithNulls!
+}
+
+type AnotherSimpleObjectWithNulls {
+  str3: String
+  int3: Int
+}
