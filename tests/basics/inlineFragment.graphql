@@ -1,0 +1,40 @@
+fragment objectFragment on SimpleObjectWithNulls {
+  str0: str0
+  int
+}
+
+fragment unionFragment on UnionType {
+  ... on SimpleObjectWithNulls {
+    str: str0
+  }
+  ... on SimpleObjectWithNonNulls {
+    str1: str1
+  }
+  ... on NestedObjectType {
+    simpleObjectWithNonNulls {
+      str: str1
+    }
+  }
+}
+
+fragment arrayFragment on AnotherSimpleObjectWithNulls {
+  str3
+}
+
+fragment topLevelFragment on TopLevelObject {
+  simpleObjectWithNulls {
+    ... objectFragment
+  }
+  arrayOfSimpleObjectsWithNulls {
+    ... arrayFragment
+  }
+  unionField {
+    ... unionFragment
+  }
+}
+
+query myQuery {
+  someComplexObject {
+    ... topLevelFragment
+  }
+}
