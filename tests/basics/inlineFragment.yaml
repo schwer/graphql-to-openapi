@@ -1,0 +1,65 @@
+info:
+  license:
+    name: Not specified
+  title: Not specified
+  version: Not specified
+openapi: 3.0.3
+paths:
+  /myQuery:
+    get:
+      parameters: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  someComplexObject:
+                    nullable: true
+                    properties:
+                      arrayOfSimpleObjectsWithNulls:
+                        items:
+                          properties:
+                            str3:
+                              nullable: true
+                              type: string
+                          type: object
+                        nullable: true
+                        type: array
+                      simpleObjectWithNulls:
+                        nullable: true
+                        properties:
+                          int:
+                            nullable: true
+                            type: integer
+                          str0:
+                            nullable: true
+                            type: string
+                        type: object
+                      unionField:
+                        anyOf:
+                          - properties:
+                              str:
+                                nullable: true
+                                type: string
+                            type: object
+                          - properties:
+                              str1:
+                                nullable: false
+                                type: string
+                            type: object
+                          - properties:
+                              simpleObjectWithNonNulls:
+                                nullable: true
+                                properties:
+                                  str:
+                                    nullable: false
+                                    type: string
+                                type: object
+                            type: object
+                        nullable: true
+                    type: object
+                type: object
+          description: response
+servers:
+  - url: /
