@@ -1,3 +1,7 @@
+# 2.4.0 August 5, 2021
+
+Added support for inline fragments
+
 # 2.3.0 April 1, 2021
 
 Added support for return type of array set to enum values
