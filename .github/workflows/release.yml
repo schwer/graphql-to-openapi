@@ -21,6 +21,6 @@ jobs:
     needs: build
     steps:
       - uses: mikeal/merge-release@master
-      - env:
-          NPM_AUTH_TOKEN: ${{secrets.npm_token}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    env:
+      NPM_AUTH_TOKEN: ${{secrets.npm_token}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
