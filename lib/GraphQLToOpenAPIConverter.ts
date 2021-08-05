@@ -430,12 +430,38 @@ export class GraphQLToOpenAPIConverter {
     let operationDef;
     const currentSelection = [];
     const typeInfo = new TypeInfo(schema);
+    const fragments = [];
     openApiSchema = visit(
       parsedQuery,
       visitWithTypeInfo(typeInfo, {
         Document: {
           leave() {
             return openApiSchema;
+          },
+        },
+        FragmentDefinition: {
+          enter(node) {
+            const fragmentType = typeInfo.getType();
+            let openApiType;
+            if (fragmentType instanceof GraphQLUnionType) {
+              openApiType = {
+                anyOf: [],
+              };
+            } else {
+              openApiType = {
+                type: 'object',
+                properties: {},
+              };
+            }
+            currentSelection.unshift({
+              node,
+              openApiType,
+            });
+          },
+          leave(node) {
+            const result = currentSelection.shift().openApiType;
+            fragments[node.name.value] = result;
+            return result;
           },
         },
         OperationDefinition: {
@@ -508,6 +534,19 @@ export class GraphQLToOpenAPIConverter {
               description: t.description || undefined,
             });
           }
+        },
+        FragmentSpread: {
+          enter(node) {
+            const openApiType = currentSelection[0].openApiType;
+            const fragment = fragments[node.name.value];
+            if (openApiType.anyOf) {
+              openApiType.anyOf = fragment.anyOf;
+            } else if (openApiType.items) {
+              openApiType.items.properties = fragment.properties;
+            } else {
+              openApiType.properties = fragment.properties;
+            }
+          },
         },
         Field: {
           enter(node) {
