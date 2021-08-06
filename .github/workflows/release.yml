@@ -28,6 +28,7 @@ jobs:
       - run: git config user.email ${{ github.actor }}@users.noreply.github.com
       - run: git fetch origin ${{ github.event.release.target_commitish }}:${{ github.event.release.target_commitish }}
       - run: git checkout ${{ github.event.release.target_commitish }}
+      - run: git branch --set-upstream-to=origin/master master
       - run: npm version ${{ github.event.release.tag_name }}
       - run: git push
       - run: npm publish --access public
