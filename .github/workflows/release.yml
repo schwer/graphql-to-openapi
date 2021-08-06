@@ -26,7 +26,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: git config user.name ${{ github.actor }}
       - run: git config user.email ${{ github.actor }}@users.noreply.github.com
-      - run: git fetch origin ${{ github.event.release.target_commitish}}:{{ github.event.release.target_commitish }}
+      - run: git fetch origin ${{ github.event.release.target_commitish }}:${{ github.event.release.target_commitish }}
       - run: git checkout ${{ github.event.release.target_commitish }}
       - run: npm version ${{ github.event.release.tag_name }}
       - run: git commit -m "generated package.json update for ${{ github.event.release.tag_name }}"
