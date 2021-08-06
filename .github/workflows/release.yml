@@ -1,9 +1,8 @@
 name: release
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -21,7 +20,12 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v2
-      - uses: mikeal/merge-release@master
-    env:
-      NPM_AUTH_TOKEN: ${{secrets.npm_token}}
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+          registry-url: https://registry.npmjs.org/
+      - run: npm version ${{ github.event.release.tag_name }}
+      - run: git commit -m "release ${{ github.event.release.tag_name }}"
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
