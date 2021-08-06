@@ -25,7 +25,9 @@ jobs:
           node-version: '14.x'
           registry-url: https://registry.npmjs.org/
       - run: npm version ${{ github.event.release.tag_name }}
-      - run: git commit -m "release ${{ github.event.release.tag_name }}"
+      - run: git config user.name github-actions
+      - run: git config user.email github-actions@github.com
+      - run: git commit -m "generated package.json update for ${{ github.event.release.tag_name }}"
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
