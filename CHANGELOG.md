@@ -1,3 +1,7 @@
+# 2.4.5 (2.4.1 -> 2.4.5 inclusive) September 23, 2021
+
+Updated vendor dependencies, housekeeping in that regard.
+
 # 2.4.0 August 5, 2021
 
 Added support for inline fragments
