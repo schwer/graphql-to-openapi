@@ -13,8 +13,8 @@ export function graphqlToOpenApi({
 }: {
   inputQuery: string;
   introspectionSchema?: IntrospectionQuery;
-  onUnknownScalar?: (s: string) => object;
-  scalarConfig?: { [key: string]: object };
+  onUnknownScalar?: (s: string) => object; // eslint-disable-line @typescript-eslint/ban-types
+  scalarConfig?: { [key: string]: object }; // eslint-disable-line @typescript-eslint/ban-types
   schemaString?: string;
 }): GraphQLToOpenAPIResult {
   const c = new GraphQLToOpenAPIConverter(
