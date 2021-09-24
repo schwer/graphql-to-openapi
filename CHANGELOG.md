@@ -1,6 +1,8 @@
 # 2.4.5 (2.4.1 -> 2.4.5 inclusive) September 23, 2021
 
 Updated vendor dependencies, housekeeping in that regard.
+Removed nodejs version 8 support in build tooling. It may still
+work in usage though (untested).
 
 # 2.4.0 August 5, 2021
 
