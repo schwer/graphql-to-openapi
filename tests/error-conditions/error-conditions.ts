@@ -56,7 +56,7 @@ describe('error-conditions', function () {
         }
       }`;
     const output = graphqlToOpenApi({
-      introspectionSchema: (introspectionSchema as unknown) as IntrospectionQuery,
+      introspectionSchema: introspectionSchema as unknown as IntrospectionQuery,
       inputQuery,
     });
     assert.ok(output.schemaError);

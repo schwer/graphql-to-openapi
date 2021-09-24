@@ -1,3 +1,4 @@
+// eslint-disable @typescript-eslint/ban-types
 import { visit, BREAK } from 'graphql/language';
 import { visitWithTypeInfo } from 'graphql/utilities/TypeInfo';
 import { validate } from 'graphql/validation';
@@ -21,7 +22,7 @@ import {
 } from 'graphql/type/definition';
 
 export class NoOperationNameError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message) /* istanbul ignore next */;
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = NoOperationNameError.name;
@@ -29,7 +30,7 @@ export class NoOperationNameError extends Error {
 }
 
 export class MissingSchemaError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message) /* istanbul ignore next */;
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = MissingSchemaError.name;
@@ -37,7 +38,7 @@ export class MissingSchemaError extends Error {
 }
 
 export class UnknownScalarError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message) /* istanbul ignore next */;
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = UnknownScalarError.name;
@@ -135,8 +136,9 @@ const typeMap = {
 
 function getScalarType(
   typeName: string,
-  scalarConfig: { [key: string]: object },
-  onUnknownScalar: (s: string) => object
+  scalarConfig: { [key: string]: object }, // eslint-disable-line @typescript-eslint/ban-types
+  onUnknownScalar: (s: string) => object // eslint-disable-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types
 ): object {
   if (scalarConfig[typeName]) {
     return scalarConfig[typeName];
@@ -151,8 +153,8 @@ function getScalarType(
 
 function fieldDefToOpenApiField(
   typeInfo: TypeInfo,
-  scalarConfig: { [key: string]: object },
-  onUnknownScalar: (s: string) => object
+  scalarConfig: { [key: string]: object }, // eslint-disable-line @typescript-eslint/ban-types
+  onUnknownScalar: (s: string) => object // eslint-disable-line @typescript-eslint/ban-types
 ) {
   const fieldDef = typeInfo.getFieldDef();
   const typeName = fieldDef.type.toString();
@@ -247,8 +249,8 @@ type InputType =
 function recurseInputType(
   obj: InputType,
   depth: number,
-  scalarConfig: { [key: string]: object },
-  onUnknownScalar: (s: string) => object
+  scalarConfig: { [key: string]: object }, // eslint-disable-line @typescript-eslint/ban-types
+  onUnknownScalar: (s: string) => object // eslint-disable-line @typescript-eslint/ban-types
 ) {
   // istanbul ignore next
   if (depth > 50) {
@@ -359,8 +361,8 @@ export class GraphQLToOpenAPIConverter {
   constructor(
     private schemaString?: string,
     private introspectionSchema?: IntrospectionQuery,
-    private onUnknownScalar?: (s: string) => object,
-    private scalarConfig?: { [key: string]: object }
+    private onUnknownScalar?: (s: string) => object, // eslint-disable-line @typescript-eslint/ban-types
+    private scalarConfig?: { [key: string]: object } // eslint-disable-line @typescript-eslint/ban-types
   ) {
     if (!onUnknownScalar) {
       this.onUnknownScalar = () => {
