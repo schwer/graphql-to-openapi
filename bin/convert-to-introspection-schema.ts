@@ -17,8 +17,5 @@ const { filename, outputFilename } = program
 
 const original = readFileSync(filename).toString();
 const schema = buildSchema(original);
-const introspectionSchema = graphqlSync(
-  schema,
-  getIntrospectionQuery({ descriptions: true })
-).data;
+const introspectionSchema = graphqlSync({ schema, source: filename }).data;
 writeFileSync(outputFilename, stringify(introspectionSchema, { space: '  ' }));
