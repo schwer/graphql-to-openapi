@@ -5,6 +5,7 @@ on:
     types: [published]
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +15,7 @@ jobs:
           node-version: 14
       - run: npm ci
       - run: npm test
+      - run: npx codecov
 
   publish:
     runs-on: ubuntu-latest

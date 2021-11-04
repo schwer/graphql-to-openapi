@@ -35,4 +35,3 @@ jobs:
         npm run test-cli
       env:
         CI: true
-

@@ -2,6 +2,7 @@
 
 [![NPM](https://img.shields.io/npm/v/graphql-to-openapi.svg)](https://npmjs.com/graphql-to-openapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/schwer/graphql-to-openapi/badge.svg)](https://snyk.io/test/github/schwer/graphql-to-openapi)
+[![codecov](https://codecov.io/gh/schwer/graphql-to-openapi/branch/master/graph/badge.svg?token=XTRQ95F57X)](https://codecov.io/gh/schwer/graphql-to-openapi)
 
 <img alt="GraphQL → OpenAPI" src="https://raw.github.com/schwer/graphql-to-openapi/master/docs/src/logo.svg?sanitize=true">
 
