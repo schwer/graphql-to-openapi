@@ -13,7 +13,7 @@ Convert a graphql query + graphql schema into an openapi spec.
 Not to be confused with the obviously more useful
 [openapi-to-graphql](https://github.com/ibm/openapi-to-graphql).
 
-## Usage via CLI
+# Usage via CLI
 
 ```
 npx graphql-to-openapi --yaml --schema <schemaFilename> --query <queryFilename>
@@ -21,7 +21,35 @@ npx graphql-to-openapi --yaml --schema <schemaFilename> --query <queryFilename>
 
 <img alt="GraphQL → OpenAPI" src="https://raw.github.com/schwer/graphql-to-openapi/master/static/usage.gif">
 
-## Usage as a module
+## Unknown Scalar Configuration via the CLI
+
+Unknown scalars are scalar types in the graphql schema that do not obviously map to an openapi type.
+
+The default behavior for unknown scalars is to treat them as `string` types in the output openapi schema.
+If you desire to override that behavior, supply a scalar config file to the graphq-to-openapi tool:
+
+```
+Example CLI usage:
+
+npx graphql-to-openapi --scalarConfigFile myScalarConfig.json --yaml --schema <schemaFilename> --query <queryFilename>
+
+---
+
+myScalarConfig.json:
+{
+  "DateTimeScalar": {
+    "type": "string",
+    "description": "YYYY-MM-DD date",
+    "example": "2017-01-01",
+    "format": "date",
+    "pattern": "YYYY-MM-DD",
+    "minLength": 0,
+    "maxLength": 10
+  }
+}
+```
+
+# Usage as a module
 
 ```typescript
 import { graphqlToOpenApi } from 'graphql-to-openapi';
