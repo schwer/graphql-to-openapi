@@ -3,7 +3,7 @@
 import { program } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { graphqlToOpenApi } from '../index';
-import { IntrospectionQuery } from 'graphql';
+import { IntrospectionQuery, Source } from 'graphql';
 import { stringify } from 'yaml';
 
 const {
@@ -38,10 +38,10 @@ const {
   .parse(process.argv)
   .opts();
 
-let schemaString;
+let inputSchema;
 let introspectionSchema;
 if (schema) {
-  schemaString = readFileSync(schema).toString();
+  inputSchema = readFileSync(schema).toString();
 } else if (introspectionSchemaJson) {
   introspectionSchema = JSON.parse(
     readFileSync(introspectionSchemaJson).toString()
@@ -57,9 +57,9 @@ if (scalarConfigFile) {
 let needsScalarConfigFile = false;
 
 const { error, schemaError, queryErrors, openApiSchema } = graphqlToOpenApi({
-  schemaString,
+  schema: schema ? new Source(inputSchema, schema) : undefined,
   introspectionSchema,
-  inputQuery,
+  query: new Source(inputQuery, query),
   scalarConfig,
   onUnknownScalar(unknownScalar) {
     if (!scalarConfig && scalarConfigFile) {

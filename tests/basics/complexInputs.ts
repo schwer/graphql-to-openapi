@@ -6,18 +6,18 @@ import * as stringify from 'json-stable-stringify';
 
 describe('complexInputs', function () {
   const inputQueryFilename = path.join(__dirname, 'complexInputs.graphql');
-  const inputQuery = readFileSync(inputQueryFilename).toString();
+  const query = readFileSync(inputQueryFilename).toString();
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const expectedOutput = require('./complexInputs.json');
 
   describe('given a schema string', function () {
     it('should produce a valid openapi spec', function () {
-      const schemaString = readFileSync(
+      const schema = readFileSync(
         path.join(__dirname, 'complexInputsSchema.graphql')
       ).toString();
       const actualOutput = graphqlToOpenApi({
-        schemaString,
-        inputQuery,
+        schema,
+        query,
       }).openApiSchema;
       const normalizedActualOutput = stringify(actualOutput, { space: '  ' });
       const normalizedExpectedOutput = stringify(expectedOutput, {
@@ -37,7 +37,7 @@ describe('complexInputs', function () {
       );
       const actualOutput = graphqlToOpenApi({
         introspectionSchema,
-        inputQuery,
+        query,
       }).openApiSchema;
       const normalizedActualOutput = stringify(actualOutput, { space: '  ' });
       const normalizedExpectedOutput = stringify(expectedOutput, {
