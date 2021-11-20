@@ -7,7 +7,7 @@ import {
   ToggleButton,
 } from 'react-bootstrap';
 import { graphqlToOpenApi } from 'graphql-to-openapi';
-import Octicon, { Check } from '@primer/octicons-react';
+import { CheckIcon } from '@primer/octicons-react';
 import { stringify } from 'yaml';
 import logo from './logo.svg';
 import { SchemaTextArea } from './SchemaTextArea';
@@ -43,7 +43,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
     savedSchemaString ?? defaultSchema
   );
   const [inputQuery, setInputQuery] = useState(savedInputQuery ?? defaultQuery);
-  const [outputInYaml, setOutputInYaml] = useState(true);
+  const [outputType, setOutputType] = useState('YAML');
 
   useEffect(() => {
     localStorage.setItem('graphql-to-openapi:schemaString', schemaString);
@@ -72,7 +72,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
   }
   const success = !schemaError && !queryErrors;
   let value = '';
-  if (openApiSchema && outputInYaml) {
+  if (openApiSchema && outputType === 'YAML') {
     value = stringify(JSON.parse(JSON.stringify(openApiSchema)));
   } else if (openApiSchema) {
     value = JSON.stringify(openApiSchema, null, 2);
@@ -133,11 +133,11 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
                   name="outputType"
                   type="radio"
                   size="sm"
-                  value={outputInYaml}
-                  onChange={setOutputInYaml}
+                  value={outputType}
+                  onChange={setOutputType}
                 >
-                  <ToggleButton value>YAML</ToggleButton>
-                  <ToggleButton value={false}>JSON</ToggleButton>
+                  <ToggleButton value="YAML">YAML</ToggleButton>
+                  <ToggleButton value="JSON">JSON</ToggleButton>
                 </ToggleButtonGroup>
               </InputGroup>
               {!success ? (
@@ -152,7 +152,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
                 </span>
               ) : (
                 <span className="col" style={{ textAlign: 'right' }}>
-                  <Octicon icon={Check} />
+                  <CheckIcon />
                 </span>
               )}
             </div>
