@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { GraphQLError, Source } from 'graphql';
 import {
   Button,
   InputGroup,
@@ -10,8 +11,7 @@ import { graphqlToOpenApi } from 'graphql-to-openapi';
 import { CheckIcon } from '@primer/octicons-react';
 import { stringify } from 'yaml';
 import logo from './logo.svg';
-import { SchemaTextArea } from './SchemaTextArea';
-import { QueryTextArea } from './QueryTextArea';
+import { GraphQLEditor } from './GraphQLEditor';
 import './GraphQLToOpenApiDocs.scss';
 import { textAreaStyles } from './textAreaStyles';
 
@@ -54,12 +54,12 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
   }, [inputQuery]);
 
   let openApiSchema;
-  let schemaError;
+  let schemaError: GraphQLError | undefined;
   let queryErrors;
   try {
     const result = graphqlToOpenApi({
-      schemaString,
-      inputQuery,
+      schema: new Source(schemaString, 'Schema'),
+      query: inputQuery,
       onUnknownScalar() {
         return { type: 'string' };
       },
@@ -68,7 +68,7 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
     schemaError = result.schemaError;
     queryErrors = result.queryErrors;
   } catch (err) {
-    schemaError = err;
+    schemaError = err as GraphQLError;
   }
   const success = !schemaError && !queryErrors;
   let value = '';
@@ -101,8 +101,8 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
           <div className="col">
             <Form.Group style={{ height: '100%' }}>
               <Form.Label>GraphQL Schema</Form.Label>
-              <SchemaTextArea
-                isValid={!schemaError}
+              <GraphQLEditor
+                errors={schemaError ? [schemaError] : undefined}
                 onChange={setSchemaString}
                 value={schemaString}
               />
@@ -111,8 +111,8 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
           <div className="col">
             <Form.Group style={{ height: '100%' }}>
               <Form.Label>GraphQL Query</Form.Label>
-              <QueryTextArea
-                isValid={!queryErrors}
+              <GraphQLEditor
+                errors={queryErrors}
                 onChange={setInputQuery}
                 value={inputQuery}
               />
