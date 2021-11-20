@@ -55,8 +55,8 @@ myScalarConfig.json:
 import { graphqlToOpenApi } from 'graphql-to-openapi';
 
 const { error, openApiSchema, queryErrors, schemaError } = graphqlToOpenApi({
-  schemaString,
-  inputQuery,
+  schema,
+  query,
 });
 
 // error will contain any graphql-to-openapi errors if they exist.

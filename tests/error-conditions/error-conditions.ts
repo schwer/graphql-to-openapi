@@ -6,50 +6,74 @@ import {
   NoOperationNameError,
   MissingSchemaError,
 } from '../../lib/GraphQLToOpenAPIConverter';
-import { GraphQLError, IntrospectionQuery } from 'graphql';
+import { GraphQLError, IntrospectionQuery, Source } from 'graphql';
 
 describe('error-conditions', function () {
   it('should fail on a bad input query', function () {
-    const schemaString = readFileSync(
+    const schema = readFileSync(
       path.join(__dirname, '..', 'graphql-pokemon', 'schema.graphql')
     ).toString();
-    const inputQuery = `
+    const query = `
       query {
         unknown
       }
     `;
     const output = graphqlToOpenApi({
-      schemaString,
-      inputQuery,
+      schema,
+      query,
     });
     assert.ok(output.queryErrors.length > 0);
   });
 
-  it('should fail on an invalid schema', function () {
-    const schemaString = `
+  it('should fail on an invalid schema with a string', function () {
+    const schema = `
       type Query {
         badSyntax() : moreBadSyntax
       }
     `;
-    const inputQuery = `
+    const query = `
       query {
         pokemon(id: "Test", name: "Test") {
           id
         }
       }`;
     const output = graphqlToOpenApi({
-      schemaString,
-      inputQuery,
+      schema,
+      query,
     });
     assert.ok(output.schemaError);
     assert.equal(output.schemaError.name, 'GraphQLError');
+  });
+
+  it('should fail on an invalid schema with a Source', function () {
+    const schema = new Source(
+      `
+      type Query {
+        badSyntax() : moreBadSyntax
+      }
+    `,
+      'Test Query'
+    );
+    const query = `
+      query {
+        pokemon(id: "Test", name: "Test") {
+          id
+        }
+      }`;
+    const output = graphqlToOpenApi({
+      schema,
+      query,
+    });
+    assert.ok(output.schemaError);
+    assert.equal(output.schemaError.name, 'GraphQLError');
+    assert.deepEqual(output.schemaError.locations, [{ column: 19, line: 3 }]);
   });
 
   it('should fail on an invalid introspection schema', function () {
     const introspectionSchema = {
       invalid: 'schema',
     };
-    const inputQuery = `
+    const query = `
       query {
         pokemon(id: "Test", name: "Test") {
           id
@@ -57,17 +81,17 @@ describe('error-conditions', function () {
       }`;
     const output = graphqlToOpenApi({
       introspectionSchema: introspectionSchema as unknown as IntrospectionQuery,
-      inputQuery,
+      query,
     });
     assert.ok(output.schemaError);
     assert.equal(output.schemaError.name, 'Error');
   });
 
   it('should fail on a unnamed, valid input query', function () {
-    const schemaString = readFileSync(
+    const schema = readFileSync(
       path.join(__dirname, '..', 'graphql-pokemon', 'schema.graphql')
     ).toString();
-    const inputQuery = `
+    const query = `
       query {
         pokemon(id: "Test", name: "Test") {
           id
@@ -75,8 +99,8 @@ describe('error-conditions', function () {
       }
     `;
     const output = graphqlToOpenApi({
-      schemaString,
-      inputQuery,
+      schema,
+      query,
     });
     assert.ok(output.error);
     assert.ok(output.error instanceof NoOperationNameError);
@@ -84,10 +108,10 @@ describe('error-conditions', function () {
   });
 
   it('should fail on a syntax error in the input query', function () {
-    const schemaString = readFileSync(
+    const schema = readFileSync(
       path.join(__dirname, '..', 'graphql-pokemon', 'schema.graphql')
     ).toString();
-    const inputQuery = `
+    const query = `
       query {
         pokemon(id: "Test", name: "Test") {
           id
@@ -95,15 +119,15 @@ describe('error-conditions', function () {
       } a
     `;
     const output = graphqlToOpenApi({
-      schemaString,
-      inputQuery,
+      schema,
+      query,
     });
     assert.ok(output.queryErrors);
     assert.ok(output.queryErrors[0] instanceof GraphQLError);
   });
 
   it('should fail if neither schema nor introspection schema are supplied', function () {
-    const inputQuery = `
+    const query = `
       query {
         someQuery(token: "Te") {
           someResult
@@ -112,7 +136,7 @@ describe('error-conditions', function () {
     `;
     try {
       graphqlToOpenApi({
-        inputQuery,
+        query,
       });
     } catch (err) {
       assert.ok(err instanceof MissingSchemaError);

@@ -2,26 +2,26 @@ import {
   GraphQLToOpenAPIResult,
   GraphQLToOpenAPIConverter,
 } from './lib/GraphQLToOpenAPIConverter';
-import { IntrospectionQuery } from 'graphql';
+import { Source, IntrospectionQuery } from 'graphql';
 
 export function graphqlToOpenApi({
-  inputQuery,
+  query,
   introspectionSchema,
   onUnknownScalar,
   scalarConfig,
-  schemaString,
+  schema,
 }: {
-  inputQuery: string;
+  query: string | Source;
   introspectionSchema?: IntrospectionQuery;
   onUnknownScalar?: (s: string) => object; // eslint-disable-line @typescript-eslint/ban-types
   scalarConfig?: { [key: string]: object }; // eslint-disable-line @typescript-eslint/ban-types
-  schemaString?: string;
+  schema?: string | Source;
 }): GraphQLToOpenAPIResult {
   const c = new GraphQLToOpenAPIConverter(
-    schemaString,
+    schema,
     introspectionSchema,
     onUnknownScalar,
     scalarConfig
   );
-  return c.toOpenAPI(inputQuery);
+  return c.toOpenAPI(query);
 }

@@ -1,3 +1,15 @@
+# 4.0.0
+
+API update to support "Source" inputs that can improve syntax error handling.
+
+# 3.0.3 (3.0.1 - 3.0.3 inclusive) October 30, 2021 - November 4, 2021
+
+Dependency updates for security.
+
+# 3.0.0
+
+Remove support for nodejs 10.
+
 # 2.4.5 (2.4.1 -> 2.4.5 inclusive) September 23, 2021
 
 Updated vendor dependencies, housekeeping in that regard.

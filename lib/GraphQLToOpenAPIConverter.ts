@@ -11,6 +11,7 @@ import {
   GraphQLScalarType,
   GraphQLSchema,
   IntrospectionQuery,
+  Source,
   TypeInfo,
   buildClientSchema,
   buildSchema,
@@ -356,10 +357,10 @@ function recurseInputType(
 }
 
 export class GraphQLToOpenAPIConverter {
-  private schema: GraphQLSchema;
+  private graphqlSchema: GraphQLSchema;
   private schemaError: GraphQLError;
   constructor(
-    private schemaString?: string,
+    private schema?: string | Source,
     private introspectionSchema?: IntrospectionQuery,
     private onUnknownScalar?: (s: string) => object, // eslint-disable-line @typescript-eslint/ban-types
     private scalarConfig?: { [key: string]: object } // eslint-disable-line @typescript-eslint/ban-types
@@ -372,15 +373,15 @@ export class GraphQLToOpenAPIConverter {
     if (!scalarConfig) {
       this.scalarConfig = {};
     }
-    if (schemaString) {
+    if (schema) {
       try {
-        this.schema = buildSchema(this.schemaString);
+        this.graphqlSchema = buildSchema(this.schema);
       } catch (err) {
         this.schemaError = err;
       }
     } else if (introspectionSchema) {
       try {
-        this.schema = buildClientSchema(this.introspectionSchema);
+        this.graphqlSchema = buildClientSchema(this.introspectionSchema);
       } catch (err) {
         this.schemaError = err;
       }
@@ -391,21 +392,21 @@ export class GraphQLToOpenAPIConverter {
     }
   }
 
-  public toOpenAPI(inputQuery: string): GraphQLToOpenAPIResult {
+  public toOpenAPI(query: string | Source): GraphQLToOpenAPIResult {
     const { schemaError, onUnknownScalar, scalarConfig } = this;
     if (schemaError) {
       return {
         schemaError,
       };
     }
-    const { schema } = this;
+    const { graphqlSchema } = this;
     let parsedQuery;
     try {
-      parsedQuery = parse(inputQuery);
+      parsedQuery = parse(query);
     } catch (err) {
       return { queryErrors: [err] };
     }
-    const queryErrors = validate(schema, parsedQuery);
+    const queryErrors = validate(graphqlSchema, parsedQuery);
     if (queryErrors.length > 0) {
       return {
         queryErrors,
@@ -431,7 +432,7 @@ export class GraphQLToOpenAPIConverter {
     let error;
     let operationDef;
     const currentSelection = [];
-    const typeInfo = new TypeInfo(schema);
+    const typeInfo = new TypeInfo(graphqlSchema);
     const fragments = [];
     openApiSchema = visit(
       parsedQuery,
