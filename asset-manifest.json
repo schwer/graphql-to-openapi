@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/graphql-to-openapi/static/css/main.afd7172b.chunk.css",
-    "main.js": "/graphql-to-openapi/static/js/main.4ce5fe8c.chunk.js",
-    "main.js.map": "/graphql-to-openapi/static/js/main.4ce5fe8c.chunk.js.map",
+    "main.js": "/graphql-to-openapi/static/js/main.1cc6527a.chunk.js",
+    "main.js.map": "/graphql-to-openapi/static/js/main.1cc6527a.chunk.js.map",
     "runtime-main.js": "/graphql-to-openapi/static/js/runtime-main.c9b59110.js",
     "runtime-main.js.map": "/graphql-to-openapi/static/js/runtime-main.c9b59110.js.map",
     "static/css/2.fc4ad356.chunk.css": "/graphql-to-openapi/static/css/2.fc4ad356.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.fc4ad356.chunk.css",
     "static/js/2.d50e7ee8.chunk.js",
     "static/css/main.afd7172b.chunk.css",
-    "static/js/main.4ce5fe8c.chunk.js"
+    "static/js/main.1cc6527a.chunk.js"
   ]
 }
