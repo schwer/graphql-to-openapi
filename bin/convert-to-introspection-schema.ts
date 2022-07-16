@@ -1,7 +1,7 @@
 import * as stringify from 'json-stable-stringify';
 import { program } from 'commander';
 import { readFileSync, writeFileSync } from 'fs';
-import { buildSchema, graphqlSync, getIntrospectionQuery } from 'graphql';
+import { buildSchema, graphqlSync } from 'graphql';
 
 const { filename, outputFilename } = program
   .description(
