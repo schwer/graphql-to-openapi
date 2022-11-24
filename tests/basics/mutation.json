@@ -1,0 +1,81 @@
+{
+  "info": {
+    "license": {
+      "name": "Not specified"
+    },
+    "title": "Not specified",
+    "version": "Not specified"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/updateUser": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userID": {
+                  "required": true,
+                  "schema": {
+                    "type": "string"
+                  }
+                },
+                "name": {
+                  "required": false,
+                  "schema": {
+                    "type": "string"
+                  }
+                },
+                "address": {
+                  "required": false,
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "updateUser": {
+                      "nullable": false,
+                      "properties": {
+                        "address": {
+                          "nullable": false,
+                          "type": "string"
+                        },
+                        "id": {
+                          "nullable": false,
+                          "type": "string"
+                        },
+                        "name": {
+                          "nullable": false,
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "response"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}
