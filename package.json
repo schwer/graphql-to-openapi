@@ -33,7 +33,7 @@
   "dependencies": {
     "commander": "^10.0.1",
     "graphql": "^16.6.0",
-    "yaml": "^2.2.1"
+    "yaml": "^2.2.2"
   },
   "devDependencies": {
     "@types/jest": "^28.1.6",
