@@ -23,24 +23,27 @@ import {
 } from 'graphql/type/definition';
 
 export class NoOperationNameError extends Error {
+  /* istanbul ignore next */
   constructor(message: string) {
-    super(message) /* istanbul ignore next */;
+    super(message);
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = NoOperationNameError.name;
   }
 }
 
 export class MissingSchemaError extends Error {
+  /* istanbul ignore next */
   constructor(message: string) {
-    super(message) /* istanbul ignore next */;
+    super(message);
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = MissingSchemaError.name;
   }
 }
 
 export class UnknownScalarError extends Error {
+  /* istanbul ignore next */
   constructor(message: string) {
-    super(message) /* istanbul ignore next */;
+    super(message);
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
     this.name = UnknownScalarError.name;
   }
