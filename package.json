@@ -48,7 +48,7 @@
     "prettier": "^2.8.8",
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   },
   "types": "dist/index.d.ts"
 }
