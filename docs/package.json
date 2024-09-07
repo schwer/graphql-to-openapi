@@ -12,7 +12,7 @@
     "@types/react": "^17.0.35",
     "@types/react-dom": "^17.0.11",
     "ace-builds": "^1.4.13",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.0.0",
     "gh-pages": "^5.0.0",
     "graphql-to-openapi": "^4.0.0",
     "react": "^17.0.2",
