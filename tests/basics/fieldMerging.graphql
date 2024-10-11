@@ -14,3 +14,45 @@ query fieldMerging($id: ID!) {
     }
   }
 }
+
+fragment cityState on Address {
+  city
+  state
+}
+
+query fieldMergingWithFragmentSpread($id: ID!) {
+  person(id: $id) {
+    id
+    firstName
+    lastName
+
+    address {
+      ...cityState
+    }
+
+    address {
+      country
+    }
+  }
+}
+
+fragment addressSubfields on Person {
+  address {
+    city
+    state
+  }
+}
+
+query fieldMergingWithSubfieldFragmentSpread($id: ID!) {
+  person(id: $id) {
+    id
+    firstName
+    lastName
+
+    ...addressSubfields
+
+    address {
+      country
+    }
+  }
+}
