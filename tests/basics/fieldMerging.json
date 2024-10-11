@@ -1,0 +1,81 @@
+{
+  "info": {
+    "license": {
+      "name": "Not specified"
+    },
+    "title": "Not specified",
+    "version": "Not specified"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/fieldMerging": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "person": {
+                      "nullable": false,
+                      "properties": {
+                        "address": {
+                          "nullable": false,
+                          "properties": {
+                            "country": {
+                              "nullable": false,
+                              "type": "string"
+                            },
+                            "city": {
+                              "nullable": false,
+                              "type": "string"
+                            },
+                            "state": {
+                              "nullable": false,
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "firstName": {
+                          "nullable": false,
+                          "type": "string"
+                        },
+                        "id": {
+                          "nullable": false,
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "nullable": false,
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "response"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}

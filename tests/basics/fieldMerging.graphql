@@ -1,0 +1,16 @@
+query fieldMerging($id: ID!) {
+  person(id: $id) {
+    id
+    firstName
+    lastName
+
+    address {
+      country
+    }
+
+    address {
+      city
+      state
+    }
+  }
+}
