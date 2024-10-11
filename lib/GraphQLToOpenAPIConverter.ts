@@ -566,6 +566,12 @@ export class GraphQLToOpenAPIConverter {
             );
             const parentObj = currentSelection[0].openApiType;
             if (parentObj.type === 'object') {
+              if (parentObj.properties[name]?.properties) {
+                openApiType.properties = {
+                  ...parentObj.properties[name]?.properties,
+                  ...openApiType.properties,
+                };
+              }
               parentObj.properties[name] = openApiType;
             } else {
               // array
