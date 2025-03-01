@@ -33,7 +33,7 @@
   "dependencies": {
     "commander": "^12.1.0",
     "graphql": "^16.9.0",
-    "yaml": "^2.5.1"
+    "yaml": "^2.7.0"
   },
   "devDependencies": {
     "@types/jest": "^28.1.6",
@@ -48,7 +48,7 @@
     "prettier": "^2.8.8",
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.7.2"
   },
   "types": "dist/index.d.ts"
 }
