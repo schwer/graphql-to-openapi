@@ -1,0 +1,35 @@
+fragment FurOrHairFragment on FurOrHair {
+  ... on Fur {
+    color
+  }
+  ... on Hair {
+    color
+    texture
+  }
+}
+
+query queryInvolvingUnionTypes($name: String!) {
+  favoritePets(
+    name: $name
+  ) {
+    ... on Cat {
+      adultFur {
+        color
+        texture
+      }
+    }
+    ... on Dog {
+      puppyFur {
+        ...FurOrHairFragment
+      }
+      adultFurs {
+        ... on Fur {
+          texture
+        }
+        ... on Hair {
+          color
+        }
+      }
+    }
+  }
+}
