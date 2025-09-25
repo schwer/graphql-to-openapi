@@ -144,4 +144,25 @@ describe('error-conditions', function () {
     }
     assert.fail('exception not produced');
   });
+
+  it('should fail on undefined fragment in query', function () {
+    const schema = readFileSync(
+      path.join(__dirname, '..', 'graphql-pokemon', 'schema.graphql')
+    ).toString();
+    const query = `
+      query {
+        pokemon(id: "Test", name: "Test") {
+          ...SomeOtherPokemonFragment
+        }
+      }
+    `;
+    const output = graphqlToOpenApi({
+      schema,
+      query,
+    });
+    assert.ok(output.queryErrors);
+    assert.ok(output.queryErrors[0] instanceof GraphQLError);
+    // this could probably change
+    //assert.ok(output.queryErrors[0].message.startsWith("Unknown fragment"))
+  });
 });
