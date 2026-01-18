@@ -1,8 +1,10 @@
 import { readFileSync } from 'fs';
-import * as path from 'path';
-import { graphqlToOpenApi } from '../../index';
-import * as assert from 'assert';
-import * as stringify from 'json-stable-stringify';
+import path from 'path';
+import { graphqlToOpenApi } from '../../index.js';
+import assert from 'assert';
+import stringify from 'json-stable-stringify';
+import expectedOutput from './openapi.json' with { type: 'json' };
+import { describe, it } from 'vitest';
 
 describe('graphql-pokemon', function () {
   it('should produce a valid openapi spec', function () {
@@ -11,8 +13,6 @@ describe('graphql-pokemon', function () {
     ).toString();
     const inputQueryFilename = path.join(__dirname, 'example.graphql');
     const query = readFileSync(inputQueryFilename).toString();
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const expectedOutput = require('./openapi.json');
     const actualOutput = graphqlToOpenApi({
       schema,
       query,

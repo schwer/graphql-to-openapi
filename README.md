@@ -83,6 +83,6 @@ const { error, openApiSchema, queryErrors, schemaError } = graphqlToOpenApi({
 
 ### Updating the documentation:
 
-1. The `docs` subdirectory contains a `create-react-app`.
+1. The `docs` subdirectory contains a vite static web app.
 1. `cd docs && npm run start`
 

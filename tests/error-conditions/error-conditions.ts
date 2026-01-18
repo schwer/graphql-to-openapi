@@ -1,12 +1,13 @@
 import { readFileSync } from 'fs';
-import * as path from 'path';
-import { graphqlToOpenApi } from '../../index';
-import * as assert from 'assert';
+import path from 'path';
+import { graphqlToOpenApi } from '../../index.js';
+import assert from 'assert';
 import {
   NoOperationNameError,
   MissingSchemaError,
-} from '../../lib/GraphQLToOpenAPIConverter';
+} from '../../lib/GraphQLToOpenAPIConverter.js';
 import { GraphQLError, IntrospectionQuery, Source } from 'graphql';
+import { describe, it } from 'vitest';
 
 describe('error-conditions', function () {
   it('should fail on a bad input query', function () {
@@ -22,7 +23,7 @@ describe('error-conditions', function () {
       schema,
       query,
     });
-    assert.ok(output.queryErrors.length > 0);
+    assert.ok((output.queryErrors?.length ?? 0) > 0);
   });
 
   it('should fail on an invalid schema with a string', function () {
