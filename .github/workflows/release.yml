@@ -15,7 +15,6 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm test
-      - run: npx codecov
 
   publish:
     runs-on: ubuntu-latest
