@@ -1,8 +1,8 @@
-// eslint-disable @typescript-eslint/ban-types
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { visit, BREAK } from 'graphql/language';
-import { visitWithTypeInfo } from 'graphql/utilities/TypeInfo';
+import { visitWithTypeInfo } from 'graphql/utilities';
 import { validate } from 'graphql/validation';
-import { parse } from 'graphql/language/parser';
+import { parse } from 'graphql';
 import {
   GraphQLEnumType,
   GraphQLError,
@@ -16,14 +16,10 @@ import {
   buildClientSchema,
   buildSchema,
 } from 'graphql';
-import {
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLUnionType,
-} from 'graphql/type/definition';
+import { GraphQLList, GraphQLObjectType, GraphQLUnionType } from 'graphql';
 
 export class NoOperationNameError extends Error {
-  /* istanbul ignore next */
+  /* v8 ignore next */
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
@@ -32,7 +28,7 @@ export class NoOperationNameError extends Error {
 }
 
 export class MissingSchemaError extends Error {
-  /* istanbul ignore next */
+  /* v8 ignore next */
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
@@ -41,7 +37,7 @@ export class MissingSchemaError extends Error {
 }
 
 export class UnknownScalarError extends Error {
-  /* istanbul ignore next */
+  /* v8 ignore next */
   constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
@@ -53,10 +49,10 @@ export interface GraphQLToOpenAPIResult {
   readonly queryErrors?: readonly GraphQLError[];
   readonly error?: NoOperationNameError;
   readonly schemaError?: GraphQLError;
-  openApiSchema?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  openApiSchema?: any;
 }
 
-const typeMap = {
+const typeMap: { [key: string]: object } = {
   ID: {
     type: 'string',
   },
@@ -140,27 +136,33 @@ const typeMap = {
 
 function getScalarType(
   typeName: string,
-  scalarConfig: { [key: string]: object }, // eslint-disable-line @typescript-eslint/ban-types
-  onUnknownScalar: (s: string) => object // eslint-disable-line @typescript-eslint/ban-types
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  scalarConfig: { [key: string]: object },
+  onUnknownScalar: (s: string) => object
 ): object {
   if (scalarConfig[typeName]) {
     return scalarConfig[typeName];
   }
   const r = onUnknownScalar(typeName);
+  /* v8 ignore start */
   if (r) {
     scalarConfig[typeName] = r;
     return r;
   }
   throw new UnknownScalarError('Unknown scalar: ' + typeName);
+  /* v8 ignore stop */
 }
 
 function fieldDefToOpenApiField(
   typeInfo: TypeInfo,
-  scalarConfig: { [key: string]: object }, // eslint-disable-line @typescript-eslint/ban-types
-  onUnknownScalar: (s: string) => object // eslint-disable-line @typescript-eslint/ban-types
+  scalarConfig: { [key: string]: object },
+  onUnknownScalar: (s: string) => object
 ) {
   const fieldDef = typeInfo.getFieldDef();
+  /* v8 ignore start */
+  if (!fieldDef) {
+    throw new Error('Field definition is null or undefined');
+    /* v8 ignore stop */
+  }
   const typeName = fieldDef.type.toString();
   const description = fieldDef.description || undefined;
   let nullable;
@@ -171,7 +173,7 @@ function fieldDefToOpenApiField(
   } else {
     nullable = true;
   }
-  const openApiType = {
+  const openApiType: any = {
     nullable,
     items: undefined,
     properties: undefined,
@@ -190,7 +192,7 @@ function fieldDefToOpenApiField(
   }
   if (type instanceof GraphQLList) {
     openApiType.type = 'array';
-    let itemType = type.ofType;
+    let itemType = (type as GraphQLList<any>).ofType;
     let nullableItems = true;
     if (itemType instanceof GraphQLNonNull) {
       nullableItems = false;
@@ -247,35 +249,34 @@ type InputType =
   | GraphQLInputObjectType
   | GraphQLScalarType
   | GraphQLEnumType
-  | GraphQLList<any> // eslint-disable-line @typescript-eslint/no-explicit-any
-  | GraphQLNonNull<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  | GraphQLList<any>
+  | GraphQLNonNull<any>;
 
 function recurseInputType(
   obj: InputType,
   depth: number,
-  scalarConfig: { [key: string]: object }, // eslint-disable-line @typescript-eslint/ban-types
-  onUnknownScalar: (s: string) => object // eslint-disable-line @typescript-eslint/ban-types
-) {
-  // istanbul ignore next
+  scalarConfig: { [key: string]: object },
+  onUnknownScalar: (s: string) => object
+): any {
+  /* v8 ignore start */
   if (depth > 50) {
-    // istanbul ignore next
     throw new Error('depth limit exceeded: ' + depth);
   }
+  /* v8 ignore stop */
   if (obj instanceof GraphQLInputObjectType) {
     const inputObjectType = obj as GraphQLInputObjectType;
-    const properties = Object.entries(inputObjectType.getFields()).reduce(
-      (properties, [name, f]) => {
-        properties[name] = recurseInputType(
-          f.type,
-          depth + 1,
-          scalarConfig,
-          onUnknownScalar
-        );
-        properties[name].description = f.description;
-        return properties;
-      },
-      {}
-    );
+    const properties: { [key: string]: any } = Object.entries(
+      inputObjectType.getFields()
+    ).reduce((properties: { [key: string]: any }, [name, f]) => {
+      properties[name] = recurseInputType(
+        f.type,
+        depth + 1,
+        scalarConfig,
+        onUnknownScalar
+      );
+      properties[name].description = f.description;
+      return properties;
+    }, {});
     return {
       type: 'object',
       nullable: true,
@@ -284,7 +285,6 @@ function recurseInputType(
     };
   }
   if (obj instanceof GraphQLList) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const list = obj as GraphQLList<any>;
     return {
       type: 'array',
@@ -323,7 +323,7 @@ function recurseInputType(
         nullable: true,
       };
     }
-    // istanbul ignore else
+    // v8 ignore else
     if (name === 'ID') {
       return {
         type: 'string',
@@ -341,9 +341,10 @@ function recurseInputType(
       enum: enumValues.map(({ name }) => name),
     };
   }
-  // istanbul ignore else
+  /* v8 ignore start */
   if (obj instanceof GraphQLNonNull) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /* v8 ignore stop */
+
     const nonNull = obj as GraphQLNonNull<any>;
     return {
       ...recurseInputType(
@@ -355,22 +356,23 @@ function recurseInputType(
       nullable: false,
     };
   }
-  // istanbul ignore next
+  /* v8 ignore start */
   throw new Error(`Unexpected InputType: ${obj}`);
+  /* v8 ignore stop */
 }
 
 export class GraphQLToOpenAPIConverter {
-  private graphqlSchema: GraphQLSchema;
-  private schemaError: GraphQLError;
+  private graphqlSchema!: GraphQLSchema;
+  private schemaError?: GraphQLError;
   constructor(
     private schema?: string | Source,
     private introspectionSchema?: IntrospectionQuery,
-    private onUnknownScalar?: (s: string) => object, // eslint-disable-line @typescript-eslint/ban-types
-    private scalarConfig?: { [key: string]: object } // eslint-disable-line @typescript-eslint/ban-types
+    private onUnknownScalar?: (s: string) => object,
+    private scalarConfig?: { [key: string]: object }
   ) {
     if (!onUnknownScalar) {
       this.onUnknownScalar = () => {
-        return null;
+        return {};
       };
     }
     if (!scalarConfig) {
@@ -378,15 +380,17 @@ export class GraphQLToOpenAPIConverter {
     }
     if (schema) {
       try {
-        this.graphqlSchema = buildSchema(this.schema);
+        this.graphqlSchema = buildSchema(this.schema as string | Source);
       } catch (err) {
-        this.schemaError = err;
+        this.schemaError = err as GraphQLError;
       }
     } else if (introspectionSchema) {
       try {
-        this.graphqlSchema = buildClientSchema(this.introspectionSchema);
+        this.graphqlSchema = buildClientSchema(
+          this.introspectionSchema as IntrospectionQuery
+        );
       } catch (err) {
-        this.schemaError = err;
+        this.schemaError = err as GraphQLError;
       }
     } else {
       throw new MissingSchemaError(
@@ -407,7 +411,7 @@ export class GraphQLToOpenAPIConverter {
     try {
       parsedQuery = parse(query);
     } catch (err) {
-      return { queryErrors: [err] };
+      return { queryErrors: [err as GraphQLError] };
     }
     const queryErrors = validate(graphqlSchema, parsedQuery);
     if (queryErrors.length > 0) {
@@ -415,7 +419,7 @@ export class GraphQLToOpenAPIConverter {
         queryErrors,
       };
     }
-    let openApiSchema = {
+    let openApiSchema: any = {
       openapi: '3.0.3',
       info: {
         title: 'Not specified',
@@ -432,11 +436,11 @@ export class GraphQLToOpenAPIConverter {
       paths: {},
     };
 
-    let error;
-    let operationDef;
-    const currentSelection = [];
+    let error: NoOperationNameError | undefined;
+    let operationDef: any;
+    const currentSelection: any[] = [];
     const typeInfo = new TypeInfo(graphqlSchema);
-    const fragments = [];
+    const fragments: { [key: string]: any } = {};
     openApiSchema = visit(
       parsedQuery,
       visitWithTypeInfo(typeInfo, {
@@ -446,7 +450,7 @@ export class GraphQLToOpenAPIConverter {
           },
         },
         FragmentDefinition: {
-          enter(node) {
+          enter(node: any) {
             const fragmentType = typeInfo.getType();
             let openApiType;
             if (fragmentType instanceof GraphQLUnionType) {
@@ -464,14 +468,14 @@ export class GraphQLToOpenAPIConverter {
               openApiType,
             });
           },
-          leave(node) {
+          leave(node: any) {
             const result = currentSelection.shift().openApiType;
             fragments[node.name.value] = result;
             return result;
           },
         },
         OperationDefinition: {
-          enter(node) {
+          enter(node: any) {
             const openApiType = {
               type: 'object',
               properties: {
@@ -510,12 +514,18 @@ export class GraphQLToOpenAPIConverter {
             return openApiSchema;
           },
         },
-        VariableDefinition({ variable }) {
+        VariableDefinition({ variable }: any) {
+          const inputType = typeInfo.getInputType();
+          /* v8 ignore start */
+          if (!inputType) {
+            return;
+          }
+          /* v8 ignore stop */
           const t = recurseInputType(
-            typeInfo.getInputType(),
+            inputType,
             0,
-            scalarConfig,
-            onUnknownScalar
+            scalarConfig as { [key: string]: object },
+            onUnknownScalar as (s: string) => object
           );
           if (t.type === 'object' || t.type === 'array') {
             operationDef.get.parameters.push({
@@ -542,7 +552,7 @@ export class GraphQLToOpenAPIConverter {
           }
         },
         FragmentSpread: {
-          enter(node) {
+          enter(node: any) {
             const openApiType = currentSelection[0].openApiType;
             const fragment = fragments[node.name.value];
             if (openApiType.anyOf) {
@@ -555,7 +565,7 @@ export class GraphQLToOpenAPIConverter {
           },
         },
         Field: {
-          enter(node) {
+          enter(node: any) {
             let name;
             if (node.alias) {
               name = node.alias.value;
@@ -564,8 +574,8 @@ export class GraphQLToOpenAPIConverter {
             }
             const openApiType = fieldDefToOpenApiField(
               typeInfo,
-              scalarConfig,
-              onUnknownScalar
+              scalarConfig as { [key: string]: object },
+              onUnknownScalar as (s: string) => object
             );
             const parentObj = currentSelection[0].openApiType;
             if (parentObj.type === 'object') {
@@ -602,7 +612,7 @@ export class GraphQLToOpenAPIConverter {
               });
             }
           },
-          leave(node) {
+          leave(node: any) {
             // raw reference comparison doesn't work here. Using
             // loc as a proxy instead.
             if (currentSelection[0].node.loc === node.loc) {
@@ -612,7 +622,7 @@ export class GraphQLToOpenAPIConverter {
           },
         },
         InlineFragment: {
-          enter(node) {
+          enter(node: any) {
             const openApiType = {
               type: 'object',
               nullable: undefined,
