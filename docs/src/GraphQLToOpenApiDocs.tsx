@@ -124,11 +124,9 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
           <div className="col">
             <div className="row" style={{ marginBottom: 5 }}>
               <InputGroup size="sm" className="col">
-                <InputGroup.Prepend>
-                  <Button disabled variant="link">
-                    OpenAPI Schema
-                  </Button>
-                </InputGroup.Prepend>
+                <InputGroup.Text>
+                  OpenAPI Schema
+                </InputGroup.Text>
                 <ToggleButtonGroup
                   name="outputType"
                   type="radio"
@@ -136,8 +134,8 @@ export const GraphQLToOpenApiDocs: React.FC = () => {
                   value={outputType}
                   onChange={setOutputType}
                 >
-                  <ToggleButton value="YAML">YAML</ToggleButton>
-                  <ToggleButton value="JSON">JSON</ToggleButton>
+                  <ToggleButton id="toggle-yaml" value="YAML">YAML</ToggleButton>
+                  <ToggleButton id="toggle-json" value="JSON">JSON</ToggleButton>
                 </ToggleButtonGroup>
               </InputGroup>
               {!success ? (
