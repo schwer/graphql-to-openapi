@@ -1,0 +1,4 @@
+{
+  "ignoreBinaries": ["diff"],
+  "ignore": ["docs/**/*", "bin/json-to-yaml.ts", "bin/convert-to-introspection-schema.ts"]
+}

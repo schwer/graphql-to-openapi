@@ -7,13 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     name: lint
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v3
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: 24.x
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm run lint
+    - run: |
+      rm -rf node_modules package-lock.json
+      npm install
+      npm run build --if-present
+      npm run lint
 
   build:
     name: build
@@ -22,16 +24,15 @@ jobs:
       matrix:
         node-version: [20.x, 22.x, 24.x]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install, build, and test
       run: |
-        npm ci
+        rm -rf node_modules package-lock.json
+        npm install
         npm run build --if-present
         npm test
         npm run test-cli
-      env:
-        CI: true

@@ -11,19 +11,19 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      # Setup .npmrc file to publish to npm
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24.x
           registry-url: https://registry.npmjs.org
-      - run: git config user.name ${{ github.actor }}
-      - run: git config user.email ${{ github.actor }}@users.noreply.github.com
-      - run: git fetch origin ${{ github.event.release.target_commitish }}:${{ github.event.release.target_commitish }}
-      - run: git checkout ${{ github.event.release.target_commitish }}
-      - run: git tag -d ${{ github.event.release.tag_name }}
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
-      - run: npm version ${{ github.event.release.tag_name }}
-      - run: npm publish --access public
+      - run: |
+        git config user.name ${{ github.actor }}
+        git config user.email ${{ github.actor }}@users.noreply.github.com
+        git fetch origin ${{ github.event.release.target_commitish }}:${{ github.event.release.target_commitish }}
+        git checkout ${{ github.event.release.target_commitish }}
+        git tag -d ${{ github.event.release.tag_name }}
+        npm install
+        npm run build --if-present
+        npm test
+        npm version ${{ github.event.release.tag_name }}
+        npm publish --access public
