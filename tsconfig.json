@@ -1,7 +1,6 @@
 {
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
     "declaration": true,
     "outDir": "dist"
   },

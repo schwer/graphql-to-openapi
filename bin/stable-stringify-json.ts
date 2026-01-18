@@ -1,4 +1,4 @@
-import * as stringify from 'json-stable-stringify';
+import stringify from 'json-stable-stringify';
 import { program } from 'commander';
 import { readFileSync, writeFileSync } from 'fs';
 
@@ -16,4 +16,4 @@ const { filename } = program
 
 const original = JSON.parse(readFileSync(filename).toString());
 const output = stringify(original, { space: '  ' });
-writeFileSync(filename, output);
+writeFileSync(filename, output as string);

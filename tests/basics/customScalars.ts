@@ -1,18 +1,18 @@
 import { readFileSync } from 'fs';
-import * as path from 'path';
-import { graphqlToOpenApi } from '../../index';
-import * as assert from 'assert';
-import * as stringify from 'json-stable-stringify';
+import path from 'path';
+import { graphqlToOpenApi } from '../../index.js';
+import assert from 'assert';
+import stringify from 'json-stable-stringify';
+import expectedOutput from './customScalars.json' with { type: 'json' };
+import { describe, it } from 'vitest';
 
 describe('customScalars', function () {
   const schema = readFileSync(
     path.join(__dirname, 'customScalarsSchema.graphql')
   ).toString();
   const inputQueryFilename = path.join(__dirname, 'customScalars.graphql');
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const expectedOutput = require('./customScalars.json');
   const query = readFileSync(inputQueryFilename).toString();
-  const scalarConfig = {
+  const scalarConfig: Record<string, { type: string }> = {
     CustomScalar: {
       type: 'string',
     },
@@ -31,7 +31,7 @@ describe('customScalars', function () {
   });
 
   it('should produce a valid openapi spec with an onUnknownScalar function', function () {
-    function onUnknownScalar(s) {
+    function onUnknownScalar(s: string) {
       return scalarConfig[s];
     }
     const actualOutput = graphqlToOpenApi({
@@ -49,7 +49,7 @@ describe('customScalars', function () {
       graphqlToOpenApi({
         schema,
         query,
-      }).openApiSchema;
+      });
       assert.ok(false);
     } catch (err) {
       assert.ok(err);
