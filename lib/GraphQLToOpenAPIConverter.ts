@@ -36,7 +36,7 @@ export class MissingSchemaError extends Error {
   }
 }
 
-export class UnknownScalarError extends Error {
+class UnknownScalarError extends Error {
   /* v8 ignore next */
   constructor(message: string) {
     super(message);
