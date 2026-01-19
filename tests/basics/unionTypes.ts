@@ -1,8 +1,10 @@
 import { readFileSync } from 'fs';
-import * as path from 'path';
-import { graphqlToOpenApi } from '../../index';
-import * as assert from 'assert';
-import * as stringify from 'json-stable-stringify';
+import path from 'path';
+import { graphqlToOpenApi } from '../../index.js';
+import assert from 'assert';
+import stringify from 'json-stable-stringify';
+import expectedOutput from './unionTypes.json' with { type: 'json' };
+import { describe, it } from 'vitest';
 
 describe('unionTypes', function () {
   it('should produce a valid openapi spec', function () {
@@ -11,8 +13,7 @@ describe('unionTypes', function () {
     ).toString();
     const inputQueryFilename = path.join(__dirname, 'unionTypesQuery.graphql');
     const query = readFileSync(inputQueryFilename).toString();
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const expectedOutput = require('./unionTypes.json');
+
     const actualOutput = graphqlToOpenApi({
       schema,
       query,

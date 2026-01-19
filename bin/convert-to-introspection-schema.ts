@@ -1,4 +1,4 @@
-import * as stringify from 'json-stable-stringify';
+import stringify from 'json-stable-stringify';
 import { program } from 'commander';
 import { readFileSync, writeFileSync } from 'fs';
 import { buildSchema, graphqlSync } from 'graphql';
@@ -18,4 +18,7 @@ const { filename, outputFilename } = program
 const original = readFileSync(filename).toString();
 const schema = buildSchema(original);
 const introspectionSchema = graphqlSync({ schema, source: filename }).data;
-writeFileSync(outputFilename, stringify(introspectionSchema, { space: '  ' }));
+writeFileSync(
+  outputFilename,
+  stringify(introspectionSchema, { space: '  ' }) as string
+);

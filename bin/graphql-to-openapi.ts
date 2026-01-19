@@ -2,7 +2,7 @@
 
 import { program } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { graphqlToOpenApi } from '../index';
+import { graphqlToOpenApi } from '../index.js';
 import { IntrospectionQuery, Source } from 'graphql';
 import { stringify } from 'yaml';
 
@@ -47,41 +47,46 @@ if (schema) {
     readFileSync(introspectionSchemaJson).toString()
   ) as IntrospectionQuery;
 }
+type ScalarConfigType = Record<string, { type: string }>;
+
 const inputQuery = readFileSync(query).toString();
-let scalarConfig;
+let scalarConfig: ScalarConfigType = {};
 if (scalarConfigFile) {
   if (existsSync(scalarConfigFile)) {
-    scalarConfig = JSON.parse(readFileSync(scalarConfigFile).toString());
+    scalarConfig = JSON.parse(
+      readFileSync(scalarConfigFile).toString()
+    ) as ScalarConfigType;
   }
 }
 let needsScalarConfigFile = false;
 
 const { error, schemaError, queryErrors, openApiSchema } = graphqlToOpenApi({
-  schema: schema ? new Source(inputSchema, schema) : undefined,
+  schema: schema ? new Source(inputSchema as string, schema) : undefined,
   introspectionSchema,
   query: new Source(inputQuery, query),
   scalarConfig,
-  onUnknownScalar(unknownScalar) {
-    if (!scalarConfig && scalarConfigFile) {
+  onUnknownScalar(unknownScalar: string) {
+    const s = scalarConfig as ScalarConfigType;
+    if (!s && scalarConfigFile) {
       needsScalarConfigFile = true;
     }
-    if (!scalarConfig && !scalarConfigFile) {
+    if (!s && !scalarConfigFile) {
       throw new Error('A scalar configuration filename is required');
     }
-    if (!scalarConfig) {
-      scalarConfig = {};
+    if (!s) {
+      scalarConfig = {} as ScalarConfigType;
     }
-    if (!scalarConfig[unknownScalar]) {
-      scalarConfig[unknownScalar] = { type: 'string' };
+    if (!s[unknownScalar]) {
+      s[unknownScalar] = { type: 'string' };
     }
-    return scalarConfig[unknownScalar];
+    return s[unknownScalar];
   },
 });
 if (error) {
   throw error;
 }
-if (queryErrors?.length > 0) {
-  throw queryErrors[0];
+if (queryErrors && queryErrors?.length > 0) {
+  throw queryErrors?.[0];
 }
 if (schemaError) {
   throw schemaError;
@@ -97,8 +102,11 @@ if (yaml) {
 } else {
   process.stdout.write(JSON.stringify(openApiSchema));
 }
-if (needsScalarConfigFile) {
-  writeFileSync(scalarConfigFile, JSON.stringify(scalarConfig, null, 2));
+if (needsScalarConfigFile && scalarConfig) {
+  writeFileSync(
+    scalarConfigFile,
+    JSON.stringify(scalarConfig as ScalarConfigType, null, 2)
+  );
   console.error(
     'the default custom scalar configuration was written to ' + scalarConfigFile
   );
