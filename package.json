@@ -39,7 +39,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@tsconfig/node22": "^22.0.5",
-    "@types/node": "^24.0.7",
+    "@types/node": "^25.0.10",
     "@vitest/coverage-v8": "^4.0.17",
     "commander": "^14.0.2",
     "eslint": "^9.39.2",
